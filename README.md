@@ -1,55 +1,59 @@
-# Kheera
+# KheeraUi
 
-Kheera is a collaborative team productivity and project management platform inspired by modern workflow tools like Jira and Trello.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.14.
 
-The project is being built as part of a 90-day engineering challenge by a team of developers transitioning into modern full-stack software development using Java Spring Boot and Angular.
+## Development server
 
-## Mission
+To start a local development server, run:
 
-Build a real-world scalable application while simultaneously developing:
+```bash
+ng serve
+```
 
-* frontend engineering skills,
-* backend API development,
-* database design,
-* SCRUM workflow experience,
-* Git collaboration,
-* and deployment knowledge.
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Core Features
+## Code scaffolding
 
-* User Authentication
-* Team Creation & Collaboration
-* Project Boards
-* Task Management
-* Task States & Workflow Tracking
-* Kanban-style Productivity Boards
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-## Tech Stack
+```bash
+ng generate component component-name
+```
 
-### Backend
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-* Java 21
-* Spring Boot
-* PostgreSQL
-* JWT Authentication
+```bash
+ng generate --help
+```
 
-### Frontend
+## Building
 
-* Angular
-* Angular Material
-* RxJS
+To build the project run:
 
-### DevOps
+```bash
+ng build
+```
 
-* Docker
-* GitHub Actions (planned)
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Team Philosophy
+## Running unit tests
 
-Every team member participates in all areas of development including frontend, backend, database, testing, and deployment.
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
 
-Role ownership exists only to establish accountability and structured collaboration — not silos.
+```bash
+ng test
+```
 
-## Goal
+## Running end-to-end tests
 
-The objective is to evolve from learning-focused development into building production-grade engineering systems while preparing for real-world software engineering opportunities.
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

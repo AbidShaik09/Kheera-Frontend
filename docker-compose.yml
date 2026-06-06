@@ -1,0 +1,17 @@
+services:
+  kheera-frontend:
+    build: .
+
+    container_name: kheera-frontend
+
+    restart: unless-stopped
+
+    ports:
+      - '4200:80'
+
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
