@@ -16,7 +16,6 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "baseHref": "/kheera",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -29,6 +28,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/kheera",
               "budgets": [
                 {
                   "type": "initial",
@@ -44,6 +44,7 @@
               "outputHashing": "all"
             },
             "development": {
+              "baseHref": "/",
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
