@@ -1,0 +1,22 @@
+name: kheera-frontend-dev
+
+services:
+
+  kheera-frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    container_name: kheera-frontend-dev
+
+    restart: unless-stopped
+
+    ports:
+      - "4201:80"
+
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
