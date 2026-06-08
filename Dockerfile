@@ -9,7 +9,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build -- --configuration production --base-href=/kheera/
+RUN npm run build -- --configuration production --base-href=/
 
 # Runtime Stage
 FROM nginx:alpine
