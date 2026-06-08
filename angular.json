@@ -28,7 +28,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/kheera",
+              "baseHref": "/",
               "budgets": [
                 {
                   "type": "initial",
