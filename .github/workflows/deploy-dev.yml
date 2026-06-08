@@ -1,0 +1,28 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Deploy Frontend Develop
+        run: |
+          cd /opt/apps/develop/kheera-frontend/Kheera-Frontend
+
+          echo "Fetching latest code..."
+          git fetch origin
+
+          echo "Resetting to main..."
+          git reset --hard origin/develop
+
+          echo "Rebuilding container..."
+          docker compose down
+          docker compose up -d --build
+
+          echo "Cleaning old images..."
+          docker image prune -f
