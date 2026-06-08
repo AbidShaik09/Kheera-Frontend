@@ -3,7 +3,7 @@ name: Deploy Frontend Development
 on:
   push:
     branches:
-      - Develop
+      - develop
 
 jobs:
   deploy:
@@ -18,7 +18,7 @@ jobs:
           git fetch origin
 
           echo "Updating to latest develop branch..."
-          git reset --hard origin/Develop
+          git reset --hard origin/develop
 
           echo "Stopping existing development containers..."
           docker compose -f docker-compose.dev.yml down
