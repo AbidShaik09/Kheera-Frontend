@@ -1,7 +1,8 @@
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, WritableSignal } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { ThemeService } from '../../services/theme';
-import { NavRouteType, Navigation } from '../../components/navigation/navigation';
+import { Navigation, NavRouteType } from '../../components/navigation/navigation';
+
 @Component({
   selector: 'app-navbar',
   imports: [Navigation],
@@ -9,27 +10,29 @@ import { NavRouteType, Navigation } from '../../components/navigation/navigation
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  isLoggedIn: WritableSignal<boolean>;
-  routes: NavRouteType[];
+  readonly isLoggedIn!: WritableSignal<boolean>;
+
+  readonly routes = computed<NavRouteType[]>(() => {
+    if (this.isLoggedIn()) {
+      return [
+        { name: 'Dashboard', link: '/dashboard' },
+        { name: 'Profile', link: '/profile' },
+        { name: 'Settings', link: '/settings' },
+      ];
+    }
+
+    return [
+      { name: 'Home', link: '/' },
+      { name: 'Login', link: '/login' },
+      { name: 'Register', link: '/register' },
+    ];
+  });
+
   constructor(
     private readonly authService: AuthService,
     private readonly themeService: ThemeService,
   ) {
-    this.isLoggedIn = signal(this.authService.isUserLoggedIn());
-    console.log('Navbar initialized. User logged in:', this.isLoggedIn());
-    console.log('Current theme:', this.themeService.getTheme());
-    if (this.isLoggedIn()) {
-      this.routes = [
-        { name: 'Home', link: '/' },
-        { name: 'Profile', link: '/profile' },
-        { name: 'Settings', link: '/settings' },
-      ];
-    } else {
-      this.routes = [
-        { name: 'Home', link: '/' },
-        { name: 'Login', link: '/login' },
-        { name: 'Register', link: '/register' },
-      ];
-    }
+    this.isLoggedIn = this.authService.isUserLoggedIn;
+    console.log(this.themeService.getTheme());
   }
 }
