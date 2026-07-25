@@ -2,11 +2,14 @@
   @if (!isLoggedIn()) {
     <div class="flex bg-background h-3"></div>
   } @else {
-    <div class="flex gap-3 border border-border">
+    <div class="flex gap-3 border border-border align-center justify-between items-center">
       <app-navbar-logo />
-      @for (route of routes(); track route.link) {
-        <app-navigation [route]="route"></app-navigation>
-      }
+      <app-global-search />
+      <div class="flex gap-2 items-center">
+        @for (route of routes(); track route.link) {
+          <app-navigation [route]="route"></app-navigation>
+        }
+      </div>
     </div>
   }
 </div>
