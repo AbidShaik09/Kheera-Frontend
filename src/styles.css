@@ -1,136 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'tailwindcss';
 
-:root {
-  --color-hover: #eef3f5;
-  --color-selected: #ddfbf9;
-  --color-overlay: rgba(0, 0, 0, 0.08);
+@import './styles/_colors.css';
+@import './styles/_spacing.css';
+@import './styles/_typography.css';
+@import './styles/_layout.css';
+@import './styles/_radius.css';
+@import './styles/_shadow.css';
+@import './styles/_motion.css';
+@import './styles/_zindex.css';
+@import './styles/_container.css';
+@import './styles/theme.css';
 
-  /* Accent Colors */
-  --color-danger-accent: #ef4444;
-  --color-info-accent: #3b82f6;
-  --color-success-accent: #22c55e;
-  --color-warning-accent: #f59e0b;
-
-  /* Button Primary */
-  --color-btn-primary-background: #07cfc9;
-  --color-btn-primary-hover: #05b9b3;
-  --color-btn-primary-pressed: #049f9a;
-  --color-btn-primary-text: #ffffff;
-
-  /* Button Secondary */
-  --color-btn-secondary-background: #ffffff;
-  --color-btn-secondary-border: #07cfc9;
-  --color-btn-secondary-hover: #ddfbf9;
-  --color-btn-secondary-text: #07cfc9;
-
-  /* Neutrals */
-  --color-background: #ffffff;
-  --color-border: #e7ecef;
-  --color-card-background: #f5f7f8;
-  --color-divider: #d7dee2;
-  --color-secondary-background: #fafbfc;
-
-  /* Primary */
-  --color-primary: #07cfc9;
-  --color-primary-active: #049f9a;
-  --color-primary-dark: #037a77;
-  --color-primary-hover: #05b9b3;
-  --color-primary-light: #61e7e3;
-  --color-primary-tint: #ddfbf9;
-
-  /* Text */
-  --color-disabled-text: #b1b3b6;
-  --color-muted-text: #9497a0;
-  --color-primary-text: #4b5563;
-  --color-secondary-text: #636970;
-}
-
-.dark {
-  --color-hover: #2d333a;
-  --color-selected: rgba(7, 207, 201, 0.14);
-  --color-overlay: rgba(0, 0, 0, 0.45);
-
-  /* Accent Colors */
-  --color-danger-accent: #f26d6d;
-  --color-info-accent: #60a5fa;
-  --color-success-accent: #47d16c;
-  --color-warning-accent: #f6c445;
-
-  /* Button Primary */
-  --color-btn-primary-background: #07cfc9;
-  --color-btn-primary-hover: #25e7e0;
-  --color-btn-primary-pressed: #05b9b3;
-  --color-btn-primary-text: #0f1618;
-
-  /* Button Secondary */
-  --color-btn-secondary-background: #24282d;
-  --color-btn-secondary-border: #07cfc9;
-  --color-btn-secondary-hover: #2d333a;
-  --color-btn-secondary-text: #07cfc9;
-
-  /* Neutrals */
-  --color-background: #181a1d;
-  --color-secondary-background: #1f2226;
-  --color-card-background: #24282d;
-  --color-border: #343a40;
-  --color-divider: #3c434b;
-
-  /* Primary */
-  --color-primary: #07cfc9;
-  --color-primary-hover: #25e7e0;
-  --color-primary-active: #05b9b3;
-  --color-primary-dark: #049f9a;
-  --color-primary-light: #61e7e3;
-  --color-primary-tint: rgba(7, 207, 201, 0.12);
-
-  /* Text */
-  --color-primary-text: #f5f7f9;
-  --color-secondary-text: #a9b2bc;
-  --color-muted-text: #7d8792;
-  --color-disabled-text: #5f6975;
-}
-@theme {
-  /* Interaction */
-  --color-hover: var(--color-hover);
-  --color-selected: var(--color-selected);
-  --color-overlay: var(--color-overlay);
-
-  /* Accent */
-  --color-danger-accent: var(--color-danger-accent);
-  --color-info-accent: var(--color-info-accent);
-  --color-success-accent: var(--color-success-accent);
-  --color-warning-accent: var(--color-warning-accent);
-
-  /* Buttons */
-  --color-btn-primary-background: var(--color-btn-primary-background);
-  --color-btn-primary-hover: var(--color-btn-primary-hover);
-  --color-btn-primary-pressed: var(--color-btn-primary-pressed);
-  --color-btn-primary-text: var(--color-btn-primary-text);
-
-  --color-btn-secondary-background: var(--color-btn-secondary-background);
-  --color-btn-secondary-border: var(--color-btn-secondary-border);
-  --color-btn-secondary-hover: var(--color-btn-secondary-hover);
-  --color-btn-secondary-text: var(--color-btn-secondary-text);
-
-  /* Neutrals */
-  --color-background: var(--color-background);
-  --color-secondary-background: var(--color-secondary-background);
-  --color-card-background: var(--color-card-background);
-  --color-border: var(--color-border);
-  --color-divider: var(--color-divider);
-
-  /* Primary */
-  --color-primary: var(--color-primary);
-  --color-primary-hover: var(--color-primary-hover);
-  --color-primary-active: var(--color-primary-active);
-  --color-primary-dark: var(--color-primary-dark);
-  --color-primary-light: var(--color-primary-light);
-  --color-primary-tint: var(--color-primary-tint);
-
-  /* Text */
-  --color-primary-text: var(--color-primary-text);
-  --color-secondary-text: var(--color-secondary-text);
-  --color-muted-text: var(--color-muted-text);
-  --color-disabled-text: var(--color-disabled-text);
-}
+@import './styles/_base.css';
