@@ -2,7 +2,8 @@
   @if (!isLoggedIn()) {
     <div class="flex bg-background h-3"></div>
   } @else {
-    <div class="flex bg-primary gap-3 p-3 text-font-primary">
+    <div class="flex gap-3 border border-border">
+      <app-navbar-logo />
       @for (route of routes(); track route.link) {
         <app-navigation [route]="route"></app-navigation>
       }
