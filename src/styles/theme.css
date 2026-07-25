@@ -49,6 +49,12 @@
   --spacing-lg: var(--space-lg);
   --spacing-xl: var(--space-xl);
   --spacing-2xl: var(--space-2xl);
+  --spacing-3xl: var(--space-3xl);
+  --spacing-4xl: var(--space-4xl);
+  --spacing-5xl: var(--space-5xl);
+  --spacing-6xl: var(--space-6xl);
+  --spacing-7xl: var(--space-7xl);
+  --spacing-8xl: var(--space-8xl);
 
   /* Radius */
   --radius-sm: var(--radius-sm);
