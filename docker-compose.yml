@@ -9,6 +9,9 @@ services:
     ports:
       - '4200:80'
 
+    volumes:
+      - /opt/apps/config/kheera/prod-config.js:/usr/share/nginx/html/config.js:ro
+
     networks:
       - app-network
 
