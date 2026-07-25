@@ -1,7 +1,6 @@
 name: kheera-frontend-dev
 
 services:
-
   kheera-frontend-dev:
     build:
       context: .
@@ -12,7 +11,10 @@ services:
     restart: unless-stopped
 
     ports:
-      - "4201:80"
+      - '4201:80'
+
+    volumes:
+      - /opt/apps/config/kheera/dev-config.js:/usr/share/nginx/html/config.js:ro
 
     networks:
       - app-network
