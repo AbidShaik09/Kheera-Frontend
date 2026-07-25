@@ -1,0 +1,9 @@
+.search-container:focus-within {
+  outline: 2px solid var(--color-primary);
+}
+
+.search-container input {
+  border: none;
+  background: transparent;
+  outline: none;
+}

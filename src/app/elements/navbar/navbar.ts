@@ -3,10 +3,11 @@ import { AuthService } from '../../services/auth-service';
 import { ThemeService } from '../../services/theme';
 import { Navigation, NavRouteType } from '../../components/navigation/navigation';
 import { NavbarLogo } from '../navbar-logo/navbar-logo';
+import { GlobalSearch } from '../global-search/global-search';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Navigation, NavbarLogo],
+  imports: [Navigation, NavbarLogo, GlobalSearch],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
