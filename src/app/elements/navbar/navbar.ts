@@ -10,7 +10,9 @@ import { Navigation, NavRouteType } from '../../components/navigation/navigation
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  readonly isLoggedIn!: WritableSignal<boolean>;
+  themeService = inject(ThemeService);
+  authService = inject(AuthService);
+  readonly isLoggedIn: WritableSignal<boolean> = this.authService.isUserLoggedIn;
 
   readonly routes = computed<NavRouteType[]>(() => {
     if (this.isLoggedIn()) {
@@ -27,12 +29,4 @@ export class Navbar {
       { name: 'Register', link: '/register' },
     ];
   });
-
-  constructor(
-    private readonly authService: AuthService,
-    private readonly themeService: ThemeService,
-  ) {
-    this.isLoggedIn = this.authService.isUserLoggedIn;
-    console.log(this.themeService.getTheme());
-  }
 }
