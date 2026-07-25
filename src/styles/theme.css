@@ -1,0 +1,75 @@
+@theme {
+  /* Interaction */
+  --color-hover: var(--color-hover);
+  --color-selected: var(--color-selected);
+  --color-overlay: var(--color-overlay);
+
+  /* Accent */
+  --color-danger-accent: var(--color-danger-accent);
+  --color-info-accent: var(--color-info-accent);
+  --color-success-accent: var(--color-success-accent);
+  --color-warning-accent: var(--color-warning-accent);
+
+  /* Buttons */
+  --color-btn-primary-background: var(--color-btn-primary-background);
+  --color-btn-primary-hover: var(--color-btn-primary-hover);
+  --color-btn-primary-pressed: var(--color-btn-primary-pressed);
+  --color-btn-primary-text: var(--color-btn-primary-text);
+
+  --color-btn-secondary-background: var(--color-btn-secondary-background);
+  --color-btn-secondary-border: var(--color-btn-secondary-border);
+  --color-btn-secondary-hover: var(--color-btn-secondary-hover);
+  --color-btn-secondary-text: var(--color-btn-secondary-text);
+
+  /* Neutrals */
+  --color-background: var(--color-background);
+  --color-secondary-background: var(--color-secondary-background);
+  --color-card-background: var(--color-card-background);
+  --color-border: var(--color-border);
+  --color-divider: var(--color-divider);
+
+  /* Primary */
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-active: var(--color-primary-active);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-primary-light: var(--color-primary-light);
+  --color-primary-tint: var(--color-primary-tint);
+
+  /* Text */
+  --color-primary-text: var(--color-primary-text);
+  --color-secondary-text: var(--color-secondary-text);
+  --color-muted-text: var(--color-muted-text);
+  --color-disabled-text: var(--color-disabled-text);
+
+  /* Spacing */
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
+
+  /* Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  /* Fonts */
+  --font-primary: var(--font-primary);
+
+  /* Font Sizes */
+  --text-sm: var(--text-sm);
+  --text-md: var(--text-md);
+  --text-lg: var(--text-lg);
+
+  /* Shadows */
+  --shadow-card: var(--shadow-card);
+
+  /* Containers */
+  --container-sm: var(--container-sm);
+  --container-md: var(--container-md);
+  --container-lg: var(--container-lg);
+  --container-xl: var(--container-xl);
+  --container-2xl: var(--container-2xl);
+}
