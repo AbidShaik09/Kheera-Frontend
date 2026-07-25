@@ -59,6 +59,8 @@
   --font-primary: var(--font-primary);
 
   /* Font Sizes */
+  --text-2xs: var(--text-2xs);
+  --text-xs: var(--text-xs);
   --text-sm: var(--text-sm);
   --text-md: var(--text-md);
   --text-lg: var(--text-lg);

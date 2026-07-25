@@ -2,10 +2,11 @@ import { Component, computed, inject, WritableSignal } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { ThemeService } from '../../services/theme';
 import { Navigation, NavRouteType } from '../../components/navigation/navigation';
+import { NavbarLogo } from '../navbar-logo/navbar-logo';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Navigation],
+  imports: [Navigation, NavbarLogo],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
@@ -17,9 +18,9 @@ export class Navbar {
   readonly routes = computed<NavRouteType[]>(() => {
     if (this.isLoggedIn()) {
       return [
-        { name: 'Dashboard', link: '/dashboard' },
-        { name: 'Profile', link: '/profile' },
-        { name: 'Settings', link: '/settings' },
+        // { name: 'Dashboard', link: '/dashboard' },
+        // { name: 'Profile', link: '/profile' },
+        // { name: 'Settings', link: '/settings' },
       ];
     }
 
