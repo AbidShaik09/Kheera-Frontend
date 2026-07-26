@@ -5,10 +5,12 @@ import { NavbarLogo } from '../navbar-logo/navbar-logo';
 import { GlobalSearch } from '../global-search/global-search';
 import { KnightBtn } from '../../components/knight-btn/knight-btn';
 import { Router } from '@angular/router';
-
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-navbar',
-  imports: [NavbarLogo, GlobalSearch, KnightBtn],
+  imports: [NavbarLogo, GlobalSearch, KnightBtn, MatMenuModule, MatButtonModule, MatIconModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
@@ -18,6 +20,9 @@ export class Navbar {
   private router = inject(Router);
   readonly isLoggedIn: WritableSignal<boolean> = this.authService.isUserLoggedIn;
   currentTheme = signal<string>(this.themeService.getTheme());
+  toggleThemeText = computed((): string => {
+    return this.currentTheme() === 'dark' ? 'Light' : 'Dark';
+  });
   createBtnClicked() {
     console.log('Create button clicked');
   }
