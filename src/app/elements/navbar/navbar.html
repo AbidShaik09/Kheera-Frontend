@@ -10,10 +10,10 @@
 
       <!-- Search + Create -->
       <div class="flex items-center gap-2">
-        <app-global-search class="w-63 md:w-100 lg:w-140" />
+        <app-global-search class="w-50 sm:70 md:w-100 lg:w-140" />
 
         <app-knight-btn
-          class="hidden md:block"
+          class="hidden sm:block"
           text="Create"
           icon="add"
           type="secondary"
@@ -42,6 +42,10 @@
 
     <!-- Mobile Menu Definition -->
     <mat-menu #mobileMenu="matMenu">
+      <button mat-menu-item (click)="createBtnClicked()" class="text-btn-secondary-text">
+        <mat-icon>add</mat-icon>
+        <span>Create</span>
+      </button>
       <button mat-menu-item (click)="createBtnClicked()">
         <mat-icon>notifications</mat-icon>
         <span>Notifications</span>
