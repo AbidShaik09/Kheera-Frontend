@@ -1,19 +1,66 @@
 <div>
   @if (!isLoggedIn()) {
-    <div class="flex bg-background h-3"></div>
+    <div class="h-3 bg-background"></div>
   } @else {
-    <div class="flex gap-3 border border-border align-center justify-between items-center">
-      <app-navbar-logo />
-      <div class="flex gap-2 items-center">
-        <app-global-search />
-        <app-knight-btn text="Create" icon="add" type="secondary" (onClick)="createBtnClicked()" />
+    <div
+      class="sticky top-0 z-50 flex h-12 items-center justify-between border-b border-border bg-background px-1 md:px-2 w-full"
+    >
+      <!-- Logo -->
+      <app-navbar-logo class="shrink-0" />
+
+      <!-- Search + Create -->
+      <div class="flex items-center gap-2">
+        <app-global-search class="w-63 md:w-100 lg:w-140" />
+
+        <app-knight-btn
+          class="hidden md:block"
+          text="Create"
+          icon="add"
+          type="secondary"
+          (onClick)="createBtnClicked()"
+        />
       </div>
-      <div class="flex gap-2 items-center">
+
+      <!-- Desktop Actions -->
+      <div class="hidden sm:flex items-center gap-2">
         <app-knight-btn icon="notifications" type="icon" (onClick)="createBtnClicked()" />
+
         <app-knight-btn [icon]="themeIcon()" type="icon" (onClick)="toggleTheme()" />
+
         <app-knight-btn icon="settings" type="icon" (onClick)="navButtonClicked('settings')" />
+
         <app-knight-btn icon="account_circle" type="icon" (onClick)="navButtonClicked('profile')" />
       </div>
+
+      <!-- Mobile Menu -->
+      <div class="sm:hidden">
+        <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
     </div>
+
+    <!-- Mobile Menu Definition -->
+    <mat-menu #mobileMenu="matMenu">
+      <button mat-menu-item (click)="createBtnClicked()">
+        <mat-icon>notifications</mat-icon>
+        <span>Notifications</span>
+      </button>
+
+      <button mat-menu-item (click)="toggleTheme()">
+        <mat-icon>{{ themeIcon() }}</mat-icon>
+        <span>{{ toggleThemeText() }} Theme</span>
+      </button>
+
+      <button mat-menu-item (click)="navButtonClicked('settings')">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+
+      <button mat-menu-item (click)="navButtonClicked('profile')">
+        <mat-icon>account_circle</mat-icon>
+        <span>Profile</span>
+      </button>
+    </mat-menu>
   }
 </div>
