@@ -7,7 +7,7 @@ import { ApiService } from './api-service';
 export class AuthService {
   private readonly apiService = inject(ApiService);
 
-  readonly isUserLoggedIn = signal(false);
+  readonly isUserLoggedIn = signal(true);
 
   accessToken(): string | null {
     return localStorage.getItem('accessToken');

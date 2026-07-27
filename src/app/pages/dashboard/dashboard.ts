@@ -9,13 +9,13 @@ import { HomeTaskComponent, HomeTaskData } from "../../components/home-task/home
 })
 export class Dashboard {
   taskDetails: HomeTaskData={
-    title:'Timepass',
-    taskId:'123',
+    title:'Create a login, sign up pages and add create authentication module and routing structure with angular routes for protected areas',
+    taskId:'72',
     taskStatus: 'check',
-    projectKey: 'yuu',
-    issueNumber: 901,
-    projectName: 'Knight',
-    updatedAt: "26th July",
+    projectKey: 'P07',
+    issueNumber: 71,
+    projectName: 'Kheera: Modern Project Management Workspace',
+    updatedAt: new Date(),
     clickable: true
   }
 }
