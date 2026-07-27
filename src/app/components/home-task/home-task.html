@@ -1,0 +1,18 @@
+
+<div (click)="onClick()" class="flex justify-between w-170 bg-background items-center border border-border">
+    <div class="left-section">
+        <div class="text-lg font-bold ">
+            <mat-icon class="text-muted-text text-xl" [svgIcon]="task.taskStatus"></mat-icon>
+            <span>{{ task.taskId }}:</span>
+            <span>{{ task.title }}</span>
+        </div>
+        <div class="second-row">
+                <span>Task ·</span>
+        <span>{{ task.projectKey }}-{{ task.issueNumber }} ·</span>
+        <span>{{ task.projectName }}</span>
+        </div>
+    </div>
+    <div class="text-md">
+        <span>{{ task.updatedAt }}</span>
+    </div>
+</div>
