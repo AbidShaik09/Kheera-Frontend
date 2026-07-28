@@ -1,0 +1,18 @@
+
+<div (click)="onClick()" class= "flex justify-between items-center w-full h-16 px-md py-sm rounded-md bg-background border border-border transition-colors duration-200 hover:bg-primary/10" [class.cursor-pointer]="task.clickable">
+    <div class="flex flex-col flex-1 min-w-0">
+        <div class="flex items-center gap-sm min-w-0">
+            <mat-icon class="text-muted-text text-xl">check</mat-icon>
+            <span>{{ task.taskId }}:</span>
+            <span class="flex-1 min-w-0 truncate">{{ task.title }}</span>
+        </div>
+        <div class="flex items-center gap-xs text-sm text-secondary-text min-w-0">
+                <span class="shrink-0">Task ·</span>
+        <span class="shrink-0">{{ task.projectKey }}-{{ task.issueNumber }} ·</span>
+        <span class="truncate min-w-0">{{ task.projectName }}</span>
+        </div>
+    </div>
+    <div class="shrink-0 text-sm text-muted-text">
+        <span>{{ getRelativeTime() }}</span>
+    </div>
+</div>
