@@ -1,2 +1,51 @@
-<div>    <app-home-task [task]="taskDetails"></app-home-task>
+<div class="grid grid-cols-10 gap-md h-screen">
+
+    <!-- Left Section -->
+    <div class="flex flex-col gap-md col-span-2 h-full">
+        <div class=" rounded-md border border-border">
+            <div>
+                Activity
+            </div>
+            Calendar Placeholder
+        </div>
+        <div class=" border border-border rounded-md">
+            Favourites
+        </div>
+        <div class="flex-1 border border-border rounded-md">
+            Spaces
+        </div>
+    </div>
+
+    <!-- Main Section -->
+    <div class="grid grid-rows-12 gap-md col-span-5 p-md border border-border rounded-md min-h-0"> 
+        <div class="row-span-4 border border-border rounded-md p-md flex flex-col min-h-0">
+            <div>Recently Visited</div>
+            <div class="flex-1 overflow-y-auto mt-md">
+            <app-home-task></app-home-task>
+            <app-home-task></app-home-task>
+
+        </div></div>
+            <div class="row-span-4 border border-border rounded-md">
+            Last Month Tasks
+        </div>
+            <div class="row-span-4 border border-border rounded-md">
+            Earlier Tasks
+        </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="col-span-3 grid gap-md p-md content-start border border-border rounded-md">
+
+    <div>
+        Today's Focus
+    </div>
+    <div>
+        Component 1
+    </div>
+    <div>
+        Component 2
+    </div>
+
+</div>
+
 </div>
