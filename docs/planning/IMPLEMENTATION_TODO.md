@@ -49,7 +49,7 @@ without losing form state.
 
 ### Implement signup page three-step registration flow
 
-- [ ] [#71 Implement signup page three-step registration flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/71)
+- [x] [#71 Implement signup page three-step registration flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/71)
 
 **Scope:** Replace the `/register` placeholder with the three-step signup flow
 shown in Penpot `SignUp Board 1 / 3`, `SignUp Board 2 / 3`, and
@@ -79,6 +79,13 @@ shown in Penpot `SignUp Board 1 / 3`, `SignUp Board 2 / 3`, and
 **Acceptance criteria:** A new user can request an OTP, validate it, create an
 account, receive a token, and land in the authenticated dashboard using the
 existing backend APIs.
+
+**Implementation notes:** The signup flow is implemented on `/register` as a
+three-step standalone Angular component. Auth calls remain in `AuthService`,
+which uses `ApiService.postText` for raw backend string contracts including OTP
+status messages and JWT responses. Unit coverage verifies validation, backend
+success/error messages, resend behavior, account creation, token storage, and
+navigation.
 
 ### Implement forgot-password and reset-password flow
 

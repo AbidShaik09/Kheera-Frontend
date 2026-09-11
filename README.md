@@ -27,6 +27,13 @@ Authentication pages must keep backend calls in services, not page components.
 Components should own form state, validation display, loading/error UI, and
 navigation only.
 
+## Pull Request Readiness
+
+Before creating a pull request, update every relevant README and document for
+the change. This includes architecture, API/service contracts, design guidance,
+implementation TODOs, and testing notes when the work changes them. A PR is not
+ready if the code is current but the docs still describe the old behavior.
+
 ## Development server
 
 To start a local development server, run:
