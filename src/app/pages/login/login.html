@@ -1,1 +1,64 @@
-<h1> Login Works </h1>
+<main class="login-board">
+  <section class="brand-section" aria-label="Kheera workspace introduction">
+    <div class="brand-lockup">
+      <img class="brand-mark" src="/images/kheera.webp" alt="" aria-hidden="true" />
+      <div>
+        <h1>KHEERA</h1>
+        <p>Modern Project Workspace</p>
+      </div>
+    </div>
+
+    <p class="brand-statement">
+      Organize Work.<br />
+      Collaborate Better.<br />
+      <strong>Deliver</strong> Faster.
+    </p>
+  </section>
+
+  <section class="login-panel" aria-labelledby="login-title">
+    <h2 id="login-title">Welcome Back</h2>
+
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
+      @if (serverError(); as message) {
+        <p class="form-alert" role="alert">{{ message }}</p>
+      }
+
+      <div class="field-group">
+        <label class="sr-only" for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          [attr.aria-invalid]="email.invalid && email.touched"
+          aria-describedby="email-error"
+        />
+        <p id="email-error" class="field-error" aria-live="polite">{{ emailError() }}</p>
+      </div>
+
+      <div class="field-group">
+        <label class="sr-only" for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          formControlName="password"
+          placeholder="Enter your password"
+          [attr.aria-invalid]="password.invalid && password.touched"
+          aria-describedby="password-error"
+        />
+        <p id="password-error" class="field-error" aria-live="polite">{{ passwordError() }}</p>
+      </div>
+
+      <a class="forgot-link" routerLink="/forgot-password">Forgotten Password?</a>
+
+      <div class="action-row">
+        <button class="submit-button" type="submit" [disabled]="!canSubmit()">
+          {{ isSubmitting() ? 'Logging in...' : 'Log in' }}
+        </button>
+        <a class="create-button" routerLink="/register">Create new account</a>
+      </div>
+    </form>
+  </section>
+</main>

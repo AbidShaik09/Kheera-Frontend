@@ -8,7 +8,9 @@
    images where available.
 2. Add the issue to `docs/planning/IMPLEMENTATION_TODO.md` in delivery order.
 3. Read the complete issue and its attachments before coding. Inspect existing
-   components, routes, services, tests, API contracts, and Penpot references.
+   components, routes, services, tests, API contracts, Penpot references, and
+   `public/` assets. If a Penpot board is linked, open the exact board before
+   implementation and treat it as the visual source of truth.
 4. Start from an up-to-date, clean `develop` branch and create
    `issue/<number>_<short-kebab-title>`, for example
    `issue/66_establish-frontend-workflow`. Never branch feature work from
@@ -24,7 +26,9 @@
    style, and design records with implementation; update progress and major
    change history after a material merge or deployment.
 8. Self-review the diff, test changed requirements, run the relevant tests and
-   production build, and inspect the screen at desktop and mobile widths.
+   production build, and inspect the screen at desktop and mobile widths. For
+   Penpot-backed screens, compare the browser result against the board before
+   calling the issue complete.
 9. When asked to push, push only the issue branch and open a PR to `develop`,
    never `main`. Wait for code review and required checks before merge.
 
@@ -33,6 +37,13 @@ branches over existing work. Preserve it and resolve the baseline first.
 
 ## Styling and Theme Rules
 
+- Penpot-backed screens must match the referenced board's composition,
+  hierarchy, copy, proportions, and asset usage. Use responsive CSS to make the
+  board work on real screens, but do not replace the design with a different
+  layout, decorative concept, or placeholder visual direction.
+- Product logos, icons, and imagery must be reused from `public/` or the
+  approved design source when available. Do not create CSS/text substitutes for
+  existing brand assets.
 - Light and dark modes are required for every new screen and state. Verify text,
   border, focus, icon, disabled, error, and hover contrast in both modes.
 - Centralize reusable colors, spacing, type, shadows, radii, and breakpoints in
@@ -50,6 +61,8 @@ branches over existing work. Preserve it and resolve the baseline first.
 
 - Issue, TODO state, route/API contract, architecture/progress records, and
   design references are current.
+- Penpot-backed UI has been visually checked against the referenced board at a
+  realistic desktop viewport and a mobile viewport.
 - Tests cover success, failure, loading, empty, validation, and permission
   states relevant to the change.
 - The production build and relevant unit tests pass.
