@@ -2,6 +2,12 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.14.
 
+## Project Documentation
+
+- [Engineering standards](docs/engineering/ENGINEERING_STANDARDS.md)
+- [Implementation TODO](docs/planning/IMPLEMENTATION_TODO.md)
+- [Frontend style guide](docs/design/STYLE_GUIDE.md)
+
 ## Development server
 
 To start a local development server, run:
