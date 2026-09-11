@@ -6,6 +6,7 @@ describe('ConfigService', () => {
   let service: ConfigService;
 
   beforeEach(() => {
+    window.__config = { apiUrl: 'http://localhost:8080' };
     TestBed.configureTestingModule({});
     service = TestBed.inject(ConfigService);
   });

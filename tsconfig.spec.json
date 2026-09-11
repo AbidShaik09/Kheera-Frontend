@@ -9,6 +9,7 @@
     ]
   },
   "include": [
+    "public/window.d.ts",
     "src/**/*.d.ts",
     "src/**/*.spec.ts"
   ]
