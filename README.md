@@ -8,6 +8,25 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 - [Implementation TODO](docs/planning/IMPLEMENTATION_TODO.md)
 - [Frontend style guide](docs/design/STYLE_GUIDE.md)
 
+## Design Implementation Rules
+
+When an issue references Penpot, the Penpot board is the visual source of truth.
+Do not treat it as loose inspiration. Before coding a screen:
+
+- Open the exact Penpot board or frame linked in the issue.
+- Inspect the board text, layout, spacing, proportions, colors, and available
+  assets.
+- Check `public/` for existing product assets before creating placeholder
+  icons, logos, illustrations, or CSS-drawn substitutes.
+- Match the board's composition first, then adapt only as needed for responsive
+  desktop and mobile behavior.
+- Verify the implemented page in the browser against the Penpot board. A page
+  that passes tests but looks visually different is not done.
+
+Authentication pages must keep backend calls in services, not page components.
+Components should own form state, validation display, loading/error UI, and
+navigation only.
+
 ## Development server
 
 To start a local development server, run:

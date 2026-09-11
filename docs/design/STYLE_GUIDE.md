@@ -372,6 +372,12 @@ Use semantic colors.
 <p class="text-secondary-text"></p>
 ```
 
+Reuse product assets from `public/` when they exist.
+
+```html
+<img src="/images/kheera.webp" alt="" />
+```
+
 ---
 
 ## ❌ Avoid
@@ -390,6 +396,9 @@ color: #555;
 
 Instead use tokens.
 
+Do not create fake brand marks, placeholder icons, or CSS-drawn substitutes
+when the product asset already exists.
+
 ---
 
 # Best Practices
@@ -398,6 +407,9 @@ Instead use tokens.
 - Never hardcode spacing.
 - Prefer Tailwind utilities over custom CSS.
 - Reuse design tokens whenever possible.
+- Reuse existing assets from `public/` before creating new visual elements.
+- For Penpot-backed screens, match the referenced board's layout, copy, visual
+  hierarchy, and proportions before refining responsive behavior.
 - Create reusable components before page-specific styles.
 - Global styles belong in `@layer base`.
 - Component appearance belongs inside the component.
