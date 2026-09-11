@@ -1,1 +1,145 @@
-<h1> Sign in works </h1>
+<main class="signup-board">
+  <section class="brand-section" aria-label="Kheera workspace introduction">
+    <div class="brand-lockup">
+      <img class="brand-mark" src="/images/kheera.webp" alt="" aria-hidden="true" />
+      <div>
+        <h1>KHEERA</h1>
+        <p>Modern Project Workspace</p>
+      </div>
+    </div>
+
+    <p class="brand-statement">
+      Organize Work.<br />
+      Collaborate Better.<br />
+      <strong>Deliver</strong> Faster.
+    </p>
+  </section>
+
+  <section class="signup-panel" aria-labelledby="signup-title">
+    <h2 id="signup-title">Create New Account</h2>
+    <p class="step-label">Step {{ currentStep() }}/3</p>
+
+    @if (serverError(); as message) {
+      <p class="form-alert error" role="alert">{{ message }}</p>
+    }
+
+    @if (serverMessage(); as message) {
+      <p class="form-alert success" role="status">{{ message }}</p>
+    }
+
+    @if (currentStep() === 1) {
+      <form class="signup-form" [formGroup]="emailForm" (ngSubmit)="submitCurrentStep()" novalidate>
+        <div class="field-group">
+          <label class="sr-only" for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            [attr.aria-invalid]="email.invalid && email.touched"
+            aria-describedby="email-error"
+          />
+          <p id="email-error" class="field-error" aria-live="polite">{{ emailError() }}</p>
+        </div>
+
+        <button class="primary-button" type="submit" [disabled]="isSubmitting()">
+          {{ submitText() }}
+        </button>
+      </form>
+    }
+
+    @if (currentStep() === 2) {
+      <form class="signup-form" [formGroup]="otpForm" (ngSubmit)="submitCurrentStep()" novalidate>
+        <p class="helper-copy">We've sent a verification code<br />to your email.</p>
+
+        <div class="field-group">
+          <label class="sr-only" for="otp">OTP</label>
+          <input
+            id="otp"
+            type="text"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="6"
+            formControlName="otp"
+            placeholder="Enter OTP"
+            [attr.aria-invalid]="otp.invalid && otp.touched"
+            aria-describedby="otp-error"
+          />
+          <p id="otp-error" class="field-error" aria-live="polite">{{ otpError() }}</p>
+        </div>
+
+        <p class="resend-copy">
+          Didn't receive it?<br />
+          <button class="link-button" type="button" (click)="resendOtp()" [disabled]="isSubmitting()">
+            Resend OTP
+          </button>
+        </p>
+
+        <button class="primary-button" type="submit" [disabled]="isSubmitting()">
+          {{ submitText() }}
+        </button>
+      </form>
+    }
+
+    @if (currentStep() === 3) {
+      <form
+        class="signup-form compact"
+        [formGroup]="profileForm"
+        (ngSubmit)="submitCurrentStep()"
+        novalidate
+      >
+        <div class="field-group">
+          <label class="sr-only" for="name">Name</label>
+          <input
+            id="name"
+            type="text"
+            autocomplete="name"
+            formControlName="name"
+            placeholder="Name"
+            [attr.aria-invalid]="name.invalid && name.touched"
+            aria-describedby="name-error"
+          />
+          <p id="name-error" class="field-error" aria-live="polite">{{ nameError() }}</p>
+        </div>
+
+        <div class="field-group">
+          <label class="sr-only" for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            autocomplete="new-password"
+            formControlName="password"
+            placeholder="Password"
+            [attr.aria-invalid]="password.invalid && password.touched"
+            aria-describedby="password-error"
+          />
+          <p id="password-error" class="field-error" aria-live="polite">{{ passwordError() }}</p>
+        </div>
+
+        <div class="field-group">
+          <label class="sr-only" for="confirm-password">Confirm Password</label>
+          <input
+            id="confirm-password"
+            type="password"
+            autocomplete="new-password"
+            formControlName="confirmPassword"
+            placeholder="Confirm Password"
+            [attr.aria-invalid]="
+              confirmPassword.touched &&
+              (confirmPassword.invalid || profileForm.hasError('passwordMismatch'))
+            "
+            aria-describedby="confirm-password-error"
+          />
+          <p id="confirm-password-error" class="field-error" aria-live="polite">
+            {{ confirmPasswordError() }}
+          </p>
+        </div>
+
+        <button class="primary-button" type="submit" [disabled]="isSubmitting()">
+          {{ submitText() }}
+        </button>
+      </form>
+    }
+  </section>
+</main>

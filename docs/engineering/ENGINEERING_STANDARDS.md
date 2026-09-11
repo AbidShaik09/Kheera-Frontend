@@ -25,11 +25,15 @@
    [Kheera documentation standards](https://github.com/AbidShaik09/Kheera-Backend/blob/develop/docs/workspace/governance/DOCUMENTATION_STANDARDS.md). Update API, architecture,
    style, and design records with implementation; update progress and major
    change history after a material merge or deployment.
-8. Self-review the diff, test changed requirements, run the relevant tests and
+8. Before creating a PR, verify that all relevant docs were updated in the same
+   branch. This includes README files, architecture notes, API/service
+   contracts, design guidance, implementation TODOs, testing notes, and any
+   cross-repo documentation affected by the change.
+9. Self-review the diff, test changed requirements, run the relevant tests and
    production build, and inspect the screen at desktop and mobile widths. For
    Penpot-backed screens, compare the browser result against the board before
    calling the issue complete.
-9. When asked to push, push only the issue branch and open a PR to `develop`,
+10. When asked to push, push only the issue branch and open a PR to `develop`,
    never `main`. Wait for code review and required checks before merge.
 
 If the worktree is dirty or the repository lacks `develop`, do not switch
@@ -57,10 +61,28 @@ branches over existing work. Preserve it and resolve the baseline first.
   unsafe locations, log credentials/OTPs, or commit API keys, passwords,
   tokens, certificates, `.env` files, or private runtime configuration.
 
+## Frontend Architecture Rules
+
+- Page components own view state only: form controls, validation display,
+  loading flags, local success/error messages, and navigation after a successful
+  service result.
+- Backend communication belongs in injectable services. Components must not call
+  `HttpClient` or construct API URLs directly.
+- Keep backend response contracts explicit. Use JSON helpers for JSON APIs and
+  text helpers, such as `ApiService.postText`, for raw string contracts like
+  JWTs and OTP status messages. Do not rely on TypeScript generics to change
+  Angular's runtime response parser.
+- `AuthService` owns authentication-specific behavior: login/signup/reset API
+  calls, token storage, login state, and backend auth message extraction.
+- Preserve backend error messages when they are actionable for the user, but do
+  not expose secrets, tokens, stack traces, or sensitive account-discovery
+  details.
+
 ## Definition of Done
 
 - Issue, TODO state, route/API contract, architecture/progress records, and
   design references are current.
+- Relevant README and documentation updates are included before PR creation.
 - Penpot-backed UI has been visually checked against the referenced board at a
   realistic desktop viewport and a mobile viewport.
 - Tests cover success, failure, loading, empty, validation, and permission

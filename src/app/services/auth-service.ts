@@ -6,6 +6,22 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface EmailOtpRequest {
+  email: string;
+}
+
+export interface OtpValidationRequest {
+  email: string;
+  otp: number;
+}
+
+export interface SignupRequest {
+  email: string;
+  name: string;
+  password: string;
+  otp: number;
+}
+
 export interface CurrentUser {
   id: string;
   name: string;
@@ -61,7 +77,7 @@ export class AuthService {
   }
 
   async loginWithPassword(credentials: LoginCredentials): Promise<AuthActionResult> {
-    const result = await this.apiService.post<string>('auth/login', credentials);
+    const result = await this.apiService.postText('auth/login', credentials);
 
     if (result.ok && typeof result.body === 'string' && result.body.trim().length > 0) {
       this.login(result.body.trim());
@@ -80,9 +96,52 @@ export class AuthService {
     };
   }
 
+  async requestSignupOtp(request: EmailOtpRequest): Promise<AuthActionResult> {
+    const result = await this.apiService.postText('auth/signup-email', request);
+    return this.toMessageResult(result, 'Unable to send OTP. Please try again.');
+  }
+
+  async verifySignupOtp(request: OtpValidationRequest): Promise<AuthActionResult> {
+    const result = await this.apiService.postText('auth/otp-validation', request);
+    return this.toMessageResult(result, 'Unable to verify OTP. Please try again.');
+  }
+
+  async completeSignup(request: SignupRequest): Promise<AuthActionResult> {
+    const result = await this.apiService.postText('auth/signup', request);
+
+    if (result.ok && typeof result.body === 'string' && result.body.trim().length > 0) {
+      this.login(result.body.trim());
+
+      return {
+        ok: true,
+        status: result.status,
+        message: null,
+      };
+    }
+
+    return {
+      ok: false,
+      status: result.status,
+      message: this.extractErrorMessage(result.body) ?? 'Unable to create account. Please try again.',
+    };
+  }
+
   logout(): void {
     this.clearAccessToken();
     this.isUserLoggedIn.set(false);
+  }
+
+  private toMessageResult(
+    result: { ok: boolean; status: number; body: unknown },
+    fallbackMessage: string,
+  ): AuthActionResult {
+    const message = this.extractErrorMessage(result.body);
+
+    return {
+      ok: result.ok,
+      status: result.status,
+      message: message ?? (result.ok ? null : fallbackMessage),
+    };
   }
 
   private extractErrorMessage(body: unknown): string | null {
