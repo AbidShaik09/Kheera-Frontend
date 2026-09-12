@@ -39,6 +39,25 @@
 If the worktree is dirty or the repository lacks `develop`, do not switch
 branches over existing work. Preserve it and resolve the baseline first.
 
+## Codex Network Sandbox Rules
+
+- Codex shell commands run in a restricted sandbox by default. Network commands
+  can fail with connection errors even when GitHub credentials, npm tokens, or
+  backend credentials are valid.
+- For commands that clearly require internet access, such as `git push`,
+  `git fetch`, `git pull`, `npm install`, remote API checks, or CLI-based PR
+  creation, request network approval instead of repeatedly retrying in the
+  default sandbox.
+- When requesting approval, use the narrowest reasonable persistent prefix. For
+  example, prefer `git push` for pushing branches and `cmd /c npm` for Angular
+  test/build commands that need normal filesystem access.
+- If a network command first fails with `Could not connect to server`,
+  DNS/host-resolution errors, package registry errors, or similar sandbox
+  symptoms, rerun the same command once with approval and mention that the first
+  failure was sandbox-related.
+- If GitHub CLI is unavailable, use the GitHub connector to create or update the
+  PR after pushing the branch.
+
 ## Styling and Theme Rules
 
 - Penpot-backed screens must match the referenced board's composition,
