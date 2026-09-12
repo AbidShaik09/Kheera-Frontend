@@ -164,6 +164,72 @@ describe('AuthService', () => {
     expect(service.accessToken()).toBeNull();
     expect(service.isUserLoggedIn()).toBe(false);
   });
+
+  it('requests a password reset OTP through the backend', async () => {
+    apiService.postText.mockResolvedValue(apiResponse(200, 'OTP sent successfully'));
+
+    const result = await service.requestPasswordResetOtp({ email: 'abid@example.com' });
+
+    expect(apiService.postText).toHaveBeenCalledWith('auth/forgot-password', {
+      email: 'abid@example.com',
+    });
+    expect(result).toEqual({
+      ok: true,
+      status: 200,
+      message: 'OTP sent successfully',
+    });
+  });
+
+  it('returns backend password reset OTP errors without logging in', async () => {
+    apiService.postText.mockResolvedValue(apiResponse(400, 'Unable to send OTP', false));
+
+    const result = await service.requestPasswordResetOtp({ email: 'abid@example.com' });
+
+    expect(result).toEqual({
+      ok: false,
+      status: 400,
+      message: 'Unable to send OTP',
+    });
+    expect(service.accessToken()).toBeNull();
+    expect(service.isUserLoggedIn()).toBe(false);
+  });
+
+  it('stores the returned token after successful password reset', async () => {
+    apiService.postText.mockResolvedValue(apiResponse(200, ' reset-jwt '));
+
+    const result = await service.resetPassword({
+      email: 'abid@example.com',
+      password: 'new-strong-pass',
+      otp: 123456,
+    });
+
+    expect(apiService.postText).toHaveBeenCalledWith('auth/reset-password', {
+      email: 'abid@example.com',
+      password: 'new-strong-pass',
+      otp: 123456,
+    });
+    expect(result).toEqual({ ok: true, status: 200, message: null });
+    expect(service.accessToken()).toBe('reset-jwt');
+    expect(service.isUserLoggedIn()).toBe(true);
+  });
+
+  it('returns backend password reset errors without storing a token', async () => {
+    apiService.postText.mockResolvedValue(apiResponse(400, { message: 'Invalid OTP' }, false));
+
+    const result = await service.resetPassword({
+      email: 'abid@example.com',
+      password: 'new-strong-pass',
+      otp: 123456,
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      status: 400,
+      message: 'Invalid OTP',
+    });
+    expect(service.accessToken()).toBeNull();
+    expect(service.isUserLoggedIn()).toBe(false);
+  });
 });
 
 function apiResponse<T>(status: number, body: T, ok = true): ApiResponse<T> {

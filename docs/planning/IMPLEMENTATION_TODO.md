@@ -89,7 +89,7 @@ navigation.
 
 ### Implement forgot-password and reset-password flow
 
-- [ ] [#72 Implement forgot-password and reset-password flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/72)
+- [x] [#72 Implement forgot-password and reset-password flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/72)
 
 **Scope:** Add the missing forgot-password/reset-password user experience and
 route it from the login page.
@@ -115,6 +115,13 @@ route it from the login page.
 
 **Acceptance criteria:** A user who forgot their password can complete the
 existing backend reset flow without using Swagger or manual API calls.
+
+**Implementation notes:** `/forgot-password` is implemented as a standalone
+Angular page linked from login. It requests reset OTPs through `AuthService`,
+uses the raw-text backend response contract, validates OTP and matching
+passwords locally, stores the returned JWT on successful reset, and navigates to
+the dashboard. Unit coverage verifies validation, backend success/error
+messages, resend behavior, token flow, and navigation.
 
 ## Current Delivery Order
 
