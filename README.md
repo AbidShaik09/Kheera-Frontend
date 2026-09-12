@@ -34,6 +34,12 @@ the change. This includes architecture, API/service contracts, design guidance,
 implementation TODOs, and testing notes when the work changes them. A PR is not
 ready if the code is current but the docs still describe the old behavior.
 
+PR descriptions must link the implemented issue with a GitHub closing keyword,
+for example `Closes #72`. Put the keyword in the PR body, not only in a commit
+message or title. GitHub auto-closes linked issues when the PR is merged into
+the repository default branch, so keep `develop` as the default branch when
+issues should close on merge to `develop`.
+
 ## Network Sandbox Notes
 
 Codex runs shell commands in a sandbox. Commands that need internet access, such

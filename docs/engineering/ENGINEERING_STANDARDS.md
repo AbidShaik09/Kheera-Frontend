@@ -34,7 +34,9 @@
    Penpot-backed screens, compare the browser result against the board before
    calling the issue complete.
 10. When asked to push, push only the issue branch and open a PR to `develop`,
-   never `main`. Wait for code review and required checks before merge.
+   never `main`. Include a GitHub closing keyword in the PR body, such as
+   `Closes #72`, so the linked issue closes automatically when the PR is
+   merged. Wait for code review and required checks before merge.
 
 If the worktree is dirty or the repository lacks `develop`, do not switch
 branches over existing work. Preserve it and resolve the baseline first.
@@ -57,6 +59,21 @@ branches over existing work. Preserve it and resolve the baseline first.
   failure was sandbox-related.
 - If GitHub CLI is unavailable, use the GitHub connector to create or update the
   PR after pushing the branch.
+
+## Pull Request Creation Rules
+
+- Every feature or bugfix PR must target `develop`.
+- Every issue-backed PR body must include at least one closing keyword in the
+  form `Closes #<issue-number>`, `Fixes #<issue-number>`, or
+  `Resolves #<issue-number>`.
+- Prefer `Closes #<issue-number>` for normal implementation PRs so GitHub links
+  the PR and issue clearly.
+- Do not rely on commit messages, branch names, or PR titles to close issues.
+  Put the closing keyword in the PR body.
+- GitHub closes issues automatically only when the PR is merged into the
+  repository default branch. If the team expects issues to close when PRs merge
+  into `develop`, the repository default branch must be `develop`; otherwise
+  close the issue manually or merge `develop` into the default branch.
 
 ## Styling and Theme Rules
 
