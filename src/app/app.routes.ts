@@ -7,8 +7,13 @@ import { Profile } from './pages/profile/profile';
 import { Settings } from './pages/settings/settings';
 import { guestGuard } from './guards/guest-guard';
 import { ForgotPassword } from './pages/forgot-password/forgot-password';
+import { Landing } from './pages/landing/landing';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: Landing,
+  },
   {
     path: 'login',
     component: Login,
@@ -25,7 +30,7 @@ export const routes: Routes = [
     canActivate: [guestGuard],
   },
   {
-    path: '',
+    path: 'dashboard',
     component: Dashboard,
     canActivate: [authGuard], // Ensure you have an auth guard to protect this route
   },

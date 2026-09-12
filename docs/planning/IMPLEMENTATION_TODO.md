@@ -150,7 +150,7 @@ above. Keep them closed rather than planning duplicate work:
 
 ### Create Kheera landing page
 
-- [ ] [#5 Create a kheera landing page](https://github.com/AbidShaik09/Kheera-Frontend/issues/5)
+- [x] [#5 Create a kheera landing page](https://github.com/AbidShaik09/Kheera-Frontend/issues/5)
 
 **Scope:** Add a public landing page based on the linked Penpot reference so
 first-time visitors understand Kheera before entering the authenticated app.
@@ -163,6 +163,11 @@ first-time visitors understand Kheera before entering the authenticated app.
   login/signup.
 - Keep the route public and responsive across mobile and desktop.
 - Add focused unit tests for routing/rendering behavior.
+
+**Implementation notes:** `/` is implemented as a public landing page with
+Kheera branding, product value copy, workspace preview, signup/login calls to
+action, responsive layout, and unit coverage. The authenticated dashboard moved
+to `/dashboard`, and auth success/guest redirects now use `/dashboard`.
 
 ### Complete Home Task component
 

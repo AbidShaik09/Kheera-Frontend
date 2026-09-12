@@ -203,7 +203,7 @@ export class Register {
     this.isSubmitting.set(false);
 
     if (result.ok) {
-      await this.router.navigateByUrl('/');
+      await this.router.navigateByUrl('/dashboard');
       return;
     }
 
