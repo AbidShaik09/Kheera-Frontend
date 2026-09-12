@@ -1,18 +1,33 @@
 
-<div (click)="onClick()" class= "flex justify-between items-center w-full h-16 px-md py-sm rounded-md bg-background border border-border transition-colors duration-200 hover:bg-primary/10" [class.cursor-pointer]="task.clickable">
-    <div class="flex flex-col flex-1 min-w-0">
-        <div class="flex items-center gap-sm min-w-0">
-            <mat-icon class="text-muted-text text-xl">check</mat-icon>
-            <span>{{ task.taskId }}:</span>
-            <span class="flex-1 min-w-0 truncate">{{ task.title }}</span>
-        </div>
-        <div class="flex items-center gap-xs text-sm text-secondary-text min-w-0">
-                <span class="shrink-0">Task ·</span>
-        <span class="shrink-0">{{ task.projectKey }}-{{ task.issueNumber }} ·</span>
-        <span class="truncate min-w-0">{{ task.projectName }}</span>
-        </div>
+<article
+  class="home-task"
+  [class.clickable]="isClickable"
+  [attr.role]="isClickable ? 'button' : null"
+  [attr.tabindex]="isClickable ? 0 : null"
+  [attr.aria-label]="task.taskId + ': ' + task.title + ', ' + statusLabel"
+  (click)="onClick()"
+  (keydown)="onKeydown($event)"
+>
+  <div class="task-content">
+    <div class="task-title-row">
+      <mat-icon
+        class="status-icon"
+        [class.done]="statusLabel === 'Done'"
+        [class.in-progress]="statusLabel === 'In progress'"
+        [class.blocked]="statusLabel === 'Blocked'"
+      >
+        {{ statusIcon }}
+      </mat-icon>
+      <span class="task-id">{{ task.taskId }}:</span>
+      <strong class="task-title">{{ task.title }}</strong>
     </div>
-    <div class="shrink-0 text-sm text-muted-text">
-        <span>{{ getRelativeTime() }}</span>
+
+    <div class="task-meta">
+      <span>Task</span>
+      <span>{{ task.projectKey }}-{{ task.issueNumber }}</span>
+      <span class="project-name">{{ task.projectName }}</span>
     </div>
-</div>
+  </div>
+
+  <time class="updated-time" [attr.datetime]="task.updatedAt">{{ getRelativeTime() }}</time>
+</article>
