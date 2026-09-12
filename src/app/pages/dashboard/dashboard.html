@@ -1,51 +1,81 @@
-<div class="grid grid-cols-10 gap-md h-screen">
-
-    <!-- Left Section -->
-    <div class="flex flex-col gap-md col-span-2 h-full">
-        <div class=" rounded-md border border-border">
-            <div>
-                Activity
-            </div>
-            Calendar Placeholder
-        </div>
-        <div class=" border border-border rounded-md">
-            Favourites
-        </div>
-        <div class="flex-1 border border-border rounded-md">
-            Spaces
-        </div>
-    </div>
-
-    <!-- Main Section -->
-    <div class="grid grid-rows-12 gap-md col-span-5 p-md border border-border rounded-md min-h-0"> 
-        <div class="row-span-4 border border-border rounded-md p-md flex flex-col min-h-0">
-            <div>Recently Visited</div>
-            <div class="flex-1 overflow-y-auto mt-md">
-            <app-home-task [task]="taskDetails"></app-home-task>
-            <app-home-task [task]="taskDetails"></app-home-task>
-
-        </div></div>
-            <div class="row-span-4 border border-border rounded-md">
-            Last Month Tasks
-        </div>
-            <div class="row-span-4 border border-border rounded-md">
-            Earlier Tasks
-        </div>
-    </div>
-
-    <!-- Right Section -->
-    <div class="col-span-3 grid gap-md p-md content-start border border-border rounded-md">
-
+<main class="dashboard-page" aria-labelledby="dashboard-title">
+  <header class="dashboard-header">
     <div>
-        Today's Focus
+      <p class="eyebrow">Dashboard</p>
+      <h1 id="dashboard-title">Today at Kheera</h1>
     </div>
-    <div>
-        Component 1
-    </div>
-    <div>
-        Component 2
-    </div>
+    <p>Focus on the work that needs attention across your spaces and projects.</p>
+  </header>
 
-</div>
+  <div class="dashboard-grid">
+    <aside class="left-rail" aria-label="Workspace navigation">
+      <section class="panel calendar-panel" aria-labelledby="calendar-title">
+        <h2 id="calendar-title">Activity</h2>
+        <div class="calendar-placeholder" aria-label="Calendar placeholder">
+          <span>Calendar</span>
+          <strong>Coming soon</strong>
+        </div>
+        <ul>
+          @for (item of activityItems; track item.title) {
+            <li>
+              <strong>{{ item.title }}</strong>
+              <span>{{ item.detail }}</span>
+            </li>
+          }
+        </ul>
+      </section>
 
-</div>
+      <section class="panel" aria-labelledby="favourites-title">
+        <h2 id="favourites-title">Favourites</h2>
+        <ul>
+          @for (item of favouriteItems; track item.title) {
+            <li>
+              <strong>{{ item.title }}</strong>
+              <span>{{ item.detail }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="panel spaces-panel" aria-labelledby="spaces-title">
+        <h2 id="spaces-title">Spaces</h2>
+        <ul>
+          @for (item of spaces; track item.title) {
+            <li>
+              <strong>{{ item.title }}</strong>
+              <span>{{ item.detail }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+    </aside>
+
+    <section class="task-board" aria-label="Task sections">
+      @for (section of taskSections; track section.title) {
+        <section class="task-section" [attr.aria-label]="section.title">
+          <header>
+            <h2>{{ section.title }}</h2>
+            <span>{{ section.tasks.length }} tasks</span>
+          </header>
+          <div class="task-list">
+            @for (task of section.tasks; track task.taskId) {
+              <app-home-task [task]="task" />
+            }
+          </div>
+        </section>
+      }
+    </section>
+
+    <aside class="right-rail panel" aria-labelledby="focus-title">
+      <h2 id="focus-title">Today's Focus</h2>
+      <div class="focus-stack">
+        @for (item of focusItems; track item.title) {
+          <article>
+            <strong>{{ item.title }}</strong>
+            <span>{{ item.detail }}</span>
+          </article>
+        }
+      </div>
+    </aside>
+  </div>
+</main>
