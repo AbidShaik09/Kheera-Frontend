@@ -2,6 +2,53 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.14.
 
+## Project Documentation
+
+- [Engineering standards](docs/engineering/ENGINEERING_STANDARDS.md)
+- [Implementation TODO](docs/planning/IMPLEMENTATION_TODO.md)
+- [Frontend style guide](docs/design/STYLE_GUIDE.md)
+
+## Design Implementation Rules
+
+When an issue references Penpot, the Penpot board is the visual source of truth.
+Do not treat it as loose inspiration. Before coding a screen:
+
+- Open the exact Penpot board or frame linked in the issue.
+- Inspect the board text, layout, spacing, proportions, colors, and available
+  assets.
+- Check `public/` for existing product assets before creating placeholder
+  icons, logos, illustrations, or CSS-drawn substitutes.
+- Match the board's composition first, then adapt only as needed for responsive
+  desktop and mobile behavior.
+- Verify the implemented page in the browser against the Penpot board. A page
+  that passes tests but looks visually different is not done.
+
+Authentication pages must keep backend calls in services, not page components.
+Components should own form state, validation display, loading/error UI, and
+navigation only.
+
+## Pull Request Readiness
+
+Before creating a pull request, update every relevant README and document for
+the change. This includes architecture, API/service contracts, design guidance,
+implementation TODOs, and testing notes when the work changes them. A PR is not
+ready if the code is current but the docs still describe the old behavior.
+
+PR descriptions must link the implemented issue with a GitHub closing keyword,
+for example `Closes #72`. Put the keyword in the PR body, not only in a commit
+message or title. GitHub auto-closes linked issues when the PR is merged into
+the repository default branch, so keep `develop` as the default branch when
+issues should close on merge to `develop`.
+
+## Network Sandbox Notes
+
+Codex runs shell commands in a sandbox. Commands that need internet access, such
+as `git push`, GitHub PR creation, package installs, or remote API checks, may
+fail inside the default sandbox even when credentials and tokens are correct. Do
+not retry those commands repeatedly in the default sandbox. Rerun the same
+network command once with explicit network approval, using a narrow persistent
+prefix such as `git push` when appropriate.
+
 ## Development server
 
 To start a local development server, run:

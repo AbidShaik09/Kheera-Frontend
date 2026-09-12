@@ -1,0 +1,231 @@
+.login-board {
+  align-items: center;
+  background: var(--color-background);
+  color: var(--color-primary-text);
+  display: grid;
+  column-gap: 96px;
+  grid-template-columns: minmax(440px, 1fr) 456px;
+  min-height: calc(100vh - 56px);
+  padding: 0 11vw;
+}
+
+.brand-section {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 7vh;
+}
+
+.brand-lockup {
+  align-items: center;
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: 96px;
+}
+
+.brand-mark {
+  height: 104px;
+  object-fit: contain;
+  width: 104px;
+}
+
+h1 {
+  color: var(--color-primary-text);
+  font-size: 3.25rem;
+  font-weight: 800;
+  line-height: 1;
+  margin: 0;
+}
+
+.brand-lockup p {
+  color: var(--color-muted-text);
+  font-size: 1.45rem;
+  margin: var(--space-xs) 0 0;
+}
+
+.brand-statement {
+  color: var(--color-primary-text);
+  font-size: 2rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.brand-statement strong {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.login-panel {
+  background: var(--color-card-background);
+  justify-self: end;
+  padding: 58px 52px 54px;
+  width: 456px;
+}
+
+.login-panel h2 {
+  color: var(--color-primary-text);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 var(--space-lg);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-alert {
+  background: color-mix(in srgb, var(--color-danger-accent) 12%, transparent);
+  border: 1px solid var(--color-danger-accent);
+  border-radius: var(--radius-sm);
+  color: var(--color-danger-accent);
+  margin: 0;
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+input {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  color: var(--color-primary-text);
+  font-size: var(--text-md);
+  height: 62px;
+  padding: 0 var(--space-lg);
+  width: 100%;
+}
+
+input:focus {
+  border-color: var(--color-primary);
+}
+
+input[aria-invalid='true'] {
+  border-color: var(--color-danger-accent);
+}
+
+.field-error {
+  color: var(--color-danger-accent);
+  font-size: var(--text-sm);
+  min-height: 1rem;
+  margin: 0;
+}
+
+.forgot-link {
+  align-self: flex-start;
+  color: var(--color-muted-text);
+  font-size: var(--text-md);
+  margin-top: -2px;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  color: var(--color-primary);
+}
+
+.action-row {
+  display: grid;
+  gap: var(--space-sm);
+  grid-template-columns: 1fr 1.2fr;
+  margin-top: 34px;
+}
+
+.submit-button,
+.create-button {
+  align-items: center;
+  border-radius: 0;
+  display: inline-flex;
+  font-size: var(--text-md);
+  height: 48px;
+  justify-content: center;
+  text-align: center;
+}
+
+.submit-button {
+  background: var(--color-btn-primary-background);
+  border: 0;
+  color: var(--color-btn-primary-text);
+  font-weight: 600;
+  padding: 0 var(--space-md);
+}
+
+.submit-button:hover:not(:disabled) {
+  background: var(--color-btn-primary-hover);
+}
+
+.submit-button:active:not(:disabled) {
+  background: var(--color-btn-primary-pressed);
+}
+
+.submit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.create-button {
+  background: var(--color-background);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .login-board {
+    gap: var(--space-xl);
+    grid-template-columns: 1fr;
+    min-height: calc(100vh - 56px);
+    padding: var(--space-xl);
+  }
+
+  .brand-section {
+    align-self: auto;
+    padding-bottom: 0;
+  }
+
+  .brand-lockup {
+    margin-bottom: var(--space-xl);
+  }
+
+  h1 {
+    font-size: 2.75rem;
+  }
+
+  .brand-statement {
+    font-size: 1.75rem;
+  }
+
+  .login-panel {
+    justify-self: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-board {
+    padding: var(--space-md);
+  }
+
+  .login-panel {
+    padding: var(--space-xl);
+    width: 100%;
+  }
+
+  .action-row {
+    grid-template-columns: 1fr;
+  }
+}

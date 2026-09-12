@@ -1,0 +1,55 @@
+<main class="landing-page">
+  <section class="hero" aria-labelledby="landing-title">
+    <div class="hero-copy">
+      <div class="brand-lockup">
+        <img src="/images/kheera.webp" alt="" aria-hidden="true" />
+        <div>
+          <p class="eyebrow">Kheera</p>
+          <p class="brand-subtitle">Modern Project Workspace</p>
+        </div>
+      </div>
+
+      <p class="hero-lede">
+        Organize work, collaborate better, and deliver faster from one focused project workspace.
+      </p>
+
+      <div class="hero-actions" aria-label="Get started">
+        <a class="primary-action" routerLink="/register">Create account</a>
+        <a class="secondary-action" routerLink="/login">Log in</a>
+      </div>
+    </div>
+
+    <div class="workspace-preview" aria-label="Workspace preview">
+      <div class="preview-header">
+        <span>Today's Focus</span>
+        <strong>8 tasks</strong>
+      </div>
+      <div class="preview-grid">
+        <article>
+          <p>Recently Visited</p>
+          <strong>Project planning</strong>
+          <span>Updated 2 hours ago</span>
+        </article>
+        <article>
+          <p>In Progress</p>
+          <strong>Authentication flow</strong>
+          <span>3 active owners</span>
+        </article>
+        <article>
+          <p>Needs Attention</p>
+          <strong>Release checklist</strong>
+          <span>Due this week</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature-band" aria-label="Kheera features">
+    @for (feature of features; track feature.title) {
+      <article>
+        <h2>{{ feature.title }}</h2>
+        <p>{{ feature.description }}</p>
+      </article>
+    }
+  </section>
+</main>

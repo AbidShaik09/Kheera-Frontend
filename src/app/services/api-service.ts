@@ -63,6 +63,27 @@ export class ApiService {
     }
   }
 
+  async postText(url: string, body: unknown): Promise<ApiResponse<string>> {
+    try {
+      const response = await firstValueFrom(
+        this.http.post(`${this.api}${url}`, body, {
+          observe: 'response',
+          responseType: 'text',
+        }),
+      );
+
+      return {
+        ok: true,
+        status: response.status,
+        body: response.body,
+        headers: response.headers,
+        error: null,
+      };
+    } catch (error) {
+      return this.handleError<string>(error);
+    }
+  }
+
   async put<T>(url: string, body: unknown): Promise<ApiResponse<T>> {
     try {
       const response = await firstValueFrom(

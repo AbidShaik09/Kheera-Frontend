@@ -18,5 +18,9 @@ export class IconService {
       'search',
       this.sanitizer.bypassSecurityTrustResourceUrl('icons/cil-search.svg'),
     );
+    this.iconRegistry.addSvgIcon(
+      'check',
+      this.sanitizer.bypassSecurityTrustResourceUrl('icons/cil-check.svg'),
+    );
   }
 }
