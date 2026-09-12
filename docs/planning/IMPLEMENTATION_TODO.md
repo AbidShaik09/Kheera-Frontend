@@ -18,7 +18,7 @@ the local token-based styling system.
 
 ### Implement login page and authentication service flow
 
-- [ ] [#70 Implement login page and authentication service flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/70)
+- [x] [#70 Implement login page and authentication service flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/70)
 
 **Scope:** Replace the `/login` placeholder with a complete login experience
 based on the Penpot `Login Board`.
@@ -46,6 +46,12 @@ based on the Penpot `Login Board`.
 **Acceptance criteria:** A user can log in with the existing backend API and
 reach the authenticated dashboard; invalid credentials produce a useful message
 without losing form state.
+
+**Implementation notes:** `/login` is implemented with backend-backed password
+login through `AuthService`, raw-text JWT handling through `ApiService.postText`,
+token storage, route navigation, backend error display, form validation,
+loading state, and links to signup and forgot-password flows. Unit coverage
+verifies validation, success, backend errors, and loading behavior.
 
 ### Implement signup page three-step registration flow
 
@@ -123,11 +129,128 @@ passwords locally, stores the returned JWT on successful reset, and navigates to
 the dashboard. Unit coverage verifies validation, backend success/error
 messages, resend behavior, token flow, and navigation.
 
+## Completed Legacy Authentication Issues
+
+The following older auth issues are implemented on `develop` by the login,
+signup, forgot-password, auth service, routing, and unit-test work tracked
+above. Keep them closed rather than planning duplicate work:
+
+- [#4 Add routing and authentication Pages](https://github.com/AbidShaik09/Kheera-Frontend/issues/4)
+- [#24 Create Signup Email Screen UI](https://github.com/AbidShaik09/Kheera-Frontend/issues/24)
+- [#25 Integrate Signup Email API](https://github.com/AbidShaik09/Kheera-Frontend/issues/25)
+- [#26 Create OTP Verification Screen UI](https://github.com/AbidShaik09/Kheera-Frontend/issues/26)
+- [#27 Integrate OTP Validation API](https://github.com/AbidShaik09/Kheera-Frontend/issues/27)
+- [#28 Create Account Creation Screen UI](https://github.com/AbidShaik09/Kheera-Frontend/issues/28)
+- [#29 Integrate Final Signup API](https://github.com/AbidShaik09/Kheera-Frontend/issues/29)
+- [#31 Improve Authentication User Experience](https://github.com/AbidShaik09/Kheera-Frontend/issues/31)
+- [#68 Add unit tests for existing frontend features](https://github.com/AbidShaik09/Kheera-Frontend/issues/68)
+- [#69 Repair Angular unit-test runner and existing spec compilation errors](https://github.com/AbidShaik09/Kheera-Frontend/issues/69)
+
+## Phase 2: Landing And Dashboard Foundation
+
+### Create Kheera landing page
+
+- [ ] [#5 Create a kheera landing page](https://github.com/AbidShaik09/Kheera-Frontend/issues/5)
+
+**Scope:** Add a public landing page based on the linked Penpot reference so
+first-time visitors understand Kheera before entering the authenticated app.
+
+**Requirements:**
+
+- Inspect the linked Penpot board before implementation.
+- Use real product assets from `public/` where available.
+- Present what Kheera is, key value, feature highlights, and clear calls to
+  login/signup.
+- Keep the route public and responsive across mobile and desktop.
+- Add focused unit tests for routing/rendering behavior.
+
+### Complete Home Task component
+
+- [ ] [#37 Create Home-Task-Component](https://github.com/AbidShaik09/Kheera-Frontend/issues/37)
+
+**Scope:** Finish the reusable dashboard task item component to match the
+documented component API and Penpot design.
+
+**Requirements:**
+
+- Honor the issue's input/output contract, including status-driven icons,
+  relative timestamp display, clickable state, truncation, and stable height.
+- Keep the component presentational with no modal or navigation logic.
+- Expand unit tests beyond creation to cover rendering, click emission,
+  non-clickable behavior, status icon behavior, and relative time formatting.
+
+### Create dashboard page sections
+
+- [ ] [#60 Create Dashboard Page Sections](https://github.com/AbidShaik09/Kheera-Frontend/issues/60)
+
+**Scope:** Replace the current placeholder dashboard layout with the planned
+sectioned dashboard structure.
+
+**Requirements:**
+
+- Implement left activity/favourites/spaces sections, main task sections for
+  recently visited, last month, and earlier tasks, plus the right focus area.
+- Preserve the planned grid proportions and minimal scroll behavior.
+- Leave the calendar as a filler area until its standalone story is ready.
+- Add responsive behavior and unit tests for section rendering.
+
+## Phase 3: API-Backed Workspaces
+
+### Implement Space Details route and data flow
+
+- [ ] [#63 Implement Space Details route and data flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/63)
+
+**Scope:** Add a protected `/spaces/:spaceId` route that renders a selected
+space and its projects from live API data.
+
+**Requirements:**
+
+- Follow the Penpot Space Details board and established navigation shell.
+- Integrate the space detail and project summary API contracts.
+- Provide loading, empty, forbidden, and recoverable-error states.
+- Link project cards to `/projects/:projectId`.
+- Add route/component/service unit tests.
+
+### Build Project Details board with API-backed task states
+
+- [ ] [#64 Build Project Details board with API-backed task states](https://github.com/AbidShaik09/Kheera-Frontend/issues/64)
+
+**Scope:** Add a protected `/projects/:projectId` route with project summary,
+task columns, epic grouping, and activity based on backend project/work-item
+contracts.
+
+**Requirements:**
+
+- Wait for the backend workflow-stage contract before implementing mutable board
+  movement.
+- Render project header, progress, task counts, ordered stage columns, epic
+  groups, and task cards from API data.
+- Support task navigation and create action.
+- Include loading, empty, forbidden, and error states.
+- Add rollback behavior before enabling optimistic drag/drop.
+
+### Implement Task Details route, editing, comments, and attachments
+
+- [ ] [#65 Implement Task Details route, editing, comments, and attachments](https://github.com/AbidShaik09/Kheera-Frontend/issues/65)
+
+**Scope:** Add a protected `/work-items/:workItemId` route for direct-linkable
+task details, editing, comments, and attachments.
+
+**Requirements:**
+
+- Render editable title, description, type, assignee, dates, effort, parent,
+  sprint, and stage metadata from API data.
+- Persist edits through the work-item PATCH contract and refresh upstream views
+  safely.
+- Integrate comments and task/comment attachment APIs.
+- Provide loading, not-found, forbidden, field validation, mutation rollback,
+  upload pending/success/failure, and removal states.
+
 ## Current Delivery Order
 
-1. [#70 Implement login page and authentication service flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/70)
-2. [#71 Implement signup page three-step registration flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/71)
-3. [#72 Implement forgot-password and reset-password flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/72)
+1. [#5 Create a kheera landing page](https://github.com/AbidShaik09/Kheera-Frontend/issues/5)
+2. [#37 Create Home-Task-Component](https://github.com/AbidShaik09/Kheera-Frontend/issues/37)
+3. [#60 Create Dashboard Page Sections](https://github.com/AbidShaik09/Kheera-Frontend/issues/60)
 4. [#63 Implement Space Details route and data flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/63)
 5. [#64 Implement Project Board experience](https://github.com/AbidShaik09/Kheera-Frontend/issues/64)
 6. [#65 Implement Task Details experience](https://github.com/AbidShaik09/Kheera-Frontend/issues/65)
