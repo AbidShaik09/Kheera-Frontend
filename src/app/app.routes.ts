@@ -13,6 +13,7 @@ export const routes: Routes = [
   {
     path: '',
     component: Landing,
+    canActivate: [guestGuard],
   },
   {
     path: 'login',
