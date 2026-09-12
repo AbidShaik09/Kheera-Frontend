@@ -1,5 +1,14 @@
 # Kheera Frontend Implementation Todo
 
+## Reconciled Status (2026-09-13)
+
+Checked against latest `develop`, GitHub issue states, and merged PRs. Only
+#63, #64, and #65 remain open; all three still have missing routes/API flows.
+Dashboard layout #60 is already closed and delivered by PR #79. Its data is
+still hardcoded, and the calendar remains an intentional placeholder.
+Follow the fresh-develop synchronization rule before any implementation or
+documentation edits. New issue branches start only from verified latest develop.
+
 ## Required Foundation
 
 - [x] [#66 Establish frontend workflow, theming rules, and documentation structure](https://github.com/AbidShaik09/Kheera-Frontend/issues/66)
@@ -10,8 +19,8 @@ tests, centralized themes, security, and PR review.
 
 ## Phase 1: Authentication Screens
 
-The current login and register routes are placeholders. Build these before
-feature screens because they are the entry point into the authenticated app.
+Login, registration, and password reset are implemented. Keep the completed
+requirements below as delivery history rather than new implementation work.
 Use the Penpot `Login Board` and `SignUp Board 1 / 3`, `SignUp Board 2 / 3`,
 and `SignUp Board 3 / 3` frames for visual direction, while implementing with
 the local token-based styling system.
@@ -263,12 +272,35 @@ task details, editing, comments, and attachments.
 
 ## Current Delivery Order
 
-1. [#5 Create a kheera landing page](https://github.com/AbidShaik09/Kheera-Frontend/issues/5)
-2. [#37 Create Home-Task-Component](https://github.com/AbidShaik09/Kheera-Frontend/issues/37)
-3. [#60 Create Dashboard Page Sections](https://github.com/AbidShaik09/Kheera-Frontend/issues/60)
-4. [#63 Implement Space Details route and data flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/63)
-5. [#64 Implement Project Board experience](https://github.com/AbidShaik09/Kheera-Frontend/issues/64)
-6. [#65 Implement Task Details experience](https://github.com/AbidShaik09/Kheera-Frontend/issues/65)
+1. [#63 Implement Space Details route and API-backed project list](https://github.com/AbidShaik09/Kheera-Frontend/issues/63).
+   Depends on backend [#66](https://github.com/AbidShaik09/Kheera-Backend/issues/66),
+   [#67](https://github.com/AbidShaik09/Kheera-Backend/issues/67), and
+   [#68](https://github.com/AbidShaik09/Kheera-Backend/issues/68).
+2. [#64 Build Project Details board with API-backed task states](https://github.com/AbidShaik09/Kheera-Frontend/issues/64).
+   Depends on backend #68, [#69](https://github.com/AbidShaik09/Kheera-Backend/issues/69),
+   [#45](https://github.com/AbidShaik09/Kheera-Backend/issues/45), and remaining
+   project activity APIs under [#10](https://github.com/AbidShaik09/Kheera-Backend/issues/10).
+3. [#65 Implement Task Details route, editing, comments, and attachments](https://github.com/AbidShaik09/Kheera-Frontend/issues/65).
+   Depends on backend #69, comments/activity under
+   [#11](https://github.com/AbidShaik09/Kheera-Backend/issues/11), and uploads under
+   [#28](https://github.com/AbidShaik09/Kheera-Backend/issues/28).
+
+Completed landing #5, task component #37, and dashboard layout #60 are no longer
+in the active delivery order. Their merged PRs are #77, #78, and #79 respectively.
+
+### Pending Dashboard Integration and Other Follow-ups
+
+- [ ] Replace dashboard sample task sections, spaces, and focus data after backend
+  [#70](https://github.com/AbidShaik09/Kheera-Backend/issues/70) is delivered.
+  Create a dedicated frontend integration issue before coding; do not reopen the
+  completed layout issue #60 to disguise new API scope.
+- [ ] Reconcile HomeTaskData's projectKey/issueNumber and limited status union with
+  the backend UUID/stage contract. Use real visit history and documented date
+  boundaries rather than generated relative timestamps.
+- [ ] Favourites, full activity, calendar, search, and notifications remain
+  deferred until backend contracts/persistence and scoped frontend issues exist.
+- [ ] Coordinate remaining frontend CI/deployment safety with backend
+  [#55](https://github.com/AbidShaik09/Kheera-Backend/issues/55).
 
 Start each item only when its backend contract is implemented or explicitly
 mocked behind a documented frontend adapter. Keep the issue status and this
