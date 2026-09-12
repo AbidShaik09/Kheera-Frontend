@@ -22,6 +22,12 @@ export interface SignupRequest {
   otp: number;
 }
 
+export interface ResetPasswordRequest {
+  email: string;
+  password: string;
+  otp: number;
+}
+
 export interface CurrentUser {
   id: string;
   name: string;
@@ -123,6 +129,31 @@ export class AuthService {
       ok: false,
       status: result.status,
       message: this.extractErrorMessage(result.body) ?? 'Unable to create account. Please try again.',
+    };
+  }
+
+  async requestPasswordResetOtp(request: EmailOtpRequest): Promise<AuthActionResult> {
+    const result = await this.apiService.postText('auth/forgot-password', request);
+    return this.toMessageResult(result, 'Unable to send reset OTP. Please try again.');
+  }
+
+  async resetPassword(request: ResetPasswordRequest): Promise<AuthActionResult> {
+    const result = await this.apiService.postText('auth/reset-password', request);
+
+    if (result.ok && typeof result.body === 'string' && result.body.trim().length > 0) {
+      this.login(result.body.trim());
+
+      return {
+        ok: true,
+        status: result.status,
+        message: null,
+      };
+    }
+
+    return {
+      ok: false,
+      status: result.status,
+      message: this.extractErrorMessage(result.body) ?? 'Unable to reset password. Please try again.',
     };
   }
 

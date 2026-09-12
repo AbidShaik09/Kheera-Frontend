@@ -6,6 +6,7 @@ import { authGuard } from './guards/auth-guard';
 import { Profile } from './pages/profile/profile';
 import { Settings } from './pages/settings/settings';
 import { guestGuard } from './guards/guest-guard';
+import { ForgotPassword } from './pages/forgot-password/forgot-password';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,11 @@ export const routes: Routes = [
   {
     path: 'register',
     component: Register,
+    canActivate: [guestGuard],
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPassword,
     canActivate: [guestGuard],
   },
   {

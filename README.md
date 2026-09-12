@@ -34,6 +34,15 @@ the change. This includes architecture, API/service contracts, design guidance,
 implementation TODOs, and testing notes when the work changes them. A PR is not
 ready if the code is current but the docs still describe the old behavior.
 
+## Network Sandbox Notes
+
+Codex runs shell commands in a sandbox. Commands that need internet access, such
+as `git push`, GitHub PR creation, package installs, or remote API checks, may
+fail inside the default sandbox even when credentials and tokens are correct. Do
+not retry those commands repeatedly in the default sandbox. Rerun the same
+network command once with explicit network approval, using a narrow persistent
+prefix such as `git push` when appropriate.
+
 ## Development server
 
 To start a local development server, run:
