@@ -66,7 +66,7 @@ describe('Login', () => {
       email: 'abid@example.com',
       password: 'secret',
     });
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/');
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/dashboard');
   });
 
   it('shows backend errors without clearing entered credentials', async () => {

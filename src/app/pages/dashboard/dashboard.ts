@@ -83,5 +83,14 @@ export class Dashboard {
       clickable: true,
       updatedAt: new Date(Date.now() + hoursOffset * 60 * 60 * 1000),
     };
+  taskDetails: HomeTaskData={
+    title:'Create a login, sign up pages and add create authentication module and routing structure with angular routes for protected areas',
+    taskId:'72',
+    status: 'done',
+    projectKey: 'P07',
+    issueNumber: 71,
+    projectName: 'Kheera: Modern Project Management Workspace',
+    updatedAt: new Date(),
+    clickable: true
   }
 }

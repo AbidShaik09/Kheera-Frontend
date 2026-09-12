@@ -206,7 +206,7 @@ describe('Register', () => {
       password: 'strong-pass',
       otp: 123456,
     });
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/');
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/dashboard');
   });
 
   it('shows backend account creation errors without navigating', async () => {

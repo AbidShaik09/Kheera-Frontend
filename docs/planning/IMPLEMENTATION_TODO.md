@@ -150,7 +150,7 @@ above. Keep them closed rather than planning duplicate work:
 
 ### Create Kheera landing page
 
-- [ ] [#5 Create a kheera landing page](https://github.com/AbidShaik09/Kheera-Frontend/issues/5)
+- [x] [#5 Create a kheera landing page](https://github.com/AbidShaik09/Kheera-Frontend/issues/5)
 
 **Scope:** Add a public landing page based on the linked Penpot reference so
 first-time visitors understand Kheera before entering the authenticated app.
@@ -164,9 +164,14 @@ first-time visitors understand Kheera before entering the authenticated app.
 - Keep the route public and responsive across mobile and desktop.
 - Add focused unit tests for routing/rendering behavior.
 
+**Implementation notes:** `/` is implemented as a public landing page with
+Kheera branding, product value copy, workspace preview, signup/login calls to
+action, responsive layout, and unit coverage. The authenticated dashboard moved
+to `/dashboard`, and auth success/guest redirects now use `/dashboard`.
+
 ### Complete Home Task component
 
-- [ ] [#37 Create Home-Task-Component](https://github.com/AbidShaik09/Kheera-Frontend/issues/37)
+- [x] [#37 Create Home-Task-Component](https://github.com/AbidShaik09/Kheera-Frontend/issues/37)
 
 **Scope:** Finish the reusable dashboard task item component to match the
 documented component API and Penpot design.
@@ -178,6 +183,11 @@ documented component API and Penpot design.
 - Keep the component presentational with no modal or navigation logic.
 - Expand unit tests beyond creation to cover rendering, click emission,
   non-clickable behavior, status icon behavior, and relative time formatting.
+
+**Implementation notes:** `HomeTaskComponent` is implemented as a presentational
+standalone component with a stable typed input model, status icon mapping,
+relative time display, accessible click/keyboard activation, non-clickable
+state support, truncation-friendly layout, and focused unit coverage.
 
 ### Create dashboard page sections
 
