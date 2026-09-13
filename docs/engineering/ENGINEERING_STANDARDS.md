@@ -159,3 +159,14 @@ branches over existing work. Preserve it and resolve the baseline first.
 - The production build and relevant unit tests pass.
 - The UI is checked in light and dark mode at desktop and mobile widths.
 - The PR targets `develop` and awaits review before merge.
+
+## Codex Review After PR Creation
+
+Immediately after creating any pull request, add a PR comment containing exactly
+`@codex review` to request Codex review. Verify that GitHub accepted the comment
+and record its URL in the delivery notes. This applies to every newly created
+PR, including drafts; do not wait for review findings before requesting the
+initial review. After addressing and resolving review comments, post a new
+`@codex review` comment for the updated head. A posted request is not evidence
+that review has completed; inspect and address the resulting review before
+considering the PR ready.
