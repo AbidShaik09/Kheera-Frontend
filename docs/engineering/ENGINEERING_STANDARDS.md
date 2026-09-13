@@ -35,44 +35,96 @@ integrate the new commits safely, and recheck the result; never force-push.
 
 ## Mandatory Delivery Flow
 
-1. Create or confirm a GitHub issue before changing a feature, bug, API use,
-   design behavior, accessibility behavior, or runtime configuration. Include
-   acceptance criteria, affected routes, API contracts, and design links or
-   images where available.
-2. Add the issue to `docs/planning/IMPLEMENTATION_TODO.md` in delivery order.
-3. Read the complete issue and its attachments before coding. Inspect existing
-   components, routes, services, tests, API contracts, Penpot references, and
-   `public/` assets. If a Penpot board is linked, open the exact board before
-   implementation and treat it as the visual source of truth.
-4. Start from an up-to-date, clean `develop` branch and create
-   `issue/<number>_<short-kebab-title>`, for example
-   `issue/66_establish-frontend-workflow`. Never branch feature work from
-   `main`.
-5. Write or update focused unit tests before implementation. Mock API and other
-   irrelevant dependencies so the test proves the component, service, guard, or
-   interceptor behavior being changed.
-6. Implement the smallest complete change with clear names, typed contracts,
-   input validation, accessible semantics, keyboard behavior, responsive
-   layouts, loading states, empty states, and actionable error messages.
-7. Update every relevant shared and frontend document according to the
-   [Kheera documentation standards](https://github.com/AbidShaik09/Kheera-Backend/blob/develop/docs/workspace/governance/DOCUMENTATION_STANDARDS.md). Update API, architecture,
-   style, and design records with implementation; update progress and major
-   change history after a material merge or deployment.
-8. Before creating a PR, verify that all relevant docs were updated in the same
-   branch. This includes README files, architecture notes, API/service
-   contracts, design guidance, implementation TODOs, testing notes, and any
-   cross-repo documentation affected by the change.
-9. Self-review the diff, test changed requirements, run the relevant tests and
-   production build, and inspect the screen at desktop and mobile widths. For
-   Penpot-backed screens, compare the browser result against the board before
-   calling the issue complete.
-10. When asked to push, push only the issue branch and open a PR to `develop`,
-   never `main`. Include a GitHub closing keyword in the PR body, such as
-   `Closes #72`, so the linked issue closes automatically when the PR is
-   merged. Wait for code review and required checks before merge.
+Follow these steps in order. Delivery requests do not bypass validation gates.
 
-If the worktree is dirty or the repository lacks `develop`, do not switch
-branches over existing work. Preserve it and resolve the baseline first.
+1. Complete **Mandatory Develop Synchronization** above. Read the complete issue,
+   attachments, components, routes, services, tests, API contracts, and available
+   `public/` assets. Open the exact linked Penpot board and treat it as the visual
+   source of truth. Confirm acceptance criteria, dependencies, security impact,
+   and scope; resolve blocking ambiguity before coding.
+2. Create `issue/<number>_<short-kebab-title>` from the verified baseline.
+   Add/update the issue in `docs/planning/IMPLEMENTATION_TODO.md` in dependency
+   order. Create and commit the **Required Issue Plan** below.
+3. Write tests first. Reproduce bugs with failing regression tests; for features,
+   test required behavior before implementing it. Name tests for services,
+   components, guards, or interceptors as applicable. Mock external dependencies.
+   Run tests and record the expected behavior failure, not a setup error.
+4. Implement in the plan's dependency order: typed API contracts and services,
+   state/guards, components/templates, then styles and responsive behavior.
+   Write each affected unit's tests before implementation. Include validation,
+   accessibility, keyboard behavior, loading, empty, success, and error states.
+5. Run targeted tests after each phase. Fix failures according to the contract,
+   then rerun failed and affected regression tests. Do not weaken tests to pass.
+6. Update relevant README, API/service contracts, architecture, style/design,
+   testing, TODO, and cross-repository docs with implementation, following the
+   [documentation standards](https://github.com/AbidShaik09/Kheera-Backend/blob/develop/docs/workspace/governance/DOCUMENTATION_STANDARDS.md).
+   Record evidence and deviations in the plan.
+7. Run the full unit suite with `npm test -- --watch=false` and production
+   build with `npm run build`. Start locally with `npm start`; exercise affected
+   flows, including API success/failure and permission states. Inspect desktop
+   and mobile widths in light and dark mode, keyboard interaction and focus.
+   Compare Penpot-backed screens with the exact board.
+8. If regressions or required checks fail, fix branch-caused defects and rerun
+   the failed checks, affected browser checks, full unit suite, and production
+   build. Repeat until all gates pass. Repeat validation after upstream
+   integration, conflict resolution, or review fixes. Record exact commands,
+   results, and manual evidence for the resulting branch.
+9. Self-review the final diff against every acceptance criterion and plan step,
+   including security, API compatibility, accessibility, design, and docs.
+10. When delivery is requested, push the issue branch and create a PR to
+    `develop`, with a closing keyword, plan link, summary, and verification
+    evidence. Immediately request Codex review as specified below.
+11. Inspect CI and review findings. Fix valid findings, repeat validation, push,
+    resolve addressed threads with evidence, and request a fresh `@codex review`.
+    Review blockers and update rules where a concrete change prevents recurrence.
+    If stopped for wrong direction, correct the misunderstanding in the issue
+    or rules before resuming.
+12. Merge only after required checks, review, and applicable merge authorization.
+    Confirm issue closure under **Pull Request Creation Rules**. Update progress
+    and history after material merge/deployment; verify the deployed affected
+    flow when deployment occurs. Keep pending steps pending in the plan.
+
+### Blockers and docs-only delivery
+
+Do not push or declare readiness while a required validation gate is failing or
+unverified. Record blockers, fix them, or ask the owner for guidance. Follow the
+network sandbox rules below for environment restrictions.
+
+For owner-requested documentation/rule-only changes, use synchronized clean
+`develop`, inspect the diff and verify links/instructions, commit, and push
+directly to `develop` under the standing instruction. No issue, implementation
+plan, application tests, or PR is required for this path. It must contain no
+code, runtime configuration, dependency, or generated artifact changes.
+Issue plans accompanying implementation stay on the issue branch and in its PR.
+
+## Required Issue Plan
+
+Before changing application code or tests, create
+`docs/planning/issue-plans/issue-<number>_<short-kebab-title>.md` on the issue
+branch. Start from the [issue-plan template](../planning/issue-plans/README.md).
+One issue gets one plan; grouped PRs must link each issue's plan.
+
+The initial plan must be executable by another bot without guessing: map each
+acceptance criterion to named tests and implementation steps, identify affected
+files and contracts, list dependencies and risks, and specify exact commands,
+expected results, and manual checks. Include every applicable delivery gate
+in these standards, including documentation, regression, PR creation, and Codex review.
+Replace template placeholders before implementation. Mark inapplicable steps
+with a reason; never silently omit a gate. Missing requirements or unresolved
+contract/design decisions that affect implementation must be clarified before
+coding.
+
+Use ordered checkboxes. Before each phase, compare the next step with the issue
+and plan. Record new evidence, scope decisions, and reasons for changes before
+continuing; obtain clarification when a change alters the requested scope.
+Keep completed steps and their evidence rather than rewriting history.
+After interruptions, read the plan and repository state before resuming.
+
+Commit the initial plan before application code or test changes. Commit plan
+updates with the work they describe and push them in the implementation PR.
+These documents are expected PR content, not ignored scratch files. Do not
+mark a test, review, merge, or deployment complete until evidence exists.
+Link the plan from the PR and record PR/review URLs in it.
 
 ## Codex Network Sandbox Rules
 
@@ -149,6 +201,7 @@ branches over existing work. Preserve it and resolve the baseline first.
 
 ## Definition of Done
 
+- Issue plan checkboxes and validation evidence reflect the actual delivery state.
 - Issue, TODO state, route/API contract, architecture/progress records, and
   design references are current.
 - Relevant README and documentation updates are included before PR creation.
