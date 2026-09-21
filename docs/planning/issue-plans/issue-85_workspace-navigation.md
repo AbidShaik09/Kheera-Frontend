@@ -36,28 +36,30 @@
 ## Ordered execution checklist
 - [x] Inspect issue/contracts/routes/tests/assets/rules and signed-in Penpot dashboard.
 - [x] Publish test prerequisites on develop; synchronize and create issue branch.
-- [ ] Commit this initial plan and mark TODO in progress.
-- [ ] Write service/session tests before service changes; run behavior failures against compiling scaffolds.
-- [ ] Implement typed service/session isolation; rerun service tests.
-- [ ] Write shell/router/dashboard/navbar tests before UI changes and record failures.
-- [ ] Implement routed shell, pending states, semantic styling and accessible navigation.
-- [ ] Add HTTP/router integration and browser smoke journeys; verify negative paths.
-- [ ] Run targeted tests after each change and complete npm run verify (local Edge override if Chromium download remains unavailable).
-- [ ] Start local app; check desktop/mobile/light/dark and keyboard/focus against Penpot; record evidence.
-- [ ] Update README, architecture, testing, TODO and plan; self-review full diff, security, stale state and scope.
+- [x] Commit this initial plan and mark TODO in progress.
+- [x] Write service/session tests before service changes; run behavior failures against compiling scaffolds.
+- [x] Implement typed service/session isolation; rerun service tests.
+- [x] Write shell/router/dashboard/navbar tests before UI changes and record failures.
+- [x] Implement routed shell, pending states, semantic styling and accessible navigation.
+- [x] Add HTTP/router integration and browser smoke journeys; verify negative paths.
+- [x] Run targeted tests after each change and complete npm run verify (local Edge override if Chromium download remains unavailable).
+- [x] Start local app; check desktop/mobile/light/dark and keyboard/focus against Penpot; record evidence.
+- [x] Update README, architecture, testing, TODO and plan; self-review full diff, security, stale state and scope.
 - [ ] Commit/push branch; create PR to develop with Closes #85, plan and verification.
 - [ ] Request @codex review immediately and attach PR to task. Inspect CI/review, fix actionable findings, rerun affected/full gates and re-request review.
 - [ ] Verify readiness; merge only with applicable explicit authorization. Keep merge/deployment pending until verified.
 
 ## Validation evidence
-- Prerequisite workflow: 68 unit tests, 2 integration tests, production build passed (existing 550.32 kB warning); 4 smoke tests passed on installed Edge. Hosted CI run 35604677013 pending at branch creation.
-- Feature red/green evidence: pending.
-- Browser/API smoke: pending; API fixtures are isolated test data.
+- Prerequisite workflow: 68 unit tests, 2 integration tests, production build passed (existing 550.32 kB warning); 4 smoke tests passed on installed Edge. Hosted CI run [35604677013](https://github.com/AbidShaik09/Kheera-Frontend/actions/runs/35604677013) was pending at branch creation and subsequently passed every gate including Chromium smoke.
+- TDD evidence: service/session scaffold compiled and produced 11 behavior failures (3 baseline passes); shell/router/dashboard tests produced 8 expected failures; navbar produced 2 expected failures; cross-tab session regression produced 1 expected failure. Each was followed by implementation and passing targeted runs.
+- Final npm run verify with PLAYWRIGHT_CHANNEL=msedge: 88 unit tests in 23 files, 5 integration tests in 2 files, production build 486.57 kB with no budget warning, and 18 browser smoke tests passed. API responses are isolated fixtures, not live-backend/deployment evidence. Desktop/mobile light/dark screenshots were visually reviewed against the inspected Penpot Dashboard; keyboard Enter, Escape/focus, Back/reload and sign-out were exercised in the browser suite.
 - Deployment: not performed for feature.
 
 ## Plan changes and resume notes
 - 2026-09-21: Actual project CRUD is now on backend develop. No change to #85 scope or priority.
 - 2026-09-21: Use URL-selected dashboard context until resource-page issues land, as #85 says “as their feature issues land.” Disabled creation explains the #86 dependency; do not implement a second feature or dead route.
+
+- 2026-09-22: Added cross-tab storage invalidation after self-review identified that shared localStorage token replacement could otherwise leave old account names visible. Regression failed before fix; unit and real second-tab browser tests now pass. Router construction also required a null-safe child snapshot, and integration assertions await asynchronous HTTP completion rather than assuming synchronous flush publication.
 
 ## Delivery
 PR/review/check URLs pending. No feature merge authorized yet.

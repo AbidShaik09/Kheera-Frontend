@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { ApiService } from './api-service';
 
 export interface LoginCredentials {
@@ -47,6 +47,22 @@ export class AuthService {
   private readonly apiService = inject(ApiService);
 
   readonly isUserLoggedIn = signal(Boolean(this.accessToken()));
+  readonly sessionEpoch = signal(0);
+
+  constructor() {
+    const invalidateExternalSession = (event: StorageEvent) => {
+      if (event.storageArea !== localStorage || (event.key !== 'accessToken' && event.key !== null))
+        return;
+      // Another tab changed accounts or signed out. Hide this tab's old state;
+      // do not delete the new shared token. A reload validates it through users/me.
+      this.sessionEpoch.update((epoch) => epoch + 1);
+      this.isUserLoggedIn.set(false);
+    };
+    window.addEventListener('storage', invalidateExternalSession);
+    inject(DestroyRef).onDestroy(() =>
+      window.removeEventListener('storage', invalidateExternalSession),
+    );
+  }
 
   accessToken(): string | null {
     return localStorage.getItem('accessToken');
@@ -54,19 +70,27 @@ export class AuthService {
 
   setAccessToken(token: string): void {
     localStorage.setItem('accessToken', token);
+    this.sessionEpoch.update((epoch) => epoch + 1);
   }
 
   clearAccessToken(): void {
     localStorage.removeItem('accessToken');
+    this.sessionEpoch.update((epoch) => epoch + 1);
   }
 
   async loginStatus(): Promise<boolean> {
+    const epoch = this.sessionEpoch();
+    const token = this.accessToken();
     if (!this.accessToken()) {
       this.logout();
       return false;
     }
 
     const result = await this.apiService.get<CurrentUser>('users/me');
+
+    if (epoch !== this.sessionEpoch() || token !== this.accessToken()) {
+      return this.isUserLoggedIn();
+    }
 
     if (result.ok) {
       this.isUserLoggedIn.set(true);
@@ -128,7 +152,8 @@ export class AuthService {
     return {
       ok: false,
       status: result.status,
-      message: this.extractErrorMessage(result.body) ?? 'Unable to create account. Please try again.',
+      message:
+        this.extractErrorMessage(result.body) ?? 'Unable to create account. Please try again.',
     };
   }
 
@@ -153,7 +178,8 @@ export class AuthService {
     return {
       ok: false,
       status: result.status,
-      message: this.extractErrorMessage(result.body) ?? 'Unable to reset password. Please try again.',
+      message:
+        this.extractErrorMessage(result.body) ?? 'Unable to reset password. Please try again.',
     };
   }
 

@@ -4,78 +4,24 @@
       <p class="eyebrow">Dashboard</p>
       <h1 id="dashboard-title">Today at Kheera</h1>
     </div>
-    <p>Focus on the work that needs attention across your spaces and projects.</p>
+    <p>Choose a space to keep your workspace in view.</p>
   </header>
-
   <div class="dashboard-grid">
-    <aside class="left-rail" aria-label="Workspace navigation">
-      <section class="panel calendar-panel" aria-labelledby="calendar-title">
-        <h2 id="calendar-title">Activity</h2>
-        <div class="calendar-placeholder" aria-label="Calendar placeholder">
-          <span>Calendar</span>
-          <strong>Coming soon</strong>
-        </div>
-        <ul>
-          @for (item of activityItems; track item.title) {
-            <li>
-              <strong>{{ item.title }}</strong>
-              <span>{{ item.detail }}</span>
-            </li>
-          }
-        </ul>
-      </section>
-
-      <section class="panel" aria-labelledby="favourites-title">
-        <h2 id="favourites-title">Favourites</h2>
-        <ul>
-          @for (item of favouriteItems; track item.title) {
-            <li>
-              <strong>{{ item.title }}</strong>
-              <span>{{ item.detail }}</span>
-            </li>
-          }
-        </ul>
-      </section>
-
-      <section class="panel spaces-panel" aria-labelledby="spaces-title">
-        <h2 id="spaces-title">Spaces</h2>
-        <ul>
-          @for (item of spaces; track item.title) {
-            <li>
-              <strong>{{ item.title }}</strong>
-              <span>{{ item.detail }}</span>
-            </li>
-          }
-        </ul>
-      </section>
-    </aside>
-
     <section class="task-board" aria-label="Task sections">
-      @for (section of taskSections; track section.title) {
-        <section class="task-section" [attr.aria-label]="section.title">
+      @for (section of sections; track section) {
+        <section class="task-section" [attr.aria-label]="section">
           <header>
-            <h2>{{ section.title }}</h2>
-            <span>{{ section.tasks.length }} tasks</span>
+            <h2>{{ section }}</h2>
           </header>
-          <div class="task-list">
-            @for (task of section.tasks; track task.taskId) {
-              <app-home-task [task]="task" />
-            }
-          </div>
+          <p class="pending-message">
+            Task history is coming soon. Your work will appear here when it is available.
+          </p>
         </section>
       }
     </section>
-
     <aside class="right-rail panel" aria-labelledby="focus-title">
       <h2 id="focus-title">Today's Focus</h2>
-      <div class="focus-stack">
-        @for (item of focusItems; track item.title) {
-          <article>
-            <strong>{{ item.title }}</strong>
-            <span>{{ item.detail }}</span>
-          </article>
-        }
-      </div>
+      <p class="pending-message">Your focus list is coming soon.</p>
     </aside>
   </div>
 </main>

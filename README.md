@@ -7,6 +7,16 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 - [Engineering standards](docs/engineering/ENGINEERING_STANDARDS.md)
 - [Implementation TODO](docs/planning/IMPLEMENTATION_TODO.md)
 - [Frontend style guide](docs/design/STYLE_GUIDE.md)
+- [Testing strategy](docs/testing/TESTING_STRATEGY.md)
+- [Workspace navigation and API state](docs/architecture/WORKSPACE_NAVIGATION.md)
+
+## Workspace navigation
+
+The authenticated app includes a shared spaces sidebar and URL-based selection at
+`/dashboard?space=<UUID>`. Spaces come from the current account's API; selection,
+refresh, retry and sign-out respect session changes and access loss. Unsupported
+dashboard data and actions are explicitly marked as coming soon. Space creation
+and resource detail pages remain the separately tracked follow-up issues.
 
 ## Design Implementation Rules
 
