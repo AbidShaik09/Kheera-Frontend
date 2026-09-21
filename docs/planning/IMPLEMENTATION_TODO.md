@@ -220,88 +220,87 @@ unit tests.
 
 ## Phase 3: API-Backed Workspaces
 
-### Implement Space Details route and data flow
+Tracking issue: [#94](https://github.com/AbidShaik09/Kheera-Frontend/issues/94).
 
-- [ ] [#63 Implement Space Details route and data flow](https://github.com/AbidShaik09/Kheera-Frontend/issues/63)
+## Product flow
 
-**Scope:** Add a protected `/spaces/:spaceId` route that renders a selected
-space and its projects from live API data.
+Confirmed from the product reference, current API contract and controller code (2026-09-21):
+```
+Login / signup / recovery (implemented)
+  -> /dashboard
+  -> Space (members, roles, permissions)
+     -> Projects
+        -> Project board / workflow stages
+           -> Tasks (API: work items; optional parent/child hierarchy)
+              -> Comments
+              -> Task attachments
+              -> Comment attachments
+```
+Workflow stages belong to a project and classify/order tasks; workflow is not a separate parent between project and task. Sprints are future project planning metadata. Use Jira-style board interactions and hierarchy while retaining Kheera's documented Penpot design. No Jira integration/import is requested.
 
-**Requirements:**
+## Delivery checklist
 
-- Follow the Penpot Space Details board and established navigation shell.
-- Integrate the space detail and project summary API contracts.
-- Provide loading, empty, forbidden, and recoverable-error states.
-- Link project cards to `/projects/:projectId`.
-- Add route/component/service unit tests.
+### Ready foundations
 
-### Build Project Details board with API-backed task states
+- [ ] [#85](https://github.com/AbidShaik09/Kheera-Frontend/issues/85) Workspace shell, live space switcher and navigation.
+- [ ] [#86](https://github.com/AbidShaik09/Kheera-Frontend/issues/86) Space create/edit/delete.
+- [ ] [#87](https://github.com/AbidShaik09/Kheera-Frontend/issues/87) Membership management and read-only role/permission catalogues.
+- [ ] [#93](https://github.com/AbidShaik09/Kheera-Frontend/issues/93) Current-user profile and account menu.
 
-- [ ] [#64 Build Project Details board with API-backed task states](https://github.com/AbidShaik09/Kheera-Frontend/issues/64)
+### Project and task flow
 
-**Scope:** Add a protected `/projects/:projectId` route with project summary,
-task columns, epic grouping, and activity based on backend project/work-item
-contracts.
+- [ ] [#63](https://github.com/AbidShaik09/Kheera-Frontend/issues/63) Space details and project list. Metadata ready; listing blocked by backend #68.
+- [ ] [#89](https://github.com/AbidShaik09/Kheera-Frontend/issues/89) Project create/edit/delete, blocked by backend #68.
+- [ ] [#88](https://github.com/AbidShaik09/Kheera-Frontend/issues/88) Workflow configuration: stage APIs ready, normal project discovery needs backend #68.
+- [ ] [#64](https://github.com/AbidShaik09/Kheera-Frontend/issues/64) Board reads/moves: APIs ready; project header needs backend #68, enriched task data needs #69.
+- [ ] [#65](https://github.com/AbidShaik09/Kheera-Frontend/issues/65) Task Details/editing and collaboration integration, core blocked by backend #69.
+- [ ] [#90](https://github.com/AbidShaik09/Kheera-Frontend/issues/90) Comments, blocked by backend #11; child of [#65](https://github.com/AbidShaik09/Kheera-Frontend/issues/65).
+- [ ] [#91](https://github.com/AbidShaik09/Kheera-Frontend/issues/91) Task/comment attachments, blocked by backend #28/#11; child of [#65](https://github.com/AbidShaik09/Kheera-Frontend/issues/65).
 
-**Requirements:**
+### Personal dashboard
 
-- Wait for the backend workflow-stage contract before implementing mutable board
-  movement.
-- Render project header, progress, task counts, ordered stage columns, epic
-  groups, and task cards from API data.
-- Support task navigation and create action.
-- Include loading, empty, forbidden, and error states.
-- Add rollback behavior before enabling optimistic drag/drop.
+- [ ] [#92](https://github.com/AbidShaik09/Kheera-Frontend/issues/92) Replace sample tasks/focus with backend #70 aggregates and private visit history after project/task APIs.
 
-### Implement Task Details route, editing, comments, and attachments
+## Backend coverage and boundaries
 
-- [ ] [#65 Implement Task Details route, editing, comments, and attachments](https://github.com/AbidShaik09/Kheera-Frontend/issues/65)
+| Backend feature | Frontend coverage / decision |
+| --- | --- |
+| Auth and password recovery | Already completed #70, #71, #72; preserve existing behavior |
+| GET users/me | [#85](https://github.com/AbidShaik09/Kheera-Frontend/issues/85), [#93](https://github.com/AbidShaik09/Kheera-Frontend/issues/93) |
+| Space lifecycle | [#85](https://github.com/AbidShaik09/Kheera-Frontend/issues/85), [#86](https://github.com/AbidShaik09/Kheera-Frontend/issues/86), [#63](https://github.com/AbidShaik09/Kheera-Frontend/issues/63) |
+| Members, roles, permission catalogue | [#87](https://github.com/AbidShaik09/Kheera-Frontend/issues/87); no custom role editing or invitations API |
+| Workflow CRUD, board reads, task moves | [#88](https://github.com/AbidShaik09/Kheera-Frontend/issues/88), [#64](https://github.com/AbidShaik09/Kheera-Frontend/issues/64) |
+| Projects, task CRUD, dashboard | [#89](https://github.com/AbidShaik09/Kheera-Frontend/issues/89), [#63](https://github.com/AbidShaik09/Kheera-Frontend/issues/63), [#65](https://github.com/AbidShaik09/Kheera-Frontend/issues/65), [#92](https://github.com/AbidShaik09/Kheera-Frontend/issues/92); pending backend #68/#69/#70 |
+| Comments, attachments | [#90](https://github.com/AbidShaik09/Kheera-Frontend/issues/90), [#91](https://github.com/AbidShaik09/Kheera-Frontend/issues/91); pending backend #11/#28 |
+| GET users | No unrestricted directory UI; use scoped members and add by existing-account email |
+| Health, weather demo, SMTP worker | Infrastructure/demo; no product frontend issue needed |
 
-**Scope:** Add a protected `/work-items/:workItemId` route for direct-linkable
-task details, editing, comments, and attachments.
+The backend already implements stage APIs on develop although #45 remains open. Several prose sections still say “issue branch”; inspect source rather than infer availability from issue state. Implementation availability is not proof of deployment.
 
-**Requirements:**
+## Deferred product scope
 
-- Render editable title, description, type, assignee, dates, effort, parent,
-  sprint, and stage metadata from API data.
-- Persist edits through the work-item PATCH contract and refresh upstream views
-  safely.
-- Integrate comments and task/comment attachment APIs.
-- Provide loading, not-found, forbidden, field validation, mutation rollback,
-  upload pending/success/failure, and removal states.
+Project links, sprint/status management, full work-item-type administration and project activity remain under backend #10; task audit activity remains under #11. Profile editing/upload, custom roles, favourites, calendar, global search and in-app notifications lack complete implemented contracts. Create narrowly scoped frontend follow-ups when their backend contracts exist; do not turn placeholders into fake persisted features. SMTP email delivery is not an in-app notification API.
 
-## Current Delivery Order
+## Completion
 
-1. [#63 Implement Space Details route and API-backed project list](https://github.com/AbidShaik09/Kheera-Frontend/issues/63).
-   Depends on backend [#66](https://github.com/AbidShaik09/Kheera-Backend/issues/66),
-   [#67](https://github.com/AbidShaik09/Kheera-Backend/issues/67), and
-   [#68](https://github.com/AbidShaik09/Kheera-Backend/issues/68).
-2. [#64 Build Project Details board with API-backed task states](https://github.com/AbidShaik09/Kheera-Frontend/issues/64).
-   Depends on backend #68, [#69](https://github.com/AbidShaik09/Kheera-Backend/issues/69),
-   [#45](https://github.com/AbidShaik09/Kheera-Backend/issues/45), and remaining
-   project activity APIs under [#10](https://github.com/AbidShaik09/Kheera-Backend/issues/10).
-3. [#65 Implement Task Details route, editing, comments, and attachments](https://github.com/AbidShaik09/Kheera-Frontend/issues/65).
-   Depends on backend #69, comments/activity under
-   [#11](https://github.com/AbidShaik09/Kheera-Backend/issues/11), and uploads under
-   [#28](https://github.com/AbidShaik09/Kheera-Backend/issues/28).
+- [ ] The user can create a space, add an existing member, create a project, configure stages, create/assign a task, move it, comment and attach files, then return through breadcrumbs/dashboard.
+- [ ] Every list/read/mutation handles access revocation, empty/loading/error states, responsive layout and keyboard use; no sample data presented as user data.
+- [ ] Each child records tests, browser checks, actual backend dependency status and documentation updates before closure. This tracking issue does not imply feature implementation.
 
-Completed landing #5, task component #37, and dashboard layout #60 are no longer
-in the active delivery order. Their merged PRs are #77, #78, and #79 respectively.
+## Sources
 
-### Pending Dashboard Integration and Other Follow-ups
+- [API contract](https://github.com/AbidShaik09/Kheera-Backend/blob/d14b8c3397b34fcdc142b8f78dcb171ed756ed3a/docs/workspace/api/API_CONTRACT.md)
+- [Backend controllers](https://github.com/AbidShaik09/Kheera-Backend/tree/d14b8c3397b34fcdc142b8f78dcb171ed756ed3a/src/main/java/com/knightdevelopers/kheerabackend/controller)
+- [Documented product/Penpot flow](https://github.com/AbidShaik09/Kheera-Backend/blob/develop/docs/workspace/product/PROJECT_REFERENCE.md)
+- [Frontend routes](https://github.com/AbidShaik09/Kheera-Frontend/blob/29c12f8d3fe7258caa23b901d562c3056205b553/src/app/app.routes.ts)
+- [Placeholder dashboard implementation](https://github.com/AbidShaik09/Kheera-Frontend/blob/29c12f8d3fe7258caa23b901d562c3056205b553/src/app/pages/dashboard/dashboard.ts)
 
-- [ ] Replace dashboard sample task sections, spaces, and focus data after backend
-  [#70](https://github.com/AbidShaik09/Kheera-Backend/issues/70) is delivered.
-  Create a dedicated frontend integration issue before coding; do not reopen the
-  completed layout issue #60 to disguise new API scope.
-- [ ] Reconcile HomeTaskData's projectKey/issueNumber and limited status union with
-  the backend UUID/stage contract. Use real visit history and documented date
-  boundaries rather than generated relative timestamps.
-- [ ] Favourites, full activity, calendar, search, and notifications remain
-  deferred until backend contracts/persistence and scoped frontend issues exist.
-- [ ] Coordinate remaining frontend CI/deployment safety with backend
-  [#55](https://github.com/AbidShaik09/Kheera-Backend/issues/55).
+Backend issue numbers in this overview refer to [Kheera-Backend](https://github.com/AbidShaik09/Kheera-Backend/issues); all checklist issue links refer to this frontend repository.
 
-Start each item only when its backend contract is implemented or explicitly
-mocked behind a documented frontend adapter. Keep the issue status and this
-file aligned as work moves from planned to in progress to done.
+## Delivery guardrails
+
+Completed landing #5, task component #37 and dashboard layout #60 remain complete; their merged PRs are #77, #78 and #79. New API integration is tracked separately above.
+
+- [ ] Coordinate frontend CI/deployment safety with [backend #55](https://github.com/AbidShaik09/Kheera-Backend/issues/55).
+
+Start each integration only when its backend contract is implemented or explicitly mocked behind a documented adapter. Keep this TODO and issue statuses aligned during implementation.
