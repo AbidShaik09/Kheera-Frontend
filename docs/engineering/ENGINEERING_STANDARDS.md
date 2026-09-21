@@ -223,3 +223,7 @@ initial review. After addressing and resolving review comments, post a new
 `@codex review` comment for the updated head. A posted request is not evidence
 that review has completed; inspect and address the resulting review before
 considering the PR ready.
+
+## Required test layers
+
+Follow [Frontend testing strategy](../testing/TESTING_STRATEGY.md). Every feature uses TDD with recorded behavior failures, unit coverage, frontend integration coverage across real collaborating layers, and browser smoke checks for affected journeys. Before delivery run npm run verify; preserve full-suite regression, production build and visual/API smoke requirements above. Passing mocked browser tests is not evidence that the deployed backend works.

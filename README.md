@@ -91,15 +91,9 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ng test
 ```
 
-## Running end-to-end tests
+## Testing and browser smoke
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+See [testing strategy](docs/testing/TESTING_STRATEGY.md). After npm ci and npx playwright install chromium, run npm run verify for unit tests, integration tests, production build and desktop/mobile browser smoke. Browser tests use an isolated API fixture; no real account is required.
 
 ## Additional Resources
 

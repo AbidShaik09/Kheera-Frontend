@@ -6,7 +6,11 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:unit": "ng test --watch=false --exclude=\"**/*.integration.spec.ts\"",
+    "test:integration": "ng test --watch=false --include=\"**/*.integration.spec.ts\"",
+    "test:smoke": "playwright test",
+    "verify": "npm run test:unit && npm run test:integration && npm run build && npm run test:smoke"
   },
   "private": true,
   "packageManager": "npm@11.7.0",
@@ -29,6 +33,7 @@
     "@angular/build": "^21.2.14",
     "@angular/cli": "^21.2.14",
     "@angular/compiler-cli": "^21.2.0",
+    "@playwright/test": "^1.63.0",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
