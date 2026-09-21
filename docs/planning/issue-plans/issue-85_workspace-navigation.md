@@ -45,7 +45,7 @@
 - [x] Run targeted tests after each change and complete npm run verify (local Edge override if Chromium download remains unavailable).
 - [x] Start local app; check desktop/mobile/light/dark and keyboard/focus against Penpot; record evidence.
 - [x] Update README, architecture, testing, TODO and plan; self-review full diff, security, stale state and scope.
-- [ ] Commit/push branch; create PR to develop with Closes #85, plan and verification.
+- [x] Commit/push branch; create PR to develop with Closes #85, plan and verification.
 - [ ] Request @codex review immediately and attach PR to task. Inspect CI/review, fix actionable findings, rerun affected/full gates and re-request review.
 - [ ] Verify readiness; merge only with applicable explicit authorization. Keep merge/deployment pending until verified.
 
@@ -62,4 +62,4 @@
 - 2026-09-22: Added cross-tab storage invalidation after self-review identified that shared localStorage token replacement could otherwise leave old account names visible. Regression failed before fix; unit and real second-tab browser tests now pass. Router construction also required a null-safe child snapshot, and integration assertions await asynchronous HTTP completion rather than assuming synchronous flush publication.
 
 ## Delivery
-PR/review/check URLs pending. No feature merge authorized yet.
+Feature published in [PR #95](https://github.com/AbidShaik09/Kheera-Frontend/pull/95). Initial review requested in [this comment](https://github.com/AbidShaik09/Kheera-Frontend/pull/95#issuecomment-5765736996) and PR attached to the task. Initial feature CI [35640515694](https://github.com/AbidShaik09/Kheera-Frontend/actions/runs/35640515694) passed. Combined Angular regression also passed all 93 tests across 25 files. Review and final-head checks remain pending. No feature merge authorized yet.
