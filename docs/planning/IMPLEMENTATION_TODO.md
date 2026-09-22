@@ -245,7 +245,7 @@ Workflow stages belong to a project and classify/order tasks; workflow is not a 
 - [ ] [#85](https://github.com/AbidShaik09/Kheera-Frontend/issues/85) Workspace shell, live space switcher and navigation. **Implemented on issue branch, awaiting review:** [issue plan](issue-plans/issue-85_workspace-navigation.md). URL-selected dashboard context, live spaces, session-safe refresh and honest pending states; resource pages remain separate issues.
 - [ ] [#86](https://github.com/AbidShaik09/Kheera-Frontend/issues/86) Space create/edit/delete.
 - [ ] [#87](https://github.com/AbidShaik09/Kheera-Frontend/issues/87) Membership management and read-only role/permission catalogues.
-- [ ] [#93](https://github.com/AbidShaik09/Kheera-Frontend/issues/93) Current-user profile and account menu. In progress: [issue plan](issue-plans/issue-93_current-user-profile.md).
+- [ ] [#93](https://github.com/AbidShaik09/Kheera-Frontend/issues/93) Current-user profile and account menu. Implemented and locally verified; PR review pending: [issue plan](issue-plans/issue-93_current-user-profile.md).
 
 ### Project and task flow
 
@@ -304,4 +304,5 @@ Completed landing #5, task component #37 and dashboard layout #60 remain complet
 - [ ] Coordinate frontend CI/deployment safety with [backend #55](https://github.com/AbidShaik09/Kheera-Backend/issues/55).
 
 Start each integration only when its backend contract is implemented or explicitly mocked behind a documented adapter. Keep this TODO and issue statuses aligned during implementation.
+
 

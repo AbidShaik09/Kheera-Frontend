@@ -1,1 +1,36 @@
-<p>profile works!</p>
+<section
+  class="profile"
+  aria-labelledby="profile-title"
+  [attr.aria-busy]="auth.profileState().status === 'loading'"
+>
+  <header>
+    <div>
+      <h1 id="profile-title">Profile</h1>
+      <p>Your account details</p>
+    </div>
+    <button
+      type="button"
+      (click)="auth.profileState().status !== 'loading' && auth.refreshCurrentUser()"
+      [attr.aria-disabled]="auth.profileState().status === 'loading'"
+    >
+      Refresh profile
+    </button>
+  </header>
+  @if (auth.profileState().status === 'loading') {
+    <p role="status">Loading your profile…</p>
+  } @else if (auth.profileState().status === 'error') {
+    <p role="alert">{{ auth.profileState().message }}</p>
+  } @else if (auth.currentUser(); as user) {
+    <dl>
+      <div>
+        <dt>Name</dt>
+        <dd>{{ user.name }}</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>{{ user.email }}</dd>
+      </div>
+    </dl>
+    <p class="read-only">These account details are read-only.</p>
+  }
+</section>

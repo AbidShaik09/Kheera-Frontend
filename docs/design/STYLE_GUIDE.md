@@ -430,3 +430,13 @@ The following may be added as the design system evolves:
 - Animation presets
 
 These are intentionally postponed until the application grows.
+
+## Read-only account profile (#93)
+
+Profile uses a compact details panel inside the existing workspace shell: heading,
+account description, Refresh profile button, and a semantic name/email definition list.
+Loading and error text replace identity while it is unavailable. Shared identity appears
+in desktop account navigation and the mobile account menu. Long values wrap; existing
+surface/text/border/spacing/radius tokens provide light/dark styling. Refresh has a
+visible keyboard focus outline. No specific Profile Penpot board is present in the
+supplied design references; the existing shell composition and assets are preserved.

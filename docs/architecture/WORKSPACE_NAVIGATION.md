@@ -31,3 +31,17 @@ Fake task cards, fake focus text, favourites, activity and project counts were r
 Workspace service tests cover shape validation, empty/failure/retry states, out-of-order requests, session expiry and cross-account responses. Router/HTTP integration uses real services, routes and bearer interception, with only HTTP responses supplied as fixtures. Browser smoke covers desktop/mobile, light/dark, URL restoration, keyboard selection, Back/reload, retry, access revocation, sign-out and cross-tab token replacement.
 
 These tests exercise the frontend against the documented array contract. They do not prove deployment or live backend authorization. The backend API and persistence were unchanged.
+
+## Current-user identity (#93)
+
+AuthService retains the typed `GET users/me` response used during session restoration.
+`profileState` exposes idle/loading/ready/error and `currentUser` exposes validated
+{id,name,email} or null. Navbar and Profile share it; concurrent refreshes for one
+session share one pending request. Login invalidates the snapshot; the mounted navbar
+loads the new identity. Refresh clears old details until revalidation completes.
+Empty/malformed DTOs and 403/404/network/server failures show safe retryable errors.
+A refresh 401 logs out; initial restoration retains its existing fail-closed behavior.
+Responses must match the captured session epoch and token. Logout/token replacement
+clears the snapshot immediately, and cross-tab changes hide all identity before routing
+to login. Identity is never persisted, rendered as HTML, or fetched with GET users.
+No backend contract or mutation endpoint changed. Profile is read-only.

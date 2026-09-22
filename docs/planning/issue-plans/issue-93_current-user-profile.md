@@ -24,14 +24,14 @@ Affected files: services/auth-service.ts; pages/profile/*; elements/navbar/*; te
 ## Ordered execution checklist
 - [x] Read issue/contracts/implementation/assets/rules and verify latest develop.
 - [x] Create isolated issue branch, update TODO, commit initial plan before code/tests.
-- [ ] Write tests first; run npm test -- --watch=false --include=src/app/services/current-user.spec.ts and record behavior failures.
-- [ ] Implement typed shared identity/session state; rerun service tests.
-- [ ] Write component/integration/browser tests before UI implementation; record behavior failures.
-- [ ] Implement read-only profile and consistent navbar with semantic styles.
-- [ ] Run focused tests; update architecture/design/testing/README/TODO and evidence.
-- [ ] Run npm test -- --watch=false and npm run verify (unit/integration/build/browser).
-- [ ] Start npm start; inspect desktop/mobile/light/dark screenshots, keyboard and API fixtures; document live backend availability.
-- [ ] Self-review security, scope, contracts and acceptance criteria; commit and push.
+- [x] Write tests first; run npm test -- --watch=false --include=src/app/services/current-user.spec.ts and record behavior failures.
+- [x] Implement typed shared identity/session state; rerun service tests.
+- [x] Write component/integration tests before UI implementation; add browser coverage and record behavior failures. Browser tests followed the initial UI, exposing and reproducing focus loss before its fix.
+- [x] Implement read-only profile and consistent navbar with semantic styles.
+- [x] Run focused tests; update architecture/design/testing/README/TODO and evidence.
+- [x] Run npm test -- --watch=false and npm run verify (unit/integration/build/browser).
+- [x] Start npm start; inspect desktop/mobile/light/dark screenshots, keyboard and API fixtures; document live backend availability.
+- [x] Self-review security, scope, contracts and acceptance criteria; commit validated implementation.
 - [ ] Create PR to develop with Closes #93 and plan link; request @codex review and record URL.
 - [ ] Inspect checks/review; address findings and rerun gates as needed.
 - [ ] Merge/deployment remain outside this request to raise a PR; keep unverified steps pending.
@@ -44,3 +44,18 @@ Pending; record actual commands/counts and red/green results here.
 
 ## Delivery
 PR/review/checks pending. No merge requested.
+
+### Implementation evidence and adjustments
+- Initial focused run: 2 expected behavior failures (AuthService lacked currentUser; Profile still rendered placeholder).
+- Expanded focused run: 15 passes and one integration assertion required awaiting the shared refresh promise. Workspace route fixture now supplies users/me when visiting Profile. Subsequent unit/integration: 102 + 7 passed.
+- First browser run exposed focus loss when native disabled was applied during refresh. Replaced it with aria-disabled plus an activation guard; pending requests remain deduplicated and the focused control stays in the tab order. Retain the keyboard regression assertion.
+- npm start -- --host 127.0.0.1 --port 4301 built and served /profile with HTTP 200. Browser flows run against the production build with isolated API fixtures. No live backend account was supplied; unchanged backend contract/deployment is not claimed as validated.
+- npm ci completed from lockfile; npm reported 30 dependency audit findings in the existing locked dependency tree. Dependency upgrades are outside this issue.
+
+
+### Final local validation (2026-09-22)
+- npm run verify with PLAYWRIGHT_CHANNEL=msedge: 102 unit tests (24 files), 7 integration tests (3 files), production build (492.22 kB, below warning budget), and 32 browser tests passed.
+- npm test -- --watch=false: all 109 tests across 27 files passed.
+- Visually inspected profile screenshots at desktop 1280px and mobile Pixel 7 widths, both light/dark: readable name/email, clean wrapping, no overflow, visible keyboard focus. Existing shell/brand assets retained; no profile-specific Penpot board supplied.
+- API fixtures cover success, loading, retry, 401/403/404, server/network failures and session races. API contract unchanged; no live backend/deployment verification performed.
+- Final diff self-review: scope stays read-only; no secrets, HTML rendering, schema/API mutation or dependency changes. git diff --check passed. Develop was re-fetched and remains ceaaab4.

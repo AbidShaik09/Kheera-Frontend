@@ -47,3 +47,14 @@ passed all hosted Chromium gates.
 
 Clean npm ci succeeded. Unit suite: 68 passing tests in 20 files. HTTP integration: 2 passing tests. Production build passed with the existing 550.32 kB initial-bundle warning (500 kB warning / 1 MB error budget). Browser smoke: 4 passing tests across desktop/mobile using installed Edge; the bundled Chromium download timed out locally. Hosted Chromium CI must also pass. No product feature implementation is included in this setup baseline. The setup was requested on develop before issue implementation.
 
+
+## Current-user identity coverage (#93)
+
+`current-user.spec.ts` checks restoration reuse, concurrent refresh, loading, safe retry,
+malformed/empty DTOs, 401/403/404/server/network failures, logout, cross-tab invalidation,
+and delayed old-account success/401 responses. Profile component coverage checks literal
+text and read-only controls. `profile.integration.spec.ts` joins real AuthService,
+ApiService, bearer interceptor and both views across restoration, refresh and logout.
+`profile.smoke.spec.ts` exercises desktop/mobile light/dark, menu Escape/focus, keyboard
+refresh, identity consistency, errors/retry, session expiry and cross-tab replacement.
+Browser/API responses are disposable fixtures, not deployed-backend proof.
