@@ -64,6 +64,13 @@ describe('Workspace routing and HTTP integration', () => {
     await flushSpaces(harness);
     for (const page of ['profile', 'settings']) {
       await harness.navigateByUrl('/' + page + '?space=' + spaces[0].id);
+      if (page === 'profile') {
+        const loading = TestBed.inject(AuthService).refreshCurrentUser();
+        http
+          .expectOne('/api/users/me')
+          .flush({ id: 'test-user', name: 'Test User', email: 'test@example.test' });
+        await loading;
+      }
       harness.detectChanges();
       expect(harness.routeNativeElement?.querySelector('[aria-current="page"]')).toBeNull();
       expect(harness.routeNativeElement?.querySelector('.breadcrumbs')?.textContent).toContain(

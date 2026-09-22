@@ -69,3 +69,15 @@ button:disabled {
     gap: var(--space-sm);
   }
 }
+.account-identity {
+  display: grid;
+  gap: var(--space-xs);
+  max-width: 190px;
+  padding: var(--space-sm);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+  color: var(--color-primary-text);
+}
+.account-identity span {
+  color: var(--color-secondary-text);
+}

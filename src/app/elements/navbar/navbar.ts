@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { ThemeService } from '../../services/theme';
 import { NavbarLogo } from '../navbar-logo/navbar-logo';
@@ -23,6 +23,13 @@ export class Navbar {
   readonly themeIcon = computed(() =>
     this.currentTheme() === 'dark' ? 'light_mode' : 'dark_mode',
   );
+  constructor() {
+    effect(() => {
+      const loggedIn = this.authService.isUserLoggedIn();
+      this.authService.sessionEpoch();
+      if (loggedIn) untracked(() => void this.authService.ensureCurrentUser());
+    });
+  }
   navButtonClicked(path: string): void {
     void this.router.navigate(['/' + path], { queryParamsHandling: 'preserve' });
   }

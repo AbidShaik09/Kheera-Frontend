@@ -245,7 +245,7 @@ Workflow stages belong to a project and classify/order tasks; workflow is not a 
 - [ ] [#85](https://github.com/AbidShaik09/Kheera-Frontend/issues/85) Workspace shell, live space switcher and navigation. **Implemented on issue branch, awaiting review:** [issue plan](issue-plans/issue-85_workspace-navigation.md). URL-selected dashboard context, live spaces, session-safe refresh and honest pending states; resource pages remain separate issues.
 - [ ] [#86](https://github.com/AbidShaik09/Kheera-Frontend/issues/86) Space create/edit/delete.
 - [ ] [#87](https://github.com/AbidShaik09/Kheera-Frontend/issues/87) Membership management and read-only role/permission catalogues.
-- [ ] [#93](https://github.com/AbidShaik09/Kheera-Frontend/issues/93) Current-user profile and account menu.
+- [ ] [#93](https://github.com/AbidShaik09/Kheera-Frontend/issues/93) Current-user profile and account menu. Implemented and locally verified; PR review pending: [issue plan](issue-plans/issue-93_current-user-profile.md).
 
 ### Project and task flow
 

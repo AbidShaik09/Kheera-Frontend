@@ -108,3 +108,11 @@ See [testing strategy](docs/testing/TESTING_STRATEGY.md). After npm ci and npx p
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+### Current-user profile
+
+`/profile` displays the signed-in user's name and email from `GET /api/users/me`.
+The account navigation shares the same identity. Refresh reloads both views;
+loading and failures hide previously displayed details and provide a retry.
+Profile details are read-only; profile editing and avatar uploads are not supported.
+See the [issue #93 plan](docs/planning/issue-plans/issue-93_current-user-profile.md).

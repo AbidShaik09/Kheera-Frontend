@@ -19,6 +19,16 @@
       </button>
     </div>
     <nav class="desktop-actions" aria-label="Account navigation">
+      <div class="account-identity" aria-live="polite">
+        @if (authService.currentUser(); as user) {
+          <strong>{{ user.name }}</strong
+          ><span>{{ user.email }}</span>
+        } @else if (authService.profileState().status === 'loading') {
+          <span>Loading account…</span>
+        } @else if (authService.profileState().status === 'error') {
+          <span>Account details unavailable</span>
+        }
+      </div>
       <button
         type="button"
         aria-label="Notifications (coming soon)"
@@ -54,6 +64,16 @@
     </button>
   </header>
   <mat-menu #mobileMenu="matMenu">
+    <div class="account-identity" aria-live="polite">
+      @if (authService.currentUser(); as user) {
+        <strong>{{ user.name }}</strong
+        ><span>{{ user.email }}</span>
+      } @else if (authService.profileState().status === 'loading') {
+        <span>Loading account…</span>
+      } @else if (authService.profileState().status === 'error') {
+        <span>Account details unavailable</span>
+      }
+    </div>
     <button mat-menu-item disabled>Create · coming soon</button>
     <button mat-menu-item disabled>Notifications · coming soon</button>
     <button mat-menu-item (click)="toggleTheme()">{{ toggleThemeText() }} theme</button>
