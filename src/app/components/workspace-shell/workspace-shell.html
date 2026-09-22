@@ -70,7 +70,9 @@
                     <a
                       [routerLink]="['/dashboard']"
                       [queryParams]="{ space: space.id }"
-                      [attr.aria-current]="selectedId() === space.id ? 'page' : null"
+                      [attr.aria-current]="
+                        selectedId() === space.id && currentPage() === 'Dashboard' ? 'page' : null
+                      "
                     >
                       <span class="space-icon" aria-hidden="true">◇</span
                       ><span>{{ space.name }}</span>

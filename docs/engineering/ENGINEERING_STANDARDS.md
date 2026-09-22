@@ -178,6 +178,9 @@ Link the plan from the PR and record PR/review URLs in it.
   semantic variables so a new theme does not require scattered component edits.
 - Reuse existing components and patterns before introducing variants. Keep
   component styles locally scoped only for behavior unique to that component.
+- Current-page styling and `aria-current="page"` must match the active route,
+  not only a preserved workspace query parameter. Test transitions from a
+  selected workspace to account pages and back when changing shared navigation.
 - Do not bypass Angular sanitization, render untrusted HTML, store tokens in
   unsafe locations, log credentials/OTPs, or commit API keys, passwords,
   tokens, certificates, `.env` files, or private runtime configuration.

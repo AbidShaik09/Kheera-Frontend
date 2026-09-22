@@ -70,6 +70,35 @@ test('new account sees onboarding, never sample space counts', async ({ page }) 
   await expect(page.getByText('6 projects', { exact: true })).toHaveCount(0);
 });
 
+test('account pages preserve workspace context without a false current-page link', async ({
+  page,
+}) => {
+  await fixture(page, () => ({ status: 200, body: spaces }));
+  await page.goto('/dashboard?space=' + spaces[0].id);
+  await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText('Engineering');
+  for (const name of ['Profile', 'Settings']) {
+    const menu = page.getByRole('button', { name: 'Account menu' });
+    if (await menu.isVisible()) {
+      await menu.click();
+      await page.getByRole('menuitem', { name, exact: true }).click();
+    } else {
+      await page.getByRole('button', { name, exact: true }).click();
+    }
+    await expect(page).toHaveURL(new RegExp('/' + name.toLowerCase() + '\\?space=' + spaces[0].id));
+    await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText(name);
+    await openSpaces(page);
+    await expect(page.locator('app-workspace-shell [aria-current="page"]')).toHaveCount(0);
+  }
+  await page
+    .getByRole('navigation', { name: 'Spaces', exact: true })
+    .getByRole('link', { name: 'Engineering', exact: true })
+    .click();
+  await expect(page).toHaveURL(new RegExp('/dashboard\\?space=' + spaces[0].id));
+  await expect(page.locator('app-workspace-shell [aria-current="page"]')).toContainText(
+    'Engineering',
+  );
+});
+
 test('failed request can be retried without stale workspace data', async ({ page }) => {
   let failing = true;
   await fixture(page, () => ({ status: failing ? 500 : 200, body: failing ? {} : spaces }));

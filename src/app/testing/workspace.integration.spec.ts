@@ -59,6 +59,23 @@ describe('Workspace routing and HTTP integration', () => {
     expect(harness.routeNativeElement?.textContent).toContain('This space is no longer available');
     expect(harness.routeNativeElement?.textContent).not.toContain('Engineering');
   });
+  it('keeps workspace context without marking dashboard links current on account pages', async () => {
+    const harness = await RouterTestingHarness.create('/dashboard?space=' + spaces[0].id);
+    await flushSpaces(harness);
+    for (const page of ['profile', 'settings']) {
+      await harness.navigateByUrl('/' + page + '?space=' + spaces[0].id);
+      harness.detectChanges();
+      expect(harness.routeNativeElement?.querySelector('[aria-current="page"]')).toBeNull();
+      expect(harness.routeNativeElement?.querySelector('.breadcrumbs')?.textContent).toContain(
+        'Engineering',
+      );
+    }
+    await harness.navigateByUrl('/dashboard?space=' + spaces[0].id);
+    harness.detectChanges();
+    expect(
+      harness.routeNativeElement?.querySelector('[aria-current="page"]')?.textContent,
+    ).toContain('Engineering');
+  });
   it('redirects to login and clears the session on a spaces 401', async () => {
     const harness = await RouterTestingHarness.create('/dashboard');
     http.expectOne('/api/spaces').flush({}, { status: 401, statusText: 'Unauthorized' });

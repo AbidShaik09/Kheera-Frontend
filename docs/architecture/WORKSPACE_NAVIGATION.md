@@ -6,6 +6,8 @@ The public landing page remains at /. Login, registration and password recovery 
 
 The first workspace slice uses /dashboard?space=<UUID>. Selection survives reload, direct links and browser Back, is validated against GET /api/spaces, and is not stored as a cross-account preference. The sidebar and breadcrumb show only API-authorized names. Selecting another space revalidates the list and discards any older in-flight response. A no-longer-visible selected UUID shows an unavailable message and a return link.
 
+Profile and Settings preserve the selected workspace in their query and breadcrumb. Space links are marked as the current page only while Dashboard is active; workspace selection alone does not make a dashboard link current on an account page.
+
 Resource routes /spaces/:spaceId, /projects/:projectId and /work-items/:workItemId are owned by #63/#64/#65 and are not advertised until those pages exist. Those issues should reuse the shell and build their own authorized resource loading. #86 owns space creation; until it lands, Create space is explicitly disabled with explanatory text.
 
 ## HTTP and state contract
