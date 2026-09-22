@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { ApiService } from './api-service';
 
 export interface LoginCredentials {
@@ -40,6 +40,12 @@ export interface AuthActionResult {
   message: string | null;
 }
 
+export interface ProfileState {
+  status: 'idle' | 'loading' | 'ready' | 'error';
+  user: CurrentUser | null;
+  message: string | null;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -47,6 +53,82 @@ export class AuthService {
   private readonly apiService = inject(ApiService);
 
   readonly isUserLoggedIn = signal(Boolean(this.accessToken()));
+  readonly sessionEpoch = signal(0);
+  private readonly profile = signal<{ epoch: number; value: ProfileState } | null>(null);
+  private pendingProfile: { epoch: number; promise: Promise<void> } | null = null;
+  readonly profileState = computed<ProfileState>(() => {
+    const snapshot = this.profile();
+    return this.isUserLoggedIn() && snapshot?.epoch === this.sessionEpoch()
+      ? snapshot.value
+      : { status: 'idle', user: null, message: null };
+  });
+  readonly currentUser = computed(() => this.profileState().user);
+
+  ensureCurrentUser(): Promise<void> {
+    return this.profileState().status === 'idle' ? this.refreshCurrentUser() : Promise.resolve();
+  }
+
+  refreshCurrentUser(): Promise<void> {
+    const epoch = this.sessionEpoch();
+    if (this.pendingProfile?.epoch === epoch) return this.pendingProfile.promise;
+    const token = this.accessToken();
+    if (!token || !this.isUserLoggedIn()) return Promise.resolve();
+    this.profile.set({ epoch, value: { status: 'loading', user: null, message: null } });
+    const promise = this.fetchCurrentUser(epoch, token).finally(() => {
+      if (this.pendingProfile?.epoch === epoch) this.pendingProfile = null;
+    });
+    this.pendingProfile = { epoch, promise };
+    return promise;
+  }
+
+  private async fetchCurrentUser(epoch: number, token: string): Promise<void> {
+    const result = await this.apiService.get<CurrentUser>('users/me');
+    if (epoch !== this.sessionEpoch() || token !== this.accessToken() || !this.isUserLoggedIn())
+      return;
+    if (result.status === 401) {
+      this.logout();
+      return;
+    }
+    const user = result.body;
+    const valid =
+      result.ok &&
+      user &&
+      typeof user.id === 'string' &&
+      !!user.id.trim() &&
+      typeof user.name === 'string' &&
+      !!user.name.trim() &&
+      typeof user.email === 'string' &&
+      !!user.email.trim();
+    this.profile.set({
+      epoch,
+      value: valid
+        ? { status: 'ready', user, message: null }
+        : {
+            status: 'error',
+            user: null,
+            message:
+              result.status === 403 || result.status === 404
+                ? 'Your profile is unavailable. Refresh to check your access.'
+                : 'Unable to load your profile. Please try again.',
+          },
+    });
+  }
+
+  constructor() {
+    const invalidateExternalSession = (event: StorageEvent) => {
+      if (event.storageArea !== localStorage || (event.key !== 'accessToken' && event.key !== null))
+        return;
+      // Another tab changed accounts or signed out. Hide this tab's old state;
+      // do not delete the new shared token. A reload validates it through users/me.
+      this.sessionEpoch.update((epoch) => epoch + 1);
+      this.profile.set(null);
+      this.isUserLoggedIn.set(false);
+    };
+    window.addEventListener('storage', invalidateExternalSession);
+    inject(DestroyRef).onDestroy(() =>
+      window.removeEventListener('storage', invalidateExternalSession),
+    );
+  }
 
   accessToken(): string | null {
     return localStorage.getItem('accessToken');
@@ -54,21 +136,31 @@ export class AuthService {
 
   setAccessToken(token: string): void {
     localStorage.setItem('accessToken', token);
+    this.sessionEpoch.update((epoch) => epoch + 1);
+    this.profile.set(null);
   }
 
   clearAccessToken(): void {
     localStorage.removeItem('accessToken');
+    this.sessionEpoch.update((epoch) => epoch + 1);
+    this.profile.set(null);
   }
 
   async loginStatus(): Promise<boolean> {
+    const epoch = this.sessionEpoch();
+    const token = this.accessToken();
     if (!this.accessToken()) {
       this.logout();
       return false;
     }
 
-    const result = await this.apiService.get<CurrentUser>('users/me');
+    await this.refreshCurrentUser();
 
-    if (result.ok) {
+    if (epoch !== this.sessionEpoch() || token !== this.accessToken()) {
+      return this.isUserLoggedIn();
+    }
+
+    if (this.currentUser()) {
       this.isUserLoggedIn.set(true);
       return true;
     }
@@ -128,7 +220,8 @@ export class AuthService {
     return {
       ok: false,
       status: result.status,
-      message: this.extractErrorMessage(result.body) ?? 'Unable to create account. Please try again.',
+      message:
+        this.extractErrorMessage(result.body) ?? 'Unable to create account. Please try again.',
     };
   }
 
@@ -153,7 +246,8 @@ export class AuthService {
     return {
       ok: false,
       status: result.status,
-      message: this.extractErrorMessage(result.body) ?? 'Unable to reset password. Please try again.',
+      message:
+        this.extractErrorMessage(result.body) ?? 'Unable to reset password. Please try again.',
     };
   }
 

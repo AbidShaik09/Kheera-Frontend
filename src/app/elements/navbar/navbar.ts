@@ -1,40 +1,44 @@
-import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { ThemeService } from '../../services/theme';
 import { NavbarLogo } from '../navbar-logo/navbar-logo';
-import { GlobalSearch } from '../global-search/global-search';
-import { KnightBtn } from '../../components/knight-btn/knight-btn';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-navbar',
-  imports: [NavbarLogo, GlobalSearch, KnightBtn, MatMenuModule, MatButtonModule, MatIconModule],
+  imports: [NavbarLogo, MatMenuModule, MatButtonModule, MatIconModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  themeService = inject(ThemeService);
-  authService = inject(AuthService);
-  private router = inject(Router);
-  readonly isLoggedIn: WritableSignal<boolean> = this.authService.isUserLoggedIn;
-  currentTheme = signal<string>(this.themeService.getTheme());
-  toggleThemeText = computed((): string => {
-    return this.currentTheme() === 'dark' ? 'Light' : 'Dark';
-  });
-  createBtnClicked() {
-    console.log('Create button clicked');
+  readonly themeService = inject(ThemeService);
+  readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  readonly isLoggedIn = this.authService.isUserLoggedIn;
+  readonly currentTheme = signal(this.themeService.getTheme());
+  readonly toggleThemeText = computed(() => (this.currentTheme() === 'dark' ? 'Light' : 'Dark'));
+  readonly themeIcon = computed(() =>
+    this.currentTheme() === 'dark' ? 'light_mode' : 'dark_mode',
+  );
+  constructor() {
+    effect(() => {
+      const loggedIn = this.authService.isUserLoggedIn();
+      this.authService.sessionEpoch();
+      if (loggedIn) untracked(() => void this.authService.ensureCurrentUser());
+    });
   }
-  navButtonClicked(path: string) {
-    this.router.navigate([`/${path}`]);
+  navButtonClicked(path: string): void {
+    void this.router.navigate(['/' + path], { queryParamsHandling: 'preserve' });
   }
-  toggleTheme() {
+  toggleTheme(): void {
     this.themeService.toggleTheme();
     this.currentTheme.set(this.themeService.getTheme());
   }
-  themeIcon = computed(() => {
-    console.log('Theme changed:', this.themeService.getTheme());
-    return this.currentTheme() === 'dark' ? 'wb_sunny' : 'brightness_2';
-  });
+  signOut(): void {
+    this.authService.logout();
+    void this.router.navigate(['/login']);
+  }
 }

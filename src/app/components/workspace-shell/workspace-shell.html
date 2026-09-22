@@ -1,0 +1,116 @@
+<a class="skip-link" href="#workspace-content">Skip to content</a>
+<div class="workspace-layout">
+  <button
+    #toggle
+    class="sidebar-toggle"
+    type="button"
+    aria-controls="workspace-sidebar"
+    [attr.aria-expanded]="sidebarOpen()"
+    (click)="sidebarOpen.set(!sidebarOpen())"
+  >
+    {{ sidebarOpen() ? 'Hide spaces' : 'Show spaces' }}
+  </button>
+  <aside
+    id="workspace-sidebar"
+    class="workspace-sidebar"
+    [class.is-open]="sidebarOpen()"
+    aria-label="Workspace navigation"
+    (keydown.escape)="closeSidebar()"
+  >
+    <nav aria-label="Dashboard navigation">
+      <a
+        class="dashboard-link"
+        routerLink="/dashboard"
+        [attr.aria-current]="!selectedId() && currentPage() === 'Dashboard' ? 'page' : null"
+        >Dashboard</a
+      >
+    </nav>
+    <section aria-labelledby="activity-title">
+      <h2 id="activity-title">Activity</h2>
+      <div class="calendar-placeholder"><span>Calendar</span><strong>Coming soon</strong></div>
+      <p class="muted">Activity is coming soon.</p>
+    </section>
+    <section aria-labelledby="favourites-title">
+      <h2 id="favourites-title">Favourites</h2>
+      <p class="muted">Favourites are coming soon.</p>
+    </section>
+    <section
+      class="spaces-section"
+      aria-labelledby="spaces-title"
+      [attr.aria-busy]="workspace.state().status === 'loading'"
+    >
+      <div class="section-heading">
+        <h2 id="spaces-title">Spaces</h2>
+        <button
+          class="refresh-button"
+          type="button"
+          (click)="workspace.refresh()"
+          [disabled]="workspace.state().status === 'loading'"
+          aria-label="Refresh spaces"
+        >
+          ↻
+        </button>
+      </div>
+      @switch (workspace.state().status) {
+        @case ('loading') {
+          <p role="status">Loading spaces…</p>
+        }
+        @case ('error') {
+          <p role="alert">{{ workspace.state().message }}</p>
+          <button class="text-button" type="button" (click)="workspace.refresh()">
+            Refresh spaces
+          </button>
+        }
+        @case ('ready') {
+          @if (workspace.state().spaces.length) {
+            <nav aria-label="Spaces">
+              <ul>
+                @for (space of workspace.state().spaces; track space.id) {
+                  <li>
+                    <a
+                      [routerLink]="['/dashboard']"
+                      [queryParams]="{ space: space.id }"
+                      [attr.aria-current]="
+                        selectedId() === space.id && currentPage() === 'Dashboard' ? 'page' : null
+                      "
+                    >
+                      <span class="space-icon" aria-hidden="true">◇</span
+                      ><span>{{ space.name }}</span>
+                    </a>
+                  </li>
+                }
+              </ul>
+            </nav>
+          } @else {
+            <p class="empty-title">No spaces yet</p>
+            <p class="muted">Ask a space administrator to add your account.</p>
+          }
+        }
+      }
+      <button class="create-space" type="button" disabled aria-describedby="create-space-help">
+        + Create space
+      </button>
+      <p id="create-space-help" class="muted">Space creation is coming soon.</p>
+    </section>
+  </aside>
+  <div #content id="workspace-content" class="workspace-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a routerLink="/dashboard">Dashboard</a>
+      @if (selectedSpace(); as space) {
+        <span aria-hidden="true">/</span><span>{{ space.name }}</span>
+      }
+      @if (currentPage() !== 'Dashboard') {
+        <span aria-hidden="true">/</span><span>{{ currentPage() }}</span>
+      }
+    </nav>
+    @if (unavailable()) {
+      <section class="access-notice" role="status">
+        <h1>This space is no longer available</h1>
+        <p>It may have been removed, or your access may have changed.</p>
+        <a routerLink="/dashboard">View all spaces</a>
+      </section>
+    } @else {
+      <router-outlet />
+    }
+  </div>
+</div>

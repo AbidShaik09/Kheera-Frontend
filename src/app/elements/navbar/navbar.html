@@ -1,70 +1,84 @@
-<div>
-  @if (!isLoggedIn()) {
-    <div class="h-3 bg-background"></div>
-  } @else {
-    <div
-      class="sticky top-0 z-50 flex h-12 items-center justify-between border-b border-border bg-background px-1 md:px-2 w-full"
-    >
-      <!-- Logo -->
-      <app-navbar-logo class="shrink-0" />
-
-      <!-- Search + Create -->
-      <div class="flex items-center gap-2">
-        <app-global-search class="w-50 sm:70 md:w-100 lg:w-140" />
-
-        <app-knight-btn
-          class="hidden sm:block"
-          text="Create"
-          icon="add"
-          type="secondary"
-          (onClick)="createBtnClicked()"
-        />
-      </div>
-
-      <!-- Desktop Actions -->
-      <div class="hidden sm:flex items-center gap-2">
-        <app-knight-btn icon="notifications" type="icon" (onClick)="createBtnClicked()" />
-
-        <app-knight-btn [icon]="themeIcon()" type="icon" (onClick)="toggleTheme()" />
-
-        <app-knight-btn icon="settings" type="icon" (onClick)="navButtonClicked('settings')" />
-
-        <app-knight-btn icon="account_circle" type="icon" (onClick)="navButtonClicked('profile')" />
-      </div>
-
-      <!-- Mobile Menu -->
-      <div class="sm:hidden">
-        <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
-          <mat-icon>menu</mat-icon>
-        </button>
-      </div>
+@if (isLoggedIn()) {
+  <header class="topbar">
+    <app-navbar-logo />
+    <div class="search-create">
+      <input
+        class="search-placeholder"
+        aria-label="Search (coming soon)"
+        placeholder="Search · coming soon"
+        disabled
+      />
+      <button
+        class="create-button"
+        type="button"
+        aria-label="Create (coming soon)"
+        title="Create actions are coming soon"
+        disabled
+      >
+        + Create
+      </button>
     </div>
-
-    <!-- Mobile Menu Definition -->
-    <mat-menu #mobileMenu="matMenu">
-      <button mat-menu-item (click)="createBtnClicked()" class="text-btn-secondary-text">
-        <mat-icon>add</mat-icon>
-        <span>Create</span>
-      </button>
-      <button mat-menu-item (click)="createBtnClicked()">
+    <nav class="desktop-actions" aria-label="Account navigation">
+      <div class="account-identity" aria-live="polite">
+        @if (authService.currentUser(); as user) {
+          <strong>{{ user.name }}</strong
+          ><span>{{ user.email }}</span>
+        } @else if (authService.profileState().status === 'loading') {
+          <span>Loading account…</span>
+        } @else if (authService.profileState().status === 'error') {
+          <span>Account details unavailable</span>
+        }
+      </div>
+      <button
+        type="button"
+        aria-label="Notifications (coming soon)"
+        title="Notifications are coming soon"
+        disabled
+      >
         <mat-icon>notifications</mat-icon>
-        <span>Notifications</span>
       </button>
-
-      <button mat-menu-item (click)="toggleTheme()">
+      <button
+        type="button"
+        [attr.aria-label]="'Switch to ' + toggleThemeText().toLowerCase() + ' theme'"
+        (click)="toggleTheme()"
+      >
         <mat-icon>{{ themeIcon() }}</mat-icon>
-        <span>{{ toggleThemeText() }} Theme</span>
       </button>
-
-      <button mat-menu-item (click)="navButtonClicked('settings')">
+      <button type="button" aria-label="Settings" (click)="navButtonClicked('settings')">
         <mat-icon>settings</mat-icon>
-        <span>Settings</span>
       </button>
-
-      <button mat-menu-item (click)="navButtonClicked('profile')">
+      <button type="button" aria-label="Profile" (click)="navButtonClicked('profile')">
         <mat-icon>account_circle</mat-icon>
-        <span>Profile</span>
       </button>
-    </mat-menu>
-  }
-</div>
+      <button type="button" aria-label="Sign out" (click)="signOut()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </nav>
+    <button
+      class="mobile-actions"
+      mat-icon-button
+      aria-label="Account menu"
+      [matMenuTriggerFor]="mobileMenu"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  </header>
+  <mat-menu #mobileMenu="matMenu">
+    <div class="account-identity" aria-live="polite">
+      @if (authService.currentUser(); as user) {
+        <strong>{{ user.name }}</strong
+        ><span>{{ user.email }}</span>
+      } @else if (authService.profileState().status === 'loading') {
+        <span>Loading account…</span>
+      } @else if (authService.profileState().status === 'error') {
+        <span>Account details unavailable</span>
+      }
+    </div>
+    <button mat-menu-item disabled>Create · coming soon</button>
+    <button mat-menu-item disabled>Notifications · coming soon</button>
+    <button mat-menu-item (click)="toggleTheme()">{{ toggleThemeText() }} theme</button>
+    <button mat-menu-item (click)="navButtonClicked('settings')">Settings</button>
+    <button mat-menu-item (click)="navButtonClicked('profile')">Profile</button>
+    <button mat-menu-item (click)="signOut()">Sign out</button>
+  </mat-menu>
+}

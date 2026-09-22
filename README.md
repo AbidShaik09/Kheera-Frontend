@@ -7,6 +7,16 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 - [Engineering standards](docs/engineering/ENGINEERING_STANDARDS.md)
 - [Implementation TODO](docs/planning/IMPLEMENTATION_TODO.md)
 - [Frontend style guide](docs/design/STYLE_GUIDE.md)
+- [Testing strategy](docs/testing/TESTING_STRATEGY.md)
+- [Workspace navigation and API state](docs/architecture/WORKSPACE_NAVIGATION.md)
+
+## Workspace navigation
+
+The authenticated app includes a shared spaces sidebar and URL-based selection at
+`/dashboard?space=<UUID>`. Spaces come from the current account's API; selection,
+refresh, retry and sign-out respect session changes and access loss. Unsupported
+dashboard data and actions are explicitly marked as coming soon. Space creation
+and resource detail pages remain the separately tracked follow-up issues.
 
 ## Design Implementation Rules
 
@@ -91,16 +101,18 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ng test
 ```
 
-## Running end-to-end tests
+## Testing and browser smoke
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+See [testing strategy](docs/testing/TESTING_STRATEGY.md). After npm ci and npx playwright install chromium, run npm run verify for unit tests, integration tests, production build and desktop/mobile browser smoke. Browser tests use an isolated API fixture; no real account is required.
 
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+### Current-user profile
+
+`/profile` displays the signed-in user's name and email from `GET /api/users/me`.
+The account navigation shares the same identity. Refresh reloads both views;
+loading and failures hide previously displayed details and provide a retry.
+Profile details are read-only; profile editing and avatar uploads are not supported.
+See the [issue #93 plan](docs/planning/issue-plans/issue-93_current-user-profile.md).
