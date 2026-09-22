@@ -22,24 +22,21 @@ describe('Dashboard', () => {
   });
 
   it('renders the dashboard section structure', () => {
-    expect(textContent()).toContain('Activity');
-    expect(textContent()).toContain('Favourites');
-    expect(textContent()).toContain('Spaces');
     expect(textContent()).toContain('Recently Visited');
     expect(textContent()).toContain('Last Month Tasks');
     expect(textContent()).toContain('Earlier Tasks');
     expect(textContent()).toContain("Today's Focus");
   });
 
-  it('renders task cards in the main dashboard sections', () => {
+  it('does not present sample tasks as real user data', () => {
     const taskCards = fixture.nativeElement.querySelectorAll('app-home-task');
 
-    expect(taskCards.length).toBe(7);
+    expect(taskCards.length).toBe(0);
+    expect(textContent()).toContain('Task history is coming soon');
   });
 
-  it('keeps the calendar as a placeholder for the standalone story', () => {
-    expect(textContent()).toContain('Calendar');
-    expect(textContent()).toContain('Coming soon');
+  it('shows an honest pending focus section', () => {
+    expect(textContent()).toContain('Your focus list is coming soon');
   });
 
   function textContent(): string {

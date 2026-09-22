@@ -33,6 +33,16 @@ Branch protection and deployment ordering are separate controls: this workflow a
 
 Validation evidence must name commands, counts, commit/state, initial expected failures and final pass/fail. After fixes, rerun affected regressions and the complete verification gates. Never report mocked smoke as verification of the deployed backend.
 
+## Workspace navigation coverage
+
+Issue #85 adds service tests for GET spaces shape/error/session races, real router
+and HTTP integration, and desktop/mobile browser journeys for URL selection,
+Back/reload, empty accounts, retry, revoked access, sign-out and cross-tab account
+changes. Browser screenshots cover light/dark mode; review them against the Penpot
+dashboard composition. The initial testing-workflow CI run
+[35604677013](https://github.com/AbidShaik09/Kheera-Frontend/actions/runs/35604677013)
+passed all hosted Chromium gates.
+
 ## Initial validation (2026-09-21)
 
 Clean npm ci succeeded. Unit suite: 68 passing tests in 20 files. HTTP integration: 2 passing tests. Production build passed with the existing 550.32 kB initial-bundle warning (500 kB warning / 1 MB error budget). Browser smoke: 4 passing tests across desktop/mobile using installed Edge; the bundled Chromium download timed out locally. Hosted Chromium CI must also pass. No product feature implementation is included in this setup baseline. The setup was requested on develop before issue implementation.
