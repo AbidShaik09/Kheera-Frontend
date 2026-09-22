@@ -304,5 +304,3 @@ Completed landing #5, task component #37 and dashboard layout #60 remain complet
 - [ ] Coordinate frontend CI/deployment safety with [backend #55](https://github.com/AbidShaik09/Kheera-Backend/issues/55).
 
 Start each integration only when its backend contract is implemented or explicitly mocked behind a documented adapter. Keep this TODO and issue statuses aligned during implementation.
-
-

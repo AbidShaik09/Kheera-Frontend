@@ -32,7 +32,7 @@ Affected files: services/auth-service.ts; pages/profile/*; elements/navbar/*; te
 - [x] Run npm test -- --watch=false and npm run verify (unit/integration/build/browser).
 - [x] Start npm start; inspect desktop/mobile/light/dark screenshots, keyboard and API fixtures; document live backend availability.
 - [x] Self-review security, scope, contracts and acceptance criteria; commit validated implementation.
-- [ ] Create PR to develop with Closes #93 and plan link; request @codex review and record URL.
+- [x] Create PR to develop with Closes #93 and plan link; request @codex review and record URL.
 - [ ] Inspect checks/review; address findings and rerun gates as needed.
 - [ ] Merge/deployment remain outside this request to raise a PR; keep unverified steps pending.
 
@@ -59,3 +59,11 @@ PR/review/checks pending. No merge requested.
 - Visually inspected profile screenshots at desktop 1280px and mobile Pixel 7 widths, both light/dark: readable name/email, clean wrapping, no overflow, visible keyboard focus. Existing shell/brand assets retained; no profile-specific Penpot board supplied.
 - API fixtures cover success, loading, retry, 401/403/404, server/network failures and session races. API contract unchanged; no live backend/deployment verification performed.
 - Final diff self-review: scope stays read-only; no secrets, HTML rendering, schema/API mutation or dependency changes. git diff --check passed. Develop was re-fetched and remains ceaaab4.
+
+
+### PR delivery
+- PR: https://github.com/AbidShaik09/Kheera-Frontend/pull/96 (base develop).
+- Initial Codex review request: https://github.com/AbidShaik09/Kheera-Frontend/pull/96#issuecomment-5771571060.
+- Implementation commit: 8c22a63; prior plan commit: 92d1795. Local code checks apply unchanged to this documentation-only delivery update.
+- Final staging found an extra blank line at TODO EOF; removed in this delivery update and rechecked the complete PR diff.
+- CI and requested review pending; no merge requested or performed.
