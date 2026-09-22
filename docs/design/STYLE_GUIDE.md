@@ -440,3 +440,12 @@ in desktop account navigation and the mobile account menu. Long values wrap; exi
 surface/text/border/spacing/radius tokens provide light/dark styling. Refresh has a
 visible keyboard focus outline. No specific Profile Penpot board is present in the
 supplied design references; the existing shell composition and assets are preserved.
+
+## Space Details (#63)
+
+Retain the shared top bar/sidebar and the documented identity → description/metadata →
+projects hierarchy. Space images use the supplied safe URL with a graceful missing-image
+fallback. Project cards expose real names, descriptions, progress and open-task counts.
+Use semantic surfaces/text/borders and a responsive card grid; wrap UUIDs and long text.
+Loading, unavailable and zero-project states must remain visibly distinct. Settings and
+People entry points are capability-aware and marked coming soon while #86/#87 are pending.
