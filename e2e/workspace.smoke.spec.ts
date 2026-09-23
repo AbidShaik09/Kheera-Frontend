@@ -29,6 +29,7 @@ async function fixture(page: Page, data: () => { status: number; body: unknown }
 }
 
 async function openSpaces(page: Page) {
+  await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toBeVisible();
   const show = page.getByRole('button', { name: 'Show spaces', exact: true });
   if (await show.isVisible()) await show.click();
 }

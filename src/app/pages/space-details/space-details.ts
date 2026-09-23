@@ -77,8 +77,10 @@ export class SpaceDetails {
     if (
       this.service.state().detail.status !== 'loading' &&
       this.service.state().projects.status !== 'loading'
-    )
+    ) {
+      this.failedImage.set(null);
       void this.service.load(location.id, location.page);
+    }
   }
   goToPage(page: number): void {
     if (page < 0 || page > 100000 || this.service.state().projects.status === 'loading') return;

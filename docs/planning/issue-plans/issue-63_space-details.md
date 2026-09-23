@@ -66,3 +66,11 @@ Pending. Initial plan committed before implementation. Design-link clarification
 - Initial Codex request: https://github.com/AbidShaik09/Kheera-Frontend/pull/98#issuecomment-5783089458.
 - Implementation: 1aae5c7; initial plan: d254d82. This delivery update changes documentation only.
 - CI/review pending. No merge requested or performed.
+
+## Review follow-up (2026-09-23)
+| Finding | Evidence and verdict | Resolution |
+| --- | --- | --- |
+| PRRT_kwDOSlID6c6k5YUh / discussion_r4075954709: Refresh leaves a failed image suppressed | Real: refresh reloaded metadata without clearing failedImage; new component regression failed with no image element before the fix | Clear the failure marker on an accepted refresh; regression verifies the same URL renders again |
+| CI run 35776928698: mobile workspace navigation missing | Trace showed isVisible ran before shell mount and skipped the Show spaces click | Wait for the Breadcrumb navigation before testing toggle visibility; keep all navigation assertions |
+
+Validation: npm test -- --watch=false passed 142 tests across 31 files. npm run verify with PLAYWRIGHT_CHANNEL=msedge passed 132 unit tests, 10 integration tests, production build, and all 50 desktop/mobile browser checks. Build budget warning remains non-blocking; budgets unchanged. Review fixes will be pushed for fresh CI and Codex review; no merge authorized.
