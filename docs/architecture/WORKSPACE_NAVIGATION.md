@@ -4,11 +4,11 @@
 
 The public landing page remains at /. Login, registration and password recovery remain public guest routes. A guarded WorkspaceShell wraps /dashboard, /profile and /settings, with a child guard on every transition.
 
-The first workspace slice uses /dashboard?space=<UUID>. Selection survives reload, direct links and browser Back, is validated against GET /api/spaces, and is not stored as a cross-account preference. The sidebar and breadcrumb show only API-authorized names. Selecting another space revalidates the list and discards any older in-flight response. A no-longer-visible selected UUID shows an unavailable message and a return link.
+The first workspace slice used /dashboard?space=<UUID>; #63 now routes sidebar links to /spaces/:spaceId while retaining legacy dashboard context. Selection survives reload, direct links and browser Back, is validated against GET /api/spaces, and is not stored as a cross-account preference. The sidebar and breadcrumb show only API-authorized names. Selecting another space revalidates the list and discards any older in-flight response. A no-longer-visible selected UUID shows an unavailable message and a return link.
 
-Profile and Settings preserve the selected workspace in their query and breadcrumb. Space links are marked as the current page only while Dashboard is active; workspace selection alone does not make a dashboard link current on an account page.
+Profile and Settings preserve the selected workspace in their query and breadcrumb. Space links are marked as the current page only on their Space Details route; preserved workspace context never marks them current on account or project pages.
 
-Resource routes /spaces/:spaceId, /projects/:projectId and /work-items/:workItemId are owned by #63/#64/#65 and are not advertised until those pages exist. Those issues should reuse the shell and build their own authorized resource loading. #86 owns space creation; until it lands, Create space is explicitly disabled with explanatory text.
+Issue #63 provides /spaces/:spaceId and a read-only /projects/:projectId summary destination. #64 owns its future task board; /work-items/:workItemId remains with #65. See [Space Details](SPACE_DETAILS.md). Those issues should reuse the shell and build their own authorized resource loading. #86 owns space creation; until it lands, Create space is explicitly disabled with explanatory text.
 
 ## HTTP and state contract
 

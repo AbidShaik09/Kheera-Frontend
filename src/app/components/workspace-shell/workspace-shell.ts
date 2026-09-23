@@ -28,12 +28,23 @@ export class WorkspaceShell {
   private readonly params = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
   });
-  readonly selectedId = computed(() => this.params().get('space'));
+  private readonly resourceSpaceId = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.route.firstChild?.snapshot?.paramMap.get('spaceId') ?? null),
+    ),
+    { initialValue: this.route.firstChild?.snapshot?.paramMap.get('spaceId') ?? null },
+  );
+  readonly selectedId = computed(() => this.resourceSpaceId() ?? this.params().get('space'));
   readonly selectedSpace = computed(() =>
     this.workspace.state().spaces.find((space) => space.id === this.selectedId()),
   );
   readonly unavailable = computed(
-    () => !!this.selectedId() && this.workspace.state().status === 'ready' && !this.selectedSpace(),
+    () =>
+      this.currentPage() !== 'Project' &&
+      !!this.selectedId() &&
+      this.workspace.state().status === 'ready' &&
+      !this.selectedSpace(),
   );
   readonly sidebarOpen = signal(false);
   readonly currentPage = toSignal(

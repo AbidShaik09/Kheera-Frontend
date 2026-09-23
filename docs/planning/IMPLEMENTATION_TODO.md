@@ -304,3 +304,8 @@ Completed landing #5, task component #37 and dashboard layout #60 remain complet
 - [ ] Coordinate frontend CI/deployment safety with [backend #55](https://github.com/AbidShaik09/Kheera-Backend/issues/55).
 
 Start each integration only when its backend contract is implemented or explicitly mocked behind a documented adapter. Keep this TODO and issue statuses aligned during implementation.
+
+### Active implementation: #63
+Space Details and paginated live projects are in progress on issue/63_space-details.
+Backend #68 has landed; use current DTOs rather than the old blocked note. The space route, live pagination and project summary are implemented; verification and PR review are tracked in the plan.
+See [issue #63 plan](issue-plans/issue-63_space-details.md).

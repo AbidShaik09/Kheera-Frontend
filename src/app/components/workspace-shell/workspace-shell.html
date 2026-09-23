@@ -68,10 +68,9 @@
                 @for (space of workspace.state().spaces; track space.id) {
                   <li>
                     <a
-                      [routerLink]="['/dashboard']"
-                      [queryParams]="{ space: space.id }"
+                      [routerLink]="['/spaces', space.id]"
                       [attr.aria-current]="
-                        selectedId() === space.id && currentPage() === 'Dashboard' ? 'page' : null
+                        selectedId() === space.id && currentPage() === 'Space' ? 'page' : null
                       "
                     >
                       <span class="space-icon" aria-hidden="true">◇</span

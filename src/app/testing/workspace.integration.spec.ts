@@ -40,17 +40,17 @@ describe('Workspace routing and HTTP integration', () => {
     await harness.fixture.whenStable();
     harness.detectChanges();
   }
-  it('restores URL-selected space and revalidates when switching', async () => {
+  it('preserves legacy dashboard workspace context when switching', async () => {
     const harness = await RouterTestingHarness.create('/dashboard?space=' + spaces[0].id);
     await flushSpaces(harness);
-    expect(
-      harness.routeNativeElement?.querySelector('[aria-current="page"]')?.textContent,
-    ).toContain('Engineering');
+    expect(harness.routeNativeElement?.querySelector('.breadcrumbs')?.textContent).toContain(
+      'Engineering',
+    );
     await harness.navigateByUrl('/dashboard?space=' + spaces[1].id);
     await flushSpaces(harness);
-    expect(
-      harness.routeNativeElement?.querySelector('[aria-current="page"]')?.textContent,
-    ).toContain('Design');
+    expect(harness.routeNativeElement?.querySelector('.breadcrumbs')?.textContent).toContain(
+      'Design',
+    );
     expect(harness.routeNativeElement?.textContent).not.toContain('T300');
   });
   it('does not expose an inaccessible selected space after refresh', async () => {
@@ -79,9 +79,9 @@ describe('Workspace routing and HTTP integration', () => {
     }
     await harness.navigateByUrl('/dashboard?space=' + spaces[0].id);
     harness.detectChanges();
-    expect(
-      harness.routeNativeElement?.querySelector('[aria-current="page"]')?.textContent,
-    ).toContain('Engineering');
+    expect(harness.routeNativeElement?.querySelector('.breadcrumbs')?.textContent).toContain(
+      'Engineering',
+    );
   });
   it('redirects to login and clears the session on a spaces 401', async () => {
     const harness = await RouterTestingHarness.create('/dashboard');
