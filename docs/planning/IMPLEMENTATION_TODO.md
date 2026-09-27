@@ -309,3 +309,6 @@ Start each integration only when its backend contract is implemented or explicit
 Space Details and paginated live projects are in progress on issue/63_space-details.
 Backend #68 has landed; use current DTOs rather than the old blocked note. The space route, live pagination and project summary are implemented; verification and PR review are tracked in the plan.
 See [issue #63 plan](issue-plans/issue-63_space-details.md).
+
+### Active implementation: #86
+Space creation, editing and deletion are in progress on issue/86_space-lifecycle. Dependencies #85 and #63 are implemented on develop. See [issue plan](issue-plans/issue-86_space-lifecycle.md).
