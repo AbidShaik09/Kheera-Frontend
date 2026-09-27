@@ -45,3 +45,8 @@ Responses must match the captured session epoch and token. Logout/token replacem
 clears the snapshot immediately, and cross-tab changes hide all identity before routing
 to login. Identity is never persisted, rendered as HTML, or fetched with GET users.
 No backend contract or mutation endpoint changed. Profile is read-only.
+
+Project resource routes ignore legacy `?space=` context in the workspace breadcrumb.
+Account navigation from a project removes that query parameter, so an unrelated
+bookmark cannot label Profile or Settings with a false space. Space routes still
+preserve their path ID; dashboard/account routes retain their legacy query context.

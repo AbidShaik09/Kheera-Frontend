@@ -74,3 +74,10 @@ Pending. Initial plan committed before implementation. Design-link clarification
 | CI run 35776928698: mobile workspace navigation missing | Trace showed isVisible ran before shell mount and skipped the Show spaces click | Wait for the Breadcrumb navigation before testing toggle visibility; keep all navigation assertions |
 
 Validation: npm test -- --watch=false passed 142 tests across 31 files. npm run verify with PLAYWRIGHT_CHANNEL=msedge passed 132 unit tests, 10 integration tests, production build, and all 50 desktop/mobile browser checks. Build budget warning remains non-blocking; budgets unchanged. Review fixes will be pushed for fresh CI and Codex review; no merge authorized.
+
+## Project context review follow-up (2026-09-27)
+- Thread PRRT_kwDOSlID6c6k-6ln / discussion_r4078213368: real finding. Project routes fell back to arbitrary legacy space queries, and Navbar merged those into account routes.
+- Project breadcrumbs now ignore query-only space context. Account navigation from project routes removes space/page; actual space paths and legacy dashboard/account context remain supported.
+- Added browser regression for an unrelated valid space query and both Profile/Settings navigation. Both desktop/mobile failed before the fix, then passed against the rebuilt application.
+- npm test -- --watch=false: 142 tests / 31 files passed. npm run verify with PLAYWRIGHT_CHANNEL=msedge: 132 unit, 10 integration, production build and 52 browser checks passed. Existing non-blocking bundle warning remains; no budgets changed.
+- Refetched and integrated origin/develop before edits (already up to date). No live backend, deployment, or merge performed. Fresh CI/review requested after push.

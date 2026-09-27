@@ -35,7 +35,12 @@ export class Navbar {
     const space = segments?.[0]?.path === 'spaces' ? segments[1]?.path : undefined;
     void this.router.navigate(['/' + path], {
       queryParamsHandling: 'merge',
-      queryParams: space ? { space, page: null } : {},
+      queryParams:
+        segments?.[0]?.path === 'projects'
+          ? { space: null, page: null }
+          : space
+            ? { space, page: null }
+            : {},
     });
   }
   toggleTheme(): void {

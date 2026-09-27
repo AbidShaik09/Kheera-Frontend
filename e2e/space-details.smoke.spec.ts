@@ -48,6 +48,33 @@ for (const theme of ['light', 'dark']) {
     await expect(details.getByRole('heading', { name: SPACE.name, exact: true })).toBeVisible();
   });
 }
+test('project links ignore unrelated legacy space context, including account navigation', async ({
+  page,
+}) => {
+  const unrelatedId = '00000000-0000-4000-8000-000000000099';
+  await fixture(page, (path) =>
+    path === '/api/spaces'
+      ? { status: 200, body: [{ id: unrelatedId, name: 'Unrelated space' }] }
+      : undefined,
+  );
+  for (const accountPage of ['Profile', 'Settings']) {
+    await page.goto('/projects/' + PROJECT.id + '?space=' + unrelatedId);
+    await expect(page.getByRole('heading', { name: PROJECT.name })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).not.toContainText(
+      'Unrelated space',
+    );
+    const menu = page.getByRole('button', { name: 'Account menu' });
+    if (await menu.isVisible()) await menu.click();
+    await page
+      .getByRole('button', { name: accountPage, exact: true })
+      .or(page.getByRole('menuitem', { name: accountPage, exact: true }))
+      .click();
+    await expect(page).toHaveURL('/' + accountPage.toLowerCase());
+    await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).not.toContainText(
+      'Unrelated space',
+    );
+  }
+});
 test('paginated projects survive back and reload without invented counts', async ({ page }) => {
   const items = Array.from({ length: 12 }, (_, i) => ({
     ...PROJECT,

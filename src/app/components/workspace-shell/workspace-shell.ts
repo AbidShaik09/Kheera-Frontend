@@ -35,7 +35,11 @@ export class WorkspaceShell {
     ),
     { initialValue: this.route.firstChild?.snapshot?.paramMap.get('spaceId') ?? null },
   );
-  readonly selectedId = computed(() => this.resourceSpaceId() ?? this.params().get('space'));
+  readonly selectedId = computed(() =>
+    this.currentPage() === 'Project'
+      ? null
+      : (this.resourceSpaceId() ?? this.params().get('space')),
+  );
   readonly selectedSpace = computed(() =>
     this.workspace.state().spaces.find((space) => space.id === this.selectedId()),
   );
