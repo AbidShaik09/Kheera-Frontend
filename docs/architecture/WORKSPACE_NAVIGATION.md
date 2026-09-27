@@ -22,7 +22,7 @@ Token storage events from other tabs invalidate visible login/workspace state wi
 
 ## UI and unsupported features
 
-The inspected Penpot dashboard retains top navigation, the Activity/Favourites/Spaces rail, three central history sections and a right focus panel. Theme tokens supply light/dark styling. Small screens use Show/Hide spaces, Escape restores toggle focus, and navigation closes the expanded sidebar and moves focus to content. A skip link and labeled controls support keyboard navigation.
+The inspected Penpot dashboard retains top navigation, the Activity/Favourites/Spaces rail, three central history sections and a right focus panel. Theme tokens supply light/dark styling. Small screens use Show/Hide spaces, Escape restores toggle focus, and navigation closes the expanded sidebar and moves focus to content. Labeled controls support keyboard navigation. The standalone skip link is removed per the requested UI hotfix.
 
 Fake task cards, fake focus text, favourites, activity and project counts were removed. Unsupported data uses coming-soon copy, not a false user-specific empty result. Search/Create/notifications are disabled until their feature/API slices exist; profile/settings/theme and Sign out remain real controls. #92 supplies actual dashboard aggregates later.
 

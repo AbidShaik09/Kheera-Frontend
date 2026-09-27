@@ -139,16 +139,6 @@ button:disabled {
 .sidebar-toggle {
   display: none;
 }
-.skip-link {
-  position: absolute;
-  transform: translateY(-200%);
-  background: var(--color-background);
-  padding: var(--space-sm);
-  z-index: 100;
-}
-.skip-link:focus {
-  transform: translateY(0);
-}
 @media (max-width: 800px) {
   .workspace-layout {
     grid-template-columns: minmax(0, 1fr);

@@ -37,7 +37,9 @@ describe('Profile HTTP and shared view integration', () => {
     await nav.whenStable();
     http.expectNone('/api/users/me');
     expect(profile.nativeElement.textContent).toContain('Ada');
-    expect(nav.nativeElement.textContent).toContain('ada@example.test');
+    expect(nav.nativeElement.textContent).toContain('Ada');
+    expect(nav.nativeElement.textContent).not.toContain('ada@example.test');
+    expect(profile.nativeElement.textContent).toContain('ada@example.test');
     profile.nativeElement.querySelector('button').click();
     const refreshing = auth.refreshCurrentUser();
     profile.detectChanges();

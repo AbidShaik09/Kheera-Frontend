@@ -21,8 +21,7 @@
     <nav class="desktop-actions" aria-label="Account navigation">
       <div class="account-identity" aria-live="polite">
         @if (authService.currentUser(); as user) {
-          <strong>{{ user.name }}</strong
-          ><span>{{ user.email }}</span>
+          <strong>{{ user.name }}</strong>
         } @else if (authService.profileState().status === 'loading') {
           <span>Loading account…</span>
         } @else if (authService.profileState().status === 'error') {
@@ -66,8 +65,7 @@
   <mat-menu #mobileMenu="matMenu">
     <div class="account-identity" aria-live="polite">
       @if (authService.currentUser(); as user) {
-        <strong>{{ user.name }}</strong
-        ><span>{{ user.email }}</span>
+        <strong>{{ user.name }}</strong>
       } @else if (authService.profileState().status === 'loading') {
         <span>Loading account…</span>
       } @else if (authService.profileState().status === 'error') {

@@ -20,16 +20,22 @@ for (const theme of ['light', 'dark']) {
     const profile = page.locator('app-profile');
     await expect(profile.getByRole('heading', { name: 'Profile', exact: true })).toBeVisible();
     await expect(profile.locator('dd').first()).toHaveText(user.name);
+    await expect(profile.locator('dd').nth(1)).toHaveText(user.email);
+    await expect(page.getByRole('link', { name: 'Skip to content' })).toHaveCount(0);
     await expect(profile.locator('b, input, form')).toHaveCount(0);
     const menu = page.getByRole('button', { name: 'Account menu', exact: true });
     if (await menu.isVisible()) {
       await menu.focus();
       await page.keyboard.press('Enter');
-      await expect(page.getByRole('menu')).toContainText(user.email);
+      await expect(page.getByRole('menu')).toContainText(user.name);
+      await expect(page.getByRole('menu')).not.toContainText(user.email);
       await page.keyboard.press('Escape');
       await expect(menu).toBeFocused();
     } else {
       await expect(page.getByRole('navigation', { name: 'Account navigation' })).toContainText(
+        user.name,
+      );
+      await expect(page.getByRole('navigation', { name: 'Account navigation' })).not.toContainText(
         user.email,
       );
     }
