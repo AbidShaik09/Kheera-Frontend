@@ -1,3 +1,4 @@
+import { SPACE, projectPage } from '../src/app/testing/space-fixtures';
 import { test, expect, Page } from '@playwright/test';
 
 const spaces = [
@@ -19,11 +20,16 @@ async function fixture(page: Page, data: () => { status: number; body: unknown }
       const result = data();
       return route.fulfill({ status: result.status, json: result.body });
     }
+    if (/^\/api\/spaces\/[^/]+\/projects$/.test(path))
+      return route.fulfill({ json: projectPage([]) });
+    const matched = spaces.find((space) => path === '/api/spaces/' + space.id);
+    if (matched) return route.fulfill({ json: { ...SPACE, ...matched } });
     return route.fulfill({ status: 404, json: {} });
   });
 }
 
 async function openSpaces(page: Page) {
+  await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toBeVisible();
   const show = page.getByRole('button', { name: 'Show spaces', exact: true });
   if (await show.isVisible()) await show.click();
 }
@@ -34,7 +40,7 @@ for (const theme of ['light', 'dark']) {
     page.on('pageerror', (error) => errors.push(error.message));
     await fixture(page, () => ({ status: 200, body: spaces }));
     await page.addInitScript((value) => localStorage.setItem('theme', value), theme);
-    await page.goto('/dashboard?space=' + spaces[0].id);
+    await page.goto('/spaces/' + spaces[0].id);
     await openSpaces(page);
     const nav = page.getByRole('navigation', { name: 'Spaces', exact: true });
     await expect(nav.getByRole('link', { name: 'Engineering', exact: true })).toHaveAttribute(
@@ -43,7 +49,7 @@ for (const theme of ['light', 'dark']) {
     );
     await nav.getByRole('link', { name: 'Design', exact: true }).focus();
     await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(new RegExp('space=' + spaces[1].id));
+    await expect(page).toHaveURL(new RegExp('/spaces/' + spaces[1].id));
     await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText('Design');
     await page.goBack();
     await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText('Engineering');
@@ -93,7 +99,7 @@ test('account pages preserve workspace context without a false current-page link
     .getByRole('navigation', { name: 'Spaces', exact: true })
     .getByRole('link', { name: 'Engineering', exact: true })
     .click();
-  await expect(page).toHaveURL(new RegExp('/dashboard\\?space=' + spaces[0].id));
+  await expect(page).toHaveURL(new RegExp('/spaces/' + spaces[0].id));
   await expect(page.locator('app-workspace-shell [aria-current="page"]')).toContainText(
     'Engineering',
   );

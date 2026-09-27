@@ -1,0 +1,152 @@
+<section class="space-page" aria-label="Space details">
+  <div class="page-actions">
+    <a routerLink="/dashboard">All spaces</a
+    ><button
+      type="button"
+      (click)="refresh()"
+      [attr.aria-disabled]="
+        service.state().detail.status === 'loading' || service.state().projects.status === 'loading'
+      "
+    >
+      Refresh space
+    </button>
+  </div>
+  @if (service.state().detail.status === 'loading') {
+    <p role="status">Loading space…</p>
+  } @else if (
+    service.state().detail.status === 'error' || service.state().detail.status === 'unavailable'
+  ) {
+    <h1 #errorHeading tabindex="-1">Space unavailable</h1>
+    <p role="alert">{{ service.state().detail.message }}</p>
+  }
+  @if (service.state().detail.data; as space) {
+    <header class="space-header">
+      @if (safeImageUrl(space.profilePic); as image) {
+        @if (failedImage() !== image) {
+          <img
+            class="space-picture"
+            [src]="image"
+            alt=""
+            referrerpolicy="no-referrer"
+            (error)="failedImage.set(image)"
+          />
+        }
+      }
+      <div class="space-identity">
+        <p class="eyebrow">Space</p>
+        <h1>{{ space.name }}</h1>
+        <p class="identifier">{{ space.id }}</p>
+      </div>
+      <div class="future-actions">
+        @if (space.capabilities.canUpdate || space.capabilities.canDelete) {
+          <button
+            type="button"
+            disabled
+            aria-label="Space settings (coming soon)"
+            title="Space editing and deletion are coming soon"
+          >
+            Space settings · coming soon
+          </button>
+        }
+        @if (space.capabilities.canManageMembers) {
+          <button
+            type="button"
+            disabled
+            aria-label="People management (coming soon)"
+            title="People management is coming soon"
+          >
+            People · coming soon
+          </button>
+        }
+      </div>
+    </header>
+    <p class="description">{{ space.description || 'No description provided.' }}</p>
+    <dl class="timestamps">
+      <div>
+        <dt>Created</dt>
+        <dd>
+          <time [attr.datetime]="space.createdAt">{{ space.createdAt | date: 'medium' }}</time>
+        </dd>
+      </div>
+      <div>
+        <dt>Updated</dt>
+        <dd>
+          <time [attr.datetime]="space.updatedAt">{{ space.updatedAt | date: 'medium' }}</time>
+        </dd>
+      </div>
+    </dl>
+    <section aria-labelledby="projects-heading" class="projects-section">
+      <div class="section-heading">
+        <h2 #projectsHeading id="projects-heading" tabindex="-1">Projects</h2>
+        @if (service.state().projects.data; as result) {
+          <span
+            >{{ result.totalItems }} {{ result.totalItems === 1 ? 'project' : 'projects' }}</span
+          >
+        }
+      </div>
+      @if (service.state().projects.status === 'loading') {
+        <p role="status">Loading projects…</p>
+      } @else if (service.state().projects.status === 'error') {
+        <p role="alert">{{ service.state().projects.message }}</p>
+      }
+      @if (service.state().projects.data; as result) {
+        @if (result.totalItems === 0) {
+          <div class="empty-state">
+            <h3>No projects yet</h3>
+            <p>Projects added to this space will appear here.</p>
+          </div>
+        } @else if (result.items.length === 0) {
+          <p role="status">There are no projects on this page.</p>
+          <button type="button" (click)="goToPage(0)">First page</button>
+        }
+        <div class="project-grid">
+          @for (project of result.items; track project.id) {
+            <article class="project-card">
+              <h3>
+                <a class="project-link" [routerLink]="['/projects', project.id]">{{
+                  project.name
+                }}</a>
+              </h3>
+              <p>{{ project.description || 'No description provided.' }}</p>
+              <div class="project-metrics">
+                <span>{{ project.openTaskCount }} open tasks</span
+                ><span>{{ project.progressPercent }}% complete</span>
+              </div>
+              <progress
+                max="100"
+                [value]="project.progressPercent"
+                [attr.aria-label]="project.name + ' progress'"
+              >
+                {{ project.progressPercent }}%
+              </progress>
+              <p class="updated">
+                Updated
+                <time [attr.datetime]="project.updatedAt">{{
+                  project.updatedAt | date: 'mediumDate'
+                }}</time>
+              </p>
+            </article>
+          }
+        </div>
+        @if (result.totalPages > 1 && result.items.length > 0) {
+          <nav class="pagination" aria-label="Project pages">
+            <button
+              type="button"
+              [attr.aria-disabled]="result.page === 0"
+              (click)="result.page > 0 && goToPage(result.page - 1)"
+            >
+              Previous page</button
+            ><span aria-live="polite">Page {{ result.page + 1 }} of {{ result.totalPages }}</span
+            ><button
+              type="button"
+              [attr.aria-disabled]="result.page + 1 >= result.totalPages || result.page >= 100000"
+              (click)="result.page + 1 < result.totalPages && goToPage(result.page + 1)"
+            >
+              Next page
+            </button>
+          </nav>
+        }
+      }
+    </section>
+  }
+</section>

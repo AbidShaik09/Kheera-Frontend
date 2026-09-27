@@ -38,6 +38,18 @@ export const routes: Routes = [
     canActivate: [authGuard],
     canActivateChild: [authGuard],
     children: [
+      {
+        path: 'spaces/:spaceId',
+        loadComponent: () =>
+          import('./pages/space-details/space-details').then((m) => m.SpaceDetails),
+        data: { title: 'Space' },
+      },
+      {
+        path: 'projects/:projectId',
+        loadComponent: () =>
+          import('./pages/project-summary/project-summary').then((m) => m.ProjectSummaryPage),
+        data: { title: 'Project' },
+      },
       { path: 'dashboard', component: Dashboard, data: { title: 'Dashboard' } },
       { path: 'profile', component: Profile, data: { title: 'Profile' } },
       { path: 'settings', component: Settings, data: { title: 'Settings' } },
