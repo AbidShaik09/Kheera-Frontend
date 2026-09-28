@@ -38,7 +38,7 @@
 - [x] Run `npm test -- --watch=false`, `npm run build`, and `npm run verify` (Edge permitted locally).
 - [x] Start `npm start`; inspect affected local flows. Browser fixtures exercise real frontend/API boundaries; local backend smoke if available, otherwise explicitly record limitation.
 - [x] Inspect desktop/mobile light/dark screenshots, keyboard focus, validation, permissions and failure/retry.
-- [ ] Commit/push and create PR to develop with `Closes #86`, plan and evidence.
+- [x] Commit/push and create PR to develop with `Closes #86`, plan and evidence.
 - [ ] Post exactly `@codex review`, record URL; inspect CI/reviews and address valid findings, repeat validation and request review after fixes.
 - [ ] Merge/deployment are outside the requested raise-PR scope; leave issue open pending merge.
 
@@ -60,4 +60,8 @@
 - No specific create/settings Penpot frame or direct board URL is supplied; layout preserves the documented shell and Space Details identity hierarchy.
 
 ## Delivery
-PR and review URLs pending. No merge or deployment claimed.
+- PR: https://github.com/AbidShaik09/Kheera-Frontend/pull/99 (base develop).
+- Initial review request accepted: https://github.com/AbidShaik09/Kheera-Frontend/pull/99#issuecomment-5862909832.
+- Implementation commit: `d5abb7c22cf22f6e3a2bbf85326c7868553ebbdc` (plus initial plan `36f323f`).
+- Hosted Frontend checks and Codex review were pending at PR creation. This delivery-record update changes documentation only; implementation validation above remains current.
+- No merge, issue closure or deployment requested/performed. Review and CI results remain authoritative on the PR.

@@ -307,8 +307,8 @@ Start each integration only when its backend contract is implemented or explicit
 
 ### Active implementation: #63
 Space Details and paginated live projects are in progress on issue/63_space-details.
-Backend #68 has landed; use current DTOs rather than the old blocked note. The space route, live pagination and project summary are implemented; verification and PR review are tracked in the plan.
+Backend #68 has landed; use current DTOs rather than the old blocked note. The space route, live pagination and project summary are implemented; local verification passed and [PR #99](https://github.com/AbidShaik09/Kheera-Frontend/pull/99) is awaiting CI/review.
 See [issue #63 plan](issue-plans/issue-63_space-details.md).
 
 ### Active implementation: #86
-Space creation, editing and deletion are implemented on issue/86_space-lifecycle; verification and PR review are tracked in the plan. Dependencies #85 and #63 are implemented on develop. See [issue plan](issue-plans/issue-86_space-lifecycle.md).
+Space creation, editing and deletion are implemented on issue/86_space-lifecycle; local verification passed and [PR #99](https://github.com/AbidShaik09/Kheera-Frontend/pull/99) is awaiting CI/review. Dependencies #85 and #63 are implemented on develop. See [issue plan](issue-plans/issue-86_space-lifecycle.md).
