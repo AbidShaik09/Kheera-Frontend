@@ -1,0 +1,115 @@
+<section class="editor" [attr.aria-busy]="loading() || busy()">
+  <header>
+    <h1>{{ id ? 'Space settings' : 'Create space' }}</h1>
+    <a [routerLink]="id ? ['/spaces', id] : ['/dashboard']">{{
+      id ? 'Back to space' : 'Back to dashboard'
+    }}</a>
+  </header>
+  @if (loading()) {
+    <p role="status">Loading space…</p>
+  }
+  @if (message()) {
+    <p role="alert">{{ message() }}</p>
+  }
+  @if (success()) {
+    <p role="status">{{ success() }}</p>
+  }
+  @if (id && !unavailable()) {
+    <button type="button" (click)="load(!!space())" [disabled]="busy() || loading()">
+      Refresh permissions
+    </button>
+  }
+  @if (!unavailable() && (!id || space())) {
+    @if (space(); as current) {
+      <p class="identity">{{ current.name }} · {{ current.id }}</p>
+      @if (!current.capabilities.canUpdate) {
+        <p>You do not have permission to edit this space.</p>
+      }
+    }
+    <form (ngSubmit)="save()" novalidate>
+      <fieldset [disabled]="busy() || loading() || (id && !space()?.capabilities?.canUpdate)">
+        <legend>Space details</legend>
+        <label for="space-name">Name</label>
+        <input
+          id="space-name"
+          name="name"
+          [(ngModel)]="draft.name"
+          required
+          [attr.aria-invalid]="!!errors().name"
+          aria-describedby="name-help name-error"
+        />
+        <p id="name-help" class="help">Required. Up to 255 characters.</p>
+        <p id="name-error" class="error">{{ errors().name }}</p>
+        <label for="space-description">Description <span>(optional)</span></label>
+        <textarea
+          id="space-description"
+          name="description"
+          [(ngModel)]="draft.description"
+          rows="4"
+          [attr.aria-invalid]="!!errors().description"
+          aria-describedby="description-help description-error"
+        ></textarea>
+        <p id="description-help" class="help">
+          Up to 500 characters. Clear this field to remove the description.
+        </p>
+        <p id="description-error" class="error">{{ errors().description }}</p>
+        <label for="space-picture">Profile picture URL <span>(optional)</span></label>
+        <input
+          id="space-picture"
+          name="profilePic"
+          type="url"
+          [(ngModel)]="draft.profilePic"
+          [attr.aria-invalid]="!!errors().profilePic"
+          aria-describedby="picture-help picture-error"
+        />
+        <p id="picture-help" class="help">
+          An absolute HTTP(S) URL, up to 255 characters, without credentials. Clear to remove the
+          picture.
+        </p>
+        <p id="picture-error" class="error">{{ errors().profilePic }}</p>
+      </fieldset>
+      @if (!id || space()?.capabilities?.canUpdate) {
+        <button type="submit" class="primary" [disabled]="busy() || loading() || creationDenied()">
+          {{ busy() ? 'Saving…' : id ? 'Save changes' : 'Create space' }}
+        </button>
+      }
+    </form>
+    @if (space()?.capabilities?.canDelete) {
+      <section class="danger" aria-labelledby="delete-title">
+        <h2 id="delete-title">Delete space</h2>
+        @if (confirming()) {
+          <div role="group" aria-label="Confirm space deletion" (keydown.escape)="cancelDelete()">
+            <p>
+              Delete <strong>{{ space()?.name }}</strong> ({{ space()?.id }})?
+            </p>
+            <p>You and all members will lose access to this space and its projects and tasks.</p>
+            <div class="actions">
+              <button data-cancel-delete type="button" (click)="cancelDelete()" [disabled]="busy()">
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="destructive"
+                (click)="remove()"
+                [disabled]="busy() || loading()"
+              >
+                {{ busy() ? 'Deleting…' : 'Confirm deletion' }}
+              </button>
+            </div>
+          </div>
+        } @else {
+          <p>Deleting removes access to this space and all its projects and tasks.</p>
+          <button
+            data-delete
+            type="button"
+            class="destructive"
+            (click)="beginDelete()"
+            [disabled]="busy() || loading()"
+          >
+            Delete space
+          </button>
+        }
+      </section>
+    }
+  }
+</section>

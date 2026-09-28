@@ -35,7 +35,7 @@ describe('WorkspaceShell', () => {
     const fixture = await render();
     expect(fixture.nativeElement.textContent).toContain('No spaces yet');
     expect(fixture.nativeElement.textContent).not.toContain('6 projects');
-    expect(fixture.nativeElement.querySelector('button[disabled]')?.textContent).toContain(
+    expect(fixture.nativeElement.querySelector('a.create-space')?.textContent).toContain(
       'Create space',
     );
   });

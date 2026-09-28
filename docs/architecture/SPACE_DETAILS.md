@@ -56,3 +56,29 @@ written PROJECT_REFERENCE and existing theme, not a claimed pixel comparison to 
 unavailable board. Unit, HTTP/router integration and browser fixtures exercise access,
 stale requests, pagination, real navigation, retry, light/dark and mobile/desktop.
 Backend contracts are unchanged; fixture-based checks do not prove live deployment.
+
+## Space lifecycle routes (#86)
+
+`/spaces/new` is ordered before the UUID route. `/spaces/:spaceId/settings` reads
+SpaceDetail without fetching projects. The sidebar creates spaces; Space Details
+exposes settings when either canUpdate or canDelete is true. Settings independently
+honors both capabilities and the backend remains authoritative.
+
+SpaceLifecycleService owns GET/POST/PATCH/DELETE through ApiService and rejects
+responses from a replaced session. SpaceEditor keeps route-local drafts and guards
+async completions with route generation/session identity. It prevents duplicate
+writes, validates Unicode code-point limits (name 255, description 500, URL 255),
+and accepts only absolute credential-free HTTP(S) picture URLs. This is not upload.
+POST omits empty optional values and navigates using the returned UUID. PATCH compares
+against loaded metadata, sends changed fields only, and uses null for optional
+clearing. Name is trimmed and never null. Named server fieldErrors render as text.
+
+Successful writes refresh WorkspaceService. DELETE requires a named confirmation,
+accepts 204 and navigates to dashboard. Route-scoped detail/project state is destroyed
+when leaving its page; the editor clears its draft/metadata on deletion, read access
+loss, logout and teardown. No persistent descendant cache or restore action exists.
+Creation 403 retains the draft and disables further submissions for that form session.
+Mutation 403 preserves input while disabling the denied action; Refresh permissions
+revalidates capabilities without replacing the draft. Read 403/404 and mutation 404
+clear resource state. Recoverable failures preserve input and permit retry; current
+401 expires the session. Stale navigation/session results cannot navigate or publish.

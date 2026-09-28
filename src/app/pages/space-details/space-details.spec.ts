@@ -43,9 +43,7 @@ describe('SpaceDetails', () => {
     expect(fixture.nativeElement.querySelector('a.project-link')?.getAttribute('href')).toBe(
       '/projects/' + PROJECT.id,
     );
-    expect(
-      fixture.nativeElement.querySelector('[aria-label="Space settings (coming soon)"]'),
-    ).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('[aria-label="Space settings"]')).toBeTruthy();
     state.update((s) => ({
       ...s,
       detail: {
@@ -57,9 +55,7 @@ describe('SpaceDetails', () => {
       },
     }));
     fixture.detectChanges();
-    expect(
-      fixture.nativeElement.querySelector('[aria-label="Space settings (coming soon)"]'),
-    ).toBeNull();
+    expect(fixture.nativeElement.querySelector('[aria-label="Space settings"]')).toBeNull();
   });
   it('retries the same image URL when the user refreshes after an image failure', async () => {
     const image = 'https://example.test/space.png';

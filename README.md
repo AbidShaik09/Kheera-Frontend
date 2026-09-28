@@ -121,6 +121,6 @@ See the [issue #93 plan](docs/planning/issue-plans/issue-93_current-user-profile
 
 Open a space from the sidebar to see its details and live paginated projects.
 Project cards show API progress/open-task counts and open a read-only project overview.
-Space editing, People management and the task board remain separate upcoming features.
+Use **Create space** in the sidebar to create a workspace. **Space settings** on its details page provides permission-controlled editing and deletion. People management and the task board remain upcoming features.
 See [Space Details architecture](docs/architecture/SPACE_DETAILS.md) and the
 [issue #63 plan](docs/planning/issue-plans/issue-63_space-details.md).

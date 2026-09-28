@@ -56,7 +56,10 @@ for (const theme of ['light', 'dark']) {
     await page.reload();
     await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText('Engineering');
     await openSpaces(page);
-    await expect(page.getByRole('button', { name: '+ Create space', exact: true })).toBeDisabled();
+    await expect(page.getByRole('link', { name: '+ Create space', exact: true })).toHaveAttribute(
+      'href',
+      '/spaces/new',
+    );
     await expect(page.locator('app-home-task')).toHaveCount(0);
     await expect(page.locator('html')).toHaveClass(theme === 'dark' ? /dark/ : /^(?!.*dark).*$/);
     expect(
@@ -72,7 +75,9 @@ test('new account sees onboarding, never sample space counts', async ({ page }) 
   await page.goto('/dashboard');
   await openSpaces(page);
   await expect(page.getByText('No spaces yet', { exact: true })).toBeVisible();
-  await expect(page.getByText('Ask a space administrator to add your account.')).toBeVisible();
+  await expect(
+    page.getByText('Create a space or ask an administrator to add your account.'),
+  ).toBeVisible();
   await expect(page.getByText('6 projects', { exact: true })).toHaveCount(0);
 });
 

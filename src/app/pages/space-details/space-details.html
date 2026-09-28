@@ -39,14 +39,9 @@
       </div>
       <div class="future-actions">
         @if (space.capabilities.canUpdate || space.capabilities.canDelete) {
-          <button
-            type="button"
-            disabled
-            aria-label="Space settings (coming soon)"
-            title="Space editing and deletion are coming soon"
+          <a [routerLink]="['/spaces', space.id, 'settings']" aria-label="Space settings"
+            >Space settings</a
           >
-            Space settings · coming soon
-          </button>
         }
         @if (space.capabilities.canManageMembers) {
           <button
