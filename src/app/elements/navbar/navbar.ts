@@ -31,7 +31,17 @@ export class Navbar {
     });
   }
   navButtonClicked(path: string): void {
-    void this.router.navigate(['/' + path], { queryParamsHandling: 'preserve' });
+    const segments = this.router.parseUrl(this.router.url).root.children['primary']?.segments;
+    const space = segments?.[0]?.path === 'spaces' ? segments[1]?.path : undefined;
+    void this.router.navigate(['/' + path], {
+      queryParamsHandling: 'merge',
+      queryParams:
+        segments?.[0]?.path === 'projects'
+          ? { space: null, page: null }
+          : space
+            ? { space, page: null }
+            : {},
+    });
   }
   toggleTheme(): void {
     this.themeService.toggleTheme();

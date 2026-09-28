@@ -436,7 +436,26 @@ These are intentionally postponed until the application grows.
 Profile uses a compact details panel inside the existing workspace shell: heading,
 account description, Refresh profile button, and a semantic name/email definition list.
 Loading and error text replace identity while it is unavailable. Shared identity appears
-in desktop account navigation and the mobile account menu. Long values wrap; existing
+as the name only in desktop account navigation and the mobile account menu; email stays on Profile. Long values wrap; existing
 surface/text/border/spacing/radius tokens provide light/dark styling. Refresh has a
 visible keyboard focus outline. No specific Profile Penpot board is present in the
 supplied design references; the existing shell composition and assets are preserved.
+
+## Space Details (#63)
+
+Retain the shared top bar/sidebar and the documented identity → description/metadata →
+projects hierarchy. Space images use the supplied safe URL with a graceful missing-image
+fallback. Project cards expose real names, descriptions, progress and open-task counts.
+Use semantic surfaces/text/borders and a responsive card grid; wrap UUIDs and long text.
+Loading, unavailable and zero-project states must remain visibly distinct. Settings and People entry points are capability-aware; People remains marked coming soon while #87 is pending.
+
+## Space lifecycle (#86)
+
+Create and settings use a compact form panel within the existing workspace shell.
+Name, description and profile picture URL have visible labels/help/error associations.
+Metadata fields use semantic surface/text/border tokens; the primary action has its
+own hover token so dark-mode touch hover remains legible. Forms wrap at mobile widths.
+Delete is a separate section with an inline named confirmation group identifying the
+space and loss of descendant access. Opening it focuses Cancel; Escape/cancel restores
+the Delete button. Validation focuses the first invalid field. No new assets or
+Penpot frame were supplied; preserve the documented shell/Space Details composition.

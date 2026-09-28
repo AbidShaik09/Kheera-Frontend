@@ -1,0 +1,111 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+.editor {
+  max-width: var(--container-md);
+  margin: var(--space-lg) auto;
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card-background);
+  color: var(--color-primary-text);
+}
+header,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+h1 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+p {
+  margin: var(--space-sm) 0;
+  overflow-wrap: anywhere;
+}
+.identity,
+.help,
+label span {
+  color: var(--color-secondary-text);
+}
+.help {
+  font-size: var(--text-sm);
+}
+form,
+.danger {
+  margin-top: var(--space-lg);
+}
+fieldset {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+legend {
+  margin-bottom: var(--space-md);
+  font-weight: 600;
+}
+label {
+  display: block;
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+input,
+textarea {
+  width: 100%;
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  color: var(--color-primary-text);
+}
+textarea {
+  resize: vertical;
+}
+button {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  color: var(--color-primary-text);
+}
+button:hover:enabled {
+  background: var(--color-hover);
+}
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.primary {
+  background: var(--color-btn-primary-background);
+  color: var(--color-btn-primary-text);
+}
+.destructive,
+.error,
+[role='alert'] {
+  color: var(--color-danger-accent);
+}
+.danger {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-lg);
+}
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-primary-dark);
+  outline-offset: 3px;
+}
+@media (max-width: 640px) {
+  .editor {
+    margin: var(--space-sm);
+    padding: var(--space-md);
+  }
+}
+.primary:hover:enabled {
+  background: var(--color-btn-primary-hover);
+  color: var(--color-btn-primary-text);
+}

@@ -58,3 +58,23 @@ ApiService, bearer interceptor and both views across restoration, refresh and lo
 `profile.smoke.spec.ts` exercises desktop/mobile light/dark, menu Escape/focus, keyboard
 refresh, identity consistency, errors/retry, session expiry and cross-tab replacement.
 Browser/API responses are disposable fixtures, not deployed-backend proof.
+
+## Space Details coverage (#63)
+
+Space service tests cover independent metadata/projects, response validation, pagination,
+empty versus failure, access revalidation, current and stale 401s, teardown and account
+changes. Project summary tests verify its actual bearer-protected API and access failures.
+Component tests cover literal text, image URL safety and capability controls. Router/HTTP
+integration verifies deep links, metadata despite project failure, project navigation and
+expiry. Browser smoke covers light/dark desktop/mobile, keyboard, sidebar routes,
+project links, back/reload/pagination, retry, no data, deletion and account replacement.
+
+## Space lifecycle coverage (#86)
+
+Payload/request unit tests cover Unicode boundaries, absolute URLs/credentials,
+omission/null, response validation and current/stale session expiry. Router/HTTP
+integration covers create routing, authenticated sparse PATCH, sidebar refresh,
+duplicate submission, server field errors and route-change/teardown races.
+Lifecycle browser journeys cover create/edit/delete, read retry, permissions, 400,
+401, 403, 404, 500, preserved drafts, delete retry, keyboard focus and desktop/mobile
+light/dark screenshots. These use contract fixtures, not a deployed backend account.
