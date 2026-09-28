@@ -77,6 +77,7 @@ Successful writes refresh WorkspaceService. DELETE requires a named confirmation
 accepts 204 and navigates to dashboard. Route-scoped detail/project state is destroyed
 when leaving its page; the editor clears its draft/metadata on deletion, read access
 loss, logout and teardown. No persistent descendant cache or restore action exists.
+Creation 403 retains the draft and disables further submissions for that form session.
 Mutation 403 preserves input while disabling the denied action; Refresh permissions
 revalidates capabilities without replacing the draft. Read 403/404 and mutation 404
 clear resource state. Recoverable failures preserve input and permit retry; current

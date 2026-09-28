@@ -54,7 +54,8 @@ export function spacePayload(draft: SpaceDraft, original?: SpaceDetail): SpacePa
   const payload: SpacePayload = {};
   if (!original || values.name !== original.name) payload.name = values.name;
   for (const key of ['description', 'profilePic'] as const) {
-    if (original ? values[key] !== original[key] : values[key] !== null) payload[key] = values[key];
+    if (original ? draft[key] !== (original[key] ?? '') : values[key] !== null)
+      payload[key] = values[key];
   }
   return payload;
 }

@@ -65,3 +65,32 @@
 - Implementation commit: `d5abb7c22cf22f6e3a2bbf85326c7868553ebbdc` (plus initial plan `36f323f`).
 - Hosted Frontend checks and Codex review were pending at PR creation. This delivery-record update changes documentation only; implementation validation above remains current.
 - No merge, issue closure or deployment requested/performed. Review and CI results remain authoritative on the PR.
+
+
+### Final self-review correction (2026-09-28)
+An unchanged optional description stored as an empty string was normalized to null
+while editing another field. Added a failing payload regression (1 failed / 12 passed)
+and changed comparison to the original displayed optional value before normalization.
+Explicit clearing of a nonempty value still sends null. Re-running full validation;
+earlier counts are superseded for this one-line payload correction.
+
+
+### Review triage
+- Thread https://github.com/AbidShaik09/Kheera-Frontend/pull/99#discussion_r4118370503:
+  **real**. A denied POST was classified as update, but create mode has no metadata
+  capability to revoke. Added explicit creationDenied state and submit guards while
+  preserving draft input. Regression initially failed because submit remained enabled
+  (1 failed / 5 passed). Browser coverage also checks one POST and preserved input.
+- The initial hosted verify check passed on bb2341e. Full local verification and
+  fresh review are required after these two corrections.
+
+
+### Correction validation (2026-09-28)
+- Full Angular regression: `npm test -- --watch=false` passed 171 tests / 34 files.
+- `$env:PLAYWRIGHT_CHANNEL='msedge'; npm run verify` passed 155 unit tests,
+  16 integration tests, production build and 74 desktop/mobile browser tests.
+- Both new regressions pass: unchanged empty optional metadata remains omitted;
+  denied creation preserves its draft and blocks repeated POSTs, including direct
+  form submission. Existing explicit-null, capability, session and deletion tests pass.
+- Review fix and self-review correction are committed together. A fresh Codex review
+  is requested on the updated head; CI/review completion remains tracked on PR #99.

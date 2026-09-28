@@ -69,7 +69,7 @@
         <p id="picture-error" class="error">{{ errors().profilePic }}</p>
       </fieldset>
       @if (!id || space()?.capabilities?.canUpdate) {
-        <button type="submit" class="primary" [disabled]="busy() || loading()">
+        <button type="submit" class="primary" [disabled]="busy() || loading() || creationDenied()">
           {{ busy() ? 'Saving…' : id ? 'Save changes' : 'Create space' }}
         </button>
       }

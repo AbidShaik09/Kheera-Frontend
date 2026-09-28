@@ -11,6 +11,14 @@ describe('Space lifecycle payload and validation', () => {
       spacePayload({ name: SPACE.name, description: SPACE.description, profilePic: '' }, SPACE),
     ).toEqual({});
   });
+  it('omits unchanged empty optional strings when editing another field', () => {
+    expect(
+      spacePayload(
+        { name: 'Renamed', description: '', profilePic: '' },
+        { ...SPACE, description: '' },
+      ),
+    ).toEqual({ name: 'Renamed' });
+  });
   it('clears a profile picture with null and preserves description whitespace', () => {
     expect(
       spacePayload(

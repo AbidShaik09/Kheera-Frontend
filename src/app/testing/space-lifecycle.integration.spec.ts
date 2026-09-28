@@ -115,4 +115,24 @@ describe('Space lifecycle route integration', () => {
       )
       .toBe('Second');
   });
+  it('preserves the create draft but blocks repeated submissions after a 403', async () => {
+    const harness = await RouterTestingHarness.create('/spaces/new');
+    http.match('/api/spaces').forEach((r) => r.flush([]));
+    await harness.fixture.whenStable();
+    await enter(harness, 'name', 'My draft');
+    submit(harness);
+    http.expectOne((r) => r.method === 'POST').flush({}, { status: 403, statusText: 'Forbidden' });
+    await expect
+      .poll(() => harness.routeNativeElement?.textContent)
+      .toContain('You do not have permission');
+    expect(
+      harness.routeNativeElement?.querySelector<HTMLInputElement>('[name="name"]')?.value,
+    ).toBe('My draft');
+    expect(
+      harness.routeNativeElement?.querySelector<HTMLButtonElement>('button[type="submit"]')
+        ?.disabled,
+    ).toBe(true);
+    submit(harness);
+    http.expectNone((r) => r.method === 'POST');
+  });
 });

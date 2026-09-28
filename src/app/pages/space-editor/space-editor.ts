@@ -46,6 +46,7 @@ export class SpaceEditor {
   readonly success = signal('');
   readonly errors = signal<FieldErrors>({});
   readonly confirming = signal(false);
+  readonly creationDenied = signal(false);
   draft = empty();
   private generation = 0;
   get id(): string | null {
@@ -67,6 +68,7 @@ export class SpaceEditor {
         this.loading.set(false);
         this.unavailable.set(false);
         this.confirming.set(false);
+        this.creationDenied.set(false);
         if (loggedIn && this.id) void this.load();
       });
     });
@@ -110,6 +112,7 @@ export class SpaceEditor {
       this.busy() ||
       this.loading() ||
       this.unavailable() ||
+      this.creationDenied() ||
       (this.id && !this.space()?.capabilities.canUpdate)
     )
       return;
@@ -135,7 +138,7 @@ export class SpaceEditor {
     if (!current() || !result) return;
     this.busy.set(false);
     if (!result.ok || !result.space) {
-      this.failure(result, 'update');
+      this.failure(result, original ? 'update' : 'create');
       return;
     }
     this.space.set(result.space);
@@ -184,7 +187,7 @@ export class SpaceEditor {
     void this.workspace.refresh();
     await this.router.navigate(['/dashboard']);
   }
-  private failure(result: SpaceResult, operation?: 'update' | 'delete'): void {
+  private failure(result: SpaceResult, operation?: 'create' | 'update' | 'delete'): void {
     this.message.set(result.message);
     this.errors.set(result.fieldErrors);
     if (result.status === 404 || (result.status === 403 && !operation)) {
@@ -193,6 +196,8 @@ export class SpaceEditor {
       this.confirming.set(false);
       this.unavailable.set(true);
       void this.workspace.refresh();
+    } else if (result.status === 403 && operation === 'create') {
+      this.creationDenied.set(true);
     } else if (result.status === 403 && operation) {
       this.space.update((s) =>
         s

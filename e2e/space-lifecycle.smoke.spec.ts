@@ -179,3 +179,16 @@ test('create errors preserve input and invalid picture URLs never submit', async
   await editor.getByRole('button', { name: 'Create space', exact: true }).click();
   await expect(page).toHaveURL('/spaces/' + SPACE.id);
 });
+
+test('forbidden creation retains its draft and disables repeated requests', async ({ page }) => {
+  const state = await setup(page, { empty: true, failure: 403 });
+  await page.goto('/spaces/new');
+  const editor = page.locator('app-space-editor');
+  await editor.getByLabel('Name', { exact: true }).fill('Preserved draft');
+  const create = editor.getByRole('button', { name: 'Create space', exact: true });
+  await create.click();
+  await expect(editor.getByRole('alert')).toContainText('You do not have permission');
+  await expect(create).toBeDisabled();
+  await expect(editor.getByLabel('Name', { exact: true })).toHaveValue('Preserved draft');
+  expect(state.writes).toHaveLength(1);
+});
