@@ -81,14 +81,11 @@
             </nav>
           } @else {
             <p class="empty-title">No spaces yet</p>
-            <p class="muted">Ask a space administrator to add your account.</p>
+            <p class="muted">Create a space or ask an administrator to add your account.</p>
           }
         }
       }
-      <button class="create-space" type="button" disabled aria-describedby="create-space-help">
-        + Create space
-      </button>
-      <p id="create-space-help" class="muted">Space creation is coming soon.</p>
+      <a class="create-space" routerLink="/spaces/new">+ Create space</a>
     </section>
   </aside>
   <div #content id="workspace-content" class="workspace-content" tabindex="-1">
