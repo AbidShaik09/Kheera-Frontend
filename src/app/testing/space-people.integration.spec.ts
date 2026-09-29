@@ -1,3 +1,5 @@
+import { By } from '@angular/platform-browser';
+import { SpacePeople } from '../pages/space-people/space-people';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -132,5 +134,34 @@ describe('People route integration', () => {
         return buttons().find((b) => b.textContent?.trim() === 'Remove Alex')?.disabled;
       })
       .toBe(false);
+  });
+  it('clamps an out-of-range page after the member list shrinks', async () => {
+    const h = await open();
+    const component = h.routeDebugElement!.query(By.directive(SpacePeople))
+      .componentInstance as SpacePeople;
+    component.go(2);
+    const flushPage = (index: number) => {
+      http.match(`/api/spaces/${SPACE.id}`).forEach((r) => r.flush(SPACE));
+      http.match((r) => r.url.endsWith('/roles')).forEach((r) => r.flush(envelope([role], 100)));
+      http.match((r) => r.url.endsWith('/permissions')).forEach((r) => r.flush(envelope([], 100)));
+      http
+        .expectOne((r) => r.url.endsWith('/members') && r.params.get('page') === String(index))
+        .flush({
+          items: index ? [] : [member],
+          page: index,
+          size: 25,
+          totalItems: 1,
+          totalPages: 1,
+        });
+    };
+    flushPage(2);
+    await expect.poll(() => component.page).toBe(0);
+    flushPage(0);
+    await expect
+      .poll(() => {
+        h.detectChanges();
+        return h.routeNativeElement?.textContent;
+      })
+      .toContain('Page 1 of 1');
   });
 });

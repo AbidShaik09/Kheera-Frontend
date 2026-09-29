@@ -142,6 +142,11 @@ export class SpacePeople {
       this.permissions.set([]);
     }
     this.loading.set(false);
+    const result = this.members();
+    if (result && this.page > Math.max(0, result.totalPages - 1)) {
+      this.page = Math.max(0, result.totalPages - 1);
+      await this.load();
+    }
   }
   search() {
     if (this.loading() || this.pending()) return;

@@ -59,3 +59,6 @@
 - Codex thread PRRT_kwDOSlID6c6m-QDa was valid: a failed current-user lookup kept removal disabled. Refresh People now retries failed profile loads and displays recovery guidance.
 - Regression first failed because no profile retry request was issued; after the fix, full verify passed 164 unit tests, 19 integration tests, production build and 82 browser smoke tests. Evidence: ../issue87-review-verify.log.
 - Initial GitHub verify passed on 91568a3. Updated-head CI/review remains pending after pushing the correction.
+
+- Codex thread PRRT_kwDOSlID6c6nKm7D was valid: shrinking member totals could leave the current page out of range. A regression first failed with page 2 instead of 0; load now clamps to the last valid server page and reloads.
+- Final pagination correction validation: 164 unit tests, 20 integration tests, production build and 82 browser tests passed (../issue87-pagination-verify.log).
