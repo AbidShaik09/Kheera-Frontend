@@ -312,3 +312,5 @@ See [issue #63 plan](issue-plans/issue-63_space-details.md).
 
 ### Active implementation: #86
 Space creation, editing and deletion are implemented on issue/86_space-lifecycle; local verification passed and [PR #99](https://github.com/AbidShaik09/Kheera-Frontend/pull/99) is awaiting CI/review. Dependencies #85 and #63 are implemented on develop. See [issue plan](issue-plans/issue-86_space-lifecycle.md).
+
+Issue #87 is in progress: [Space members implementation plan](issue-plans/issue-87_space-members.md).
