@@ -16,6 +16,12 @@
   @if (loading()) {
     <p role="status">Loading people and catalogues…</p>
   }
+  @if (auth.profileState().status === 'error') {
+    <p role="alert">
+      Your account details are unavailable. Use Refresh people to retry before removing a
+      membership.
+    </p>
+  }
   @if (success()) {
     <p role="status">{{ success() }}</p>
   }

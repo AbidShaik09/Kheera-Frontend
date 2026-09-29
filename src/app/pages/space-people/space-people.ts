@@ -98,6 +98,7 @@ export class SpacePeople {
   }
   async load() {
     if (this.pending() || this.loading()) return;
+    if (this.auth.profileState().status === 'error') void this.auth.refreshCurrentUser();
     const generation = ++this.generation,
       epoch = this.auth.sessionEpoch();
     const current = () =>

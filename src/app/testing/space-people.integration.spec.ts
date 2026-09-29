@@ -40,12 +40,18 @@ describe('People route integration', () => {
     http.verify();
     localStorage.clear();
   });
-  async function open(denied = false) {
+  async function open(denied = false, profileError = false) {
     const h = await RouterTestingHarness.create(`/spaces/${SPACE.id}/people`);
     h.detectChanges();
     await h.fixture.whenStable();
     http.match('/api/spaces').forEach((r) => r.flush([{ id: SPACE.id, name: SPACE.name }]));
-    http.match('/api/users/me').forEach((r) => r.flush(member.user));
+    http
+      .match('/api/users/me')
+      .forEach((r) =>
+        profileError
+          ? r.flush({}, { status: 503, statusText: 'Unavailable' })
+          : r.flush(member.user),
+      );
     http.match(`/api/spaces/${SPACE.id}`).forEach((r) => r.flush(SPACE));
     http
       .match((r) => r.url.endsWith('/members'))
@@ -105,5 +111,26 @@ describe('People route integration', () => {
         return root.textContent;
       })
       .toContain('already belongs');
+  });
+  it('refreshes a failed profile so authorized removal can recover on this page', async () => {
+    const h = await open(false, true);
+    const buttons = () => Array.from(h.routeNativeElement!.querySelectorAll('button'));
+    expect(buttons().find((b) => b.textContent?.trim() === 'Remove Alex')?.disabled).toBe(true);
+    buttons()
+      .find((b) => b.textContent?.trim() === 'Refresh people')!
+      .click();
+    const profile = http.match('/api/users/me');
+    http.match((r) => r.url === `/api/spaces/${SPACE.id}`).forEach((r) => r.flush(SPACE));
+    http.match((r) => r.url.endsWith('/members')).forEach((r) => r.flush(envelope([member], 25)));
+    http.match((r) => r.url.endsWith('/roles')).forEach((r) => r.flush(envelope([role], 100)));
+    http.match((r) => r.url.endsWith('/permissions')).forEach((r) => r.flush(envelope([], 100)));
+    profile.forEach((r) => r.flush(member.user));
+    expect(profile).toHaveLength(1);
+    await expect
+      .poll(() => {
+        h.detectChanges();
+        return buttons().find((b) => b.textContent?.trim() === 'Remove Alex')?.disabled;
+      })
+      .toBe(false);
   });
 });

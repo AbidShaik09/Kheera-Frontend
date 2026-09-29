@@ -54,3 +54,8 @@
 - Self-review: typed transport owns HTTP, scoped paths use membership IDs, catalogue pages are validated, stale sessions are ignored, route lifetime clears state; no new dependencies, secrets, invitations or custom-role editing.
 - Browser tests were added after route implementation; the route and service acceptance tests were written and run failing first.
 - PR: https://github.com/AbidShaik09/Kheera-Frontend/pull/101 (develop). Initial review request accepted: https://github.com/AbidShaik09/Kheera-Frontend/pull/101#issuecomment-5884323581. CI/review pending; merge/deployment are outside the requested raise-PR endpoint.
+
+## Review correction
+- Codex thread PRRT_kwDOSlID6c6m-QDa was valid: a failed current-user lookup kept removal disabled. Refresh People now retries failed profile loads and displays recovery guidance.
+- Regression first failed because no profile retry request was issued; after the fix, full verify passed 164 unit tests, 19 integration tests, production build and 82 browser smoke tests. Evidence: ../issue87-review-verify.log.
+- Initial GitHub verify passed on 91568a3. Updated-head CI/review remains pending after pushing the correction.
