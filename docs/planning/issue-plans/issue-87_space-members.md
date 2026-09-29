@@ -38,7 +38,7 @@
 - [x] Run `npm run verify` with `PLAYWRIGHT_CHANNEL=msedge` (unit, integration, production build, browser smoke).
 - [x] Start local development server; inspect desktop/mobile, light/dark screenshots and keyboard/focus; fixture API success/failure checks are not deployed-backend evidence.
 - [x] Self-review every criterion and security/session behavior; repair and rerun affected/full checks.
-- [ ] Commit/push branch; create PR targeting develop with Closes #87 and plan link.
+- [x] Commit/push branch; create PR targeting develop with Closes #87 and plan link.
 - [ ] Request `@codex review`, record URL, inspect CI/reviews and fix actionable findings with renewed validation.
 - [ ] Merge/deployment pending separate authorization; do not claim issue closure or deployed validation.
 
@@ -53,4 +53,4 @@
 - API verification is against merged controller/DTO/service source and local HTTP fixtures, not a deployed-backend claim. No exact People Penpot board was supplied.
 - Self-review: typed transport owns HTTP, scoped paths use membership IDs, catalogue pages are validated, stale sessions are ignored, route lifetime clears state; no new dependencies, secrets, invitations or custom-role editing.
 - Browser tests were added after route implementation; the route and service acceptance tests were written and run failing first.
-- PR and review evidence pending creation. Merge/deployment are outside the requested raise-PR endpoint.
+- PR: https://github.com/AbidShaik09/Kheera-Frontend/pull/101 (develop). Initial review request accepted: https://github.com/AbidShaik09/Kheera-Frontend/pull/101#issuecomment-5884323581. CI/review pending; merge/deployment are outside the requested raise-PR endpoint.
