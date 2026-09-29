@@ -220,7 +220,10 @@ export class SpacePeople {
           this.selectedRoles = {};
           this.metadataError.set(detail.message);
           void this.workspace.refresh();
-        } else if (detail?.ok) this.space.set(detail.data);
+        } else if (detail?.ok) {
+          this.space.set(detail.data);
+          if (r.status === 404) await this.load();
+        }
       }
       return;
     }

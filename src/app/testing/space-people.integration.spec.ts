@@ -164,4 +164,38 @@ describe('People route integration', () => {
       })
       .toContain('Page 1 of 1');
   });
+  it('refreshes membership state when a concurrently removed target returns 404', async () => {
+    const h = await open();
+    const component = h.routeDebugElement!.query(By.directive(SpacePeople))
+      .componentInstance as SpacePeople;
+    component.email = 'draft@example.test';
+    component.confirmation.set(member);
+    const removal = component.remove();
+    http
+      .expectOne((r) => r.method === 'DELETE')
+      .flush({}, { status: 404, statusText: 'Not Found' });
+    let detail: ReturnType<HttpTestingController['match']> = [];
+    await expect
+      .poll(() => {
+        detail = http.match(`/api/spaces/${SPACE.id}`);
+        return detail.length;
+      })
+      .toBe(1);
+    detail[0].flush(SPACE);
+    let refresh: ReturnType<HttpTestingController['match']> = [];
+    await expect
+      .poll(() => {
+        refresh = http.match((r) => r.url.endsWith('/members'));
+        return refresh.length;
+      })
+      .toBe(1);
+    refresh[0].flush(envelope([], 25));
+    http.match(`/api/spaces/${SPACE.id}`).forEach((r) => r.flush(SPACE));
+    http.match((r) => r.url.endsWith('/roles')).forEach((r) => r.flush(envelope([role], 100)));
+    http.match((r) => r.url.endsWith('/permissions')).forEach((r) => r.flush(envelope([], 100)));
+    await removal;
+    expect(component.members()?.items).toEqual([]);
+    expect(component.confirmation()).toBeNull();
+    expect(component.email).toBe('draft@example.test');
+  });
 });

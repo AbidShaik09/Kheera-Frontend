@@ -62,3 +62,6 @@
 
 - Codex thread PRRT_kwDOSlID6c6nKm7D was valid: shrinking member totals could leave the current page out of range. A regression first failed with page 2 instead of 0; load now clamps to the last valid server page and reloads.
 - Final pagination correction validation: 164 unit tests, 20 integration tests, production build and 82 browser tests passed (../issue87-pagination-verify.log).
+
+- Codex thread PRRT_kwDOSlID6c6nKz_i was valid: a mutation 404 could retain a concurrently deleted membership/role. After confirming continued space access, the page now reloads members and catalogues and clears obsolete confirmation while preserving the add-user draft.
+- Regression first failed because no member refresh followed the 404. Full corrected verification passed 164 unit tests, 21 integration tests, production build and 82 browser tests (../issue87-stale-target-verify.log).
