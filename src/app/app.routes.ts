@@ -39,6 +39,11 @@ export const routes: Routes = [
     canActivateChild: [authGuard],
     children: [
       {
+        path: 'spaces/:spaceId/people',
+        loadComponent: () => import('./pages/space-people/space-people').then((m) => m.SpacePeople),
+        data: { title: 'People' },
+      },
+      {
         path: 'spaces/new',
         loadComponent: () => import('./pages/space-editor/space-editor').then((m) => m.SpaceEditor),
         data: { title: 'Create space' },

@@ -459,3 +459,10 @@ Delete is a separate section with an inline named confirmation group identifying
 space and loss of descendant access. Opening it focuses Cancel; Escape/cancel restores
 the Delete button. Validation focuses the first invalid field. No new assets or
 Penpot frame were supplied; preserve the documented shell/Space Details composition.
+
+### People
+The People route reuses the existing shell and semantic form/surface tokens. Member cards
+wrap names and email addresses on small screens. Labeled native search, sort and role
+controls support keyboard use. Removal requires a separate named confirmation section.
+Read-only catalogues explain that available permissions are not the caller's grants.
+No People-specific Penpot board was provided by issue #87.

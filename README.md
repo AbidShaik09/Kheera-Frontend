@@ -124,3 +124,7 @@ Project cards show API progress/open-task counts and open a read-only project ov
 Use **Create space** in the sidebar to create a workspace. **Space settings** on its details page provides permission-controlled editing and deletion. People management and the task board remain upcoming features.
 See [Space Details architecture](docs/architecture/SPACE_DETAILS.md) and the
 [issue #63 plan](docs/planning/issue-plans/issue-63_space-details.md).
+
+Space People is available at `/spaces/:spaceId/people`, linked from Space Details. It
+supports searchable membership pages, existing-account addition, role changes, confirmed
+removal and read-only role/permission catalogues. See [the membership architecture](docs/architecture/SPACE_DETAILS.md#space-people-87).

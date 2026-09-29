@@ -78,3 +78,11 @@ duplicate submission, server field errors and route-change/teardown races.
 Lifecycle browser journeys cover create/edit/delete, read retry, permissions, 400,
 401, 403, 404, 500, preserved drafts, delete retry, keyboard focus and desktop/mobile
 light/dark screenshots. These use contract fixtures, not a deployed backend account.
+
+## People membership tests
+`membership-service.spec.ts` covers scoped paging, complete catalogue loading, membership
+UUID writes, malformed contracts, conflicts and session expiry. `space-people.integration.spec.ts`
+exercises the real route, bearer interceptor and service with denied directory access and
+failed duplicate submissions. `space-people.smoke.spec.ts` checks paging, keyboard search,
+role changes, add/retry, last-administrator protection and self-removal on desktop/mobile
+in light/dark themes. Browser API fixtures validate frontend behavior, not deployment.
