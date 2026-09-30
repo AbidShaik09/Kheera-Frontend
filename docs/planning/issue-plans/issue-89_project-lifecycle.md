@@ -42,4 +42,3 @@
 
 ## Evidence / resume notes
 Plan committed first as b39b788. Service TDD: 18 expected failures with compilable stubs; initial route integration: 5 expected failures. Browser testing exposed Cancel/Escape focus restoration timing; after-render focus repair passed all lifecycle journeys. Final PLAYWRIGHT_CHANNEL=msedge npm run verify: 182 unit tests, 31 integration tests, production build, and 98 browser tests passed. Production bundle 520.65 kB retains the existing 500 kB warning and remains below the 1 MB error threshold. Development server compiled on loopback port 4301 and was stopped after verification. Inspected desktop/mobile screenshots in both light and dark themes; no overflow. Browser APIs use fixtures, not a deployed backend account. No exact project-editor Penpot frame was supplied; existing Space editor styles reused. No dependencies or schema changes. PR and review pending.
-
