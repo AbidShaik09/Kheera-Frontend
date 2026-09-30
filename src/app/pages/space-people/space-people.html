@@ -1,0 +1,190 @@
+<section class="editor" aria-label="Space people">
+  <header>
+    <h1>People</h1>
+    <button type="button" (click)="load()" [disabled]="loading() || pending()">
+      Refresh people
+    </button>
+  </header>
+  @if (space(); as current) {
+    <p>
+      <a [routerLink]="['/spaces', current.id]">{{ current.name }}</a>
+    </p>
+  }
+  @if (metadataError()) {
+    <p role="alert">{{ metadataError() }}</p>
+  }
+  @if (loading()) {
+    <p role="status">Loading people and catalogues…</p>
+  }
+  @if (auth.profileState().status === 'error') {
+    <p role="alert">
+      Your account details are unavailable. Use Refresh people to retry before removing a
+      membership.
+    </p>
+  }
+  @if (success()) {
+    <p role="status">{{ success() }}</p>
+  }
+  @if (mutationError()) {
+    <p role="alert">{{ mutationError() }}</p>
+  }
+  @if (space()) {
+    <form (ngSubmit)="search()" aria-label="Find members">
+      <fieldset [disabled]="loading() || pending()">
+        <legend>Find members</legend>
+        <label for="people-search">Search name or email</label
+        ><input id="people-search" name="q" [(ngModel)]="q" maxlength="100" />
+        <label for="people-sort">Sort members</label
+        ><select id="people-sort" name="sort" [(ngModel)]="sort">
+          <option value="name,asc">Name: A–Z</option>
+          <option value="name,desc">Name: Z–A</option>
+          <option value="email,asc">Email: A–Z</option>
+          <option value="email,desc">Email: Z–A</option>
+          <option value="role,asc">Role: A–Z</option>
+          <option value="role,desc">Role: Z–A</option>
+          <option value="createdAt,desc">Newest members</option>
+          <option value="createdAt,asc">Oldest members</option>
+          <option value="updatedAt,desc">Recently updated</option>
+          <option value="updatedAt,asc">Least recently updated</option></select
+        ><button type="submit">Search</button>
+      </fieldset>
+    </form>
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (members(); as result) {
+      <h2>
+        Members <span>({{ result.totalItems }})</span>
+      </h2>
+      @if (!result.items.length) {
+        <p>No members on this page.</p>
+      }
+      @for (member of result.items; track member.id) {
+        <article class="member">
+          <h3>{{ member.user.name }}</h3>
+          <p>{{ member.user.email }}</p>
+          <p>Current role: {{ member.role.name }}</p>
+          <label [for]="'role-' + member.id">Role for {{ member.user.name }}</label>
+          <select
+            [id]="'role-' + member.id"
+            [(ngModel)]="selectedRoles[member.id]"
+            [disabled]="pending() || loading() || !roles().length"
+          >
+            @for (role of roles(); track role.id) {
+              <option [value]="role.id">{{ role.name }}</option>
+            }
+          </select>
+          <div class="actions">
+            <button
+              type="button"
+              (click)="change(member)"
+              [disabled]="
+                pending() ||
+                loading() ||
+                !roles().length ||
+                selectedRoles[member.id] === member.role.id
+              "
+            >
+              Save role for {{ member.user.name }}
+            </button>
+            <button
+              type="button"
+              (click)="confirmRemoval(member, $event)"
+              [disabled]="pending() || !auth.currentUser()"
+            >
+              Remove {{ member.user.name }}
+            </button>
+          </div>
+        </article>
+      }
+      <nav class="actions" aria-label="Member pages">
+        <button type="button" (click)="go(page - 1)" [disabled]="!page || pending() || loading()">
+          Previous page
+        </button>
+        <span aria-live="polite">Page {{ page + 1 }} of {{ result.totalPages || 1 }}</span>
+        <button
+          type="button"
+          (click)="go(page + 1)"
+          [disabled]="page + 1 >= result.totalPages || page >= 100000 || pending() || loading()"
+        >
+          Next page
+        </button>
+      </nav>
+      @if (confirmation(); as member) {
+        <section class="danger" aria-label="Confirm membership removal">
+          <h2 #confirmationHeading tabindex="-1">Remove {{ member.user.name }}?</h2>
+          <p>
+            {{ member.user.email }} will lose access to this space and its projects. Historical
+            contributions remain.
+          </p>
+          <button type="button" (click)="remove()" [disabled]="pending()">Confirm removal</button
+          ><button type="button" (click)="cancelRemoval()" [disabled]="pending()">
+            Cancel removal
+          </button>
+        </section>
+      }
+      <form data-add (ngSubmit)="add()">
+        <fieldset [disabled]="pending() || loading() || !roles().length">
+          <legend>Add existing user</legend>
+          <p>
+            Enter the exact email address of an existing active account. This does not send an
+            invitation.
+          </p>
+          <label for="member-email">Account email</label
+          ><input
+            id="member-email"
+            name="email"
+            type="email"
+            [(ngModel)]="email"
+            required
+            maxlength="255"
+          />
+          @if (fieldErrors()['email']) {
+            <p role="alert">{{ fieldErrors()['email'] }}</p>
+          }
+          <label for="add-role">Role for new member</label
+          ><select id="add-role" name="addRole" [(ngModel)]="addRole" required>
+            <option value="">Choose a role</option>
+            @for (role of roles(); track role.id) {
+              <option [value]="role.id">{{ role.name }}</option>
+            }
+          </select>
+          @if (fieldErrors()['roleId']) {
+            <p role="alert">{{ fieldErrors()['roleId'] }}</p>
+          }
+          <button type="submit">Add existing user</button>
+        </fieldset>
+      </form>
+    }
+    <section class="catalogue">
+      <h2>Roles and permissions</h2>
+      <p class="help">
+        These are read-only space catalogues, not your effective permissions. Each change is checked
+        by the server, including authority over the selected role.
+      </p>
+      @if (catalogueError()) {
+        <p role="alert">{{ catalogueError() }}</p>
+      }
+      <h3>Roles</h3>
+      <ul>
+        @for (role of roles(); track role.id) {
+          <li>{{ role.name }}</li>
+        } @empty {
+          @if (!loading() && !catalogueError()) {
+            <li>No roles available.</li>
+          }
+        }
+      </ul>
+      <h3>Permissions</h3>
+      <ul>
+        @for (permission of permissions(); track permission.id) {
+          <li>{{ permission.name }}</li>
+        } @empty {
+          @if (!loading() && !catalogueError()) {
+            <li>No permissions available.</li>
+          }
+        }
+      </ul>
+    </section>
+  }
+</section>

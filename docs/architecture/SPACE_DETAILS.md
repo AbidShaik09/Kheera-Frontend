@@ -82,3 +82,20 @@ Mutation 403 preserves input while disabling the denied action; Refresh permissi
 revalidates capabilities without replacing the draft. Read 403/404 and mutation 404
 clear resource state. Recoverable failures preserve input and permit retry; current
 401 expires the session. Stale navigation/session results cannot navigate or publish.
+
+## Space People (#87)
+
+`/spaces/:spaceId/people` loads metadata independently of the membership directory.
+Members use 25-item pages, name/email search and supported server sorts. Roles and
+permissions load every 100-item catalogue page; no role or permission editing is exposed.
+The catalogues and `canManageMembers` are not effective grants. The backend authorizes
+each add/change-role/remove action and grant subset; 403 is rendered honestly.
+
+Writes use membership UUIDs, never user UUIDs. Adding an existing account trims its
+exact email; there is no invitation flow. Duplicate and last-administrator conflicts
+preserve drafts. Successful changes reload membership/catalogue/space state and the
+workspace list. Self-removal clears local state and returns to Dashboard; self-demotion
+revalidates directory access. Session epochs and page generations reject stale results.
+
+The API supplies historical user identity on current memberships; historical task author
+and assignee presentation remains owned by task features. No task history is rewritten.

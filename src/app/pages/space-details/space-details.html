@@ -43,16 +43,7 @@
             >Space settings</a
           >
         }
-        @if (space.capabilities.canManageMembers) {
-          <button
-            type="button"
-            disabled
-            aria-label="People management (coming soon)"
-            title="People management is coming soon"
-          >
-            People · coming soon
-          </button>
-        }
+        <a [routerLink]="['/spaces', space.id, 'people']">People</a>
       </div>
     </header>
     <p class="description">{{ space.description || 'No description provided.' }}</p>
