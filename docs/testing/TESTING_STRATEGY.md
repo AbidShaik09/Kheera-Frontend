@@ -86,3 +86,12 @@ exercises the real route, bearer interceptor and service with denied directory a
 failed duplicate submissions. `space-people.smoke.spec.ts` checks paging, keyboard search,
 role changes, add/retry, last-administrator protection and self-removal on desktop/mobile
 in light/dark themes. Browser API fixtures validate frontend behavior, not deployment.
+
+## Project lifecycle coverage
+`project-lifecycle-service.spec.ts` covers sparse payloads, null clearing, Unicode and cycle
+bounds, exact scope/identity, 204 deletion, field errors and session races.
+`project-lifecycle.integration.spec.ts` joins real routing, services and bearer HTTP with
+create/edit/delete, permissions, draft recovery and stale project-navigation checks.
+`project-lifecycle.smoke.spec.ts` verifies desktop/mobile light/dark forms, create navigation,
+reload persistence, server metrics, deletion/list refresh, keyboard focus and 400/401/403/404/500.
+These use the merged backend DTO contract with isolated responses, not live deployment data.

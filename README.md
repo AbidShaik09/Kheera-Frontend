@@ -128,3 +128,7 @@ See [Space Details architecture](docs/architecture/SPACE_DETAILS.md) and the
 Space People is available at `/spaces/:spaceId/people`, linked from Space Details. It
 supports searchable membership pages, existing-account addition, role changes, confirmed
 removal and read-only role/permission catalogues. See [the membership architecture](docs/architecture/SPACE_DETAILS.md#space-people-87).
+
+Projects can be created from Space Details and maintained through Project settings. The
+permission-aware editor supports metadata changes, sprint-cycle configuration and confirmed
+soft deletion. See [project lifecycle](docs/architecture/SPACE_DETAILS.md#project-lifecycle-89).

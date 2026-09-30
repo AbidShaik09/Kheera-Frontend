@@ -28,17 +28,18 @@
 
 ## Ordered execution
 - [x] Read current issue, synchronized baseline, contracts, design references, implementation and tests.
-- [ ] Commit plan and TODO before application/test edits.
-- [ ] Write service behavior tests and run expected failing tests with compilable stubs.
-- [ ] Implement service/validation and run focused tests.
-- [ ] Write failing route integration and browser expectations before UI implementation.
-- [ ] Implement editor/routes/entry points and context handling; rerun targeted regressions.
-- [ ] Update documentation and self-review all criteria/security/cancellation behavior.
-- [ ] Run PLAYWRIGHT_CHANNEL=msedge npm run verify: unit, integration, production build, browser smoke; repair required failures and rerun.
-- [ ] Start npm start on loopback; inspect desktop/mobile light/dark screenshots and keyboard behavior. API fixtures are not deployed-backend evidence; no available authorized live test account is assumed.
+- [x] Commit plan and TODO before application/test edits.
+- [x] Write service behavior tests and run expected failing tests with compilable stubs.
+- [x] Implement service/validation and run focused tests.
+- [x] Write failing route integration and browser expectations before UI implementation.
+- [x] Implement editor/routes/entry points and context handling; rerun targeted regressions.
+- [x] Update documentation and self-review all criteria/security/cancellation behavior.
+- [x] Run PLAYWRIGHT_CHANNEL=msedge npm run verify: unit, integration, production build, browser smoke; repair required failures and rerun.
+- [x] Start npm start on loopback; inspect desktop/mobile light/dark screenshots and keyboard behavior. API fixtures are not deployed-backend evidence; no available authorized live test account is assumed.
 - [ ] Commit/push and create PR targeting develop with Closes #89 and plan/evidence.
 - [ ] Post @codex review; inspect CI/reviews, fix findings and rerun affected/full checks; record review links.
 - [ ] Merge/deployment remains outside the requested raise-PR endpoint; report actual state only.
 
 ## Evidence / resume notes
-Pending implementation. Keep initial failing-test evidence, final commands/counts, PR and review links here. No dependencies or schema changes planned.
+Plan committed first as b39b788. Service TDD: 18 expected failures with compilable stubs; initial route integration: 5 expected failures. Browser testing exposed Cancel/Escape focus restoration timing; after-render focus repair passed all lifecycle journeys. Final PLAYWRIGHT_CHANNEL=msedge npm run verify: 182 unit tests, 31 integration tests, production build, and 98 browser tests passed. Production bundle 520.65 kB retains the existing 500 kB warning and remains below the 1 MB error threshold. Development server compiled on loopback port 4301 and was stopped after verification. Inspected desktop/mobile screenshots in both light and dark themes; no overflow. Browser APIs use fixtures, not a deployed backend account. No exact project-editor Penpot frame was supplied; existing Space editor styles reused. No dependencies or schema changes. PR and review pending.
+
