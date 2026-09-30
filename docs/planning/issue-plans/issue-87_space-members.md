@@ -68,3 +68,6 @@
 
 - Resumed 2026-09-30, fetched develop and confirmed no upstream changes. Review thread PRRT_kwDOSlID6c6nLCF1 was valid: directory permission can be revoked independently of ordinary space access. Both mutation 403 and 404 now reload protected directory/catalogue state after space revalidation.
 - Regression first failed because a 403 did not trigger membership reload. Final verify passed 164 unit tests, 22 integration tests, production build and 82 browser tests (../issue87-permission-verify.log).
+
+- Thread PRRT_kwDOSlID6c6nXEZf was valid: transient access-revalidation failures could retain stale targets. Mutation 403/404 now clears protected state immediately, and reloads even if preliminary space revalidation fails. Four regression combinations first failed on retained member data and now pass.
+- Full validation: 164 unit tests, 24 integration tests, production build and 82 browser tests passed (../issue87-revalidation-verify.log).

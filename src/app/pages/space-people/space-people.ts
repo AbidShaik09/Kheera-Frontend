@@ -207,6 +207,11 @@ export class SpacePeople {
       this.mutationError.set(r.message);
       this.fieldErrors.set(r.fieldErrors);
       if (r.status === 403 || r.status === 404) {
+        this.members.set(null);
+        this.roles.set([]);
+        this.permissions.set([]);
+        this.confirmation.set(null);
+        this.selectedRoles = {};
         const detail = await this.api.detail(this.id);
         if (generation !== this.generation || epoch !== this.auth.sessionEpoch()) return;
         if (detail && !detail.ok && [403, 404].includes(detail.status)) {
@@ -220,8 +225,7 @@ export class SpacePeople {
           this.selectedRoles = {};
           this.metadataError.set(detail.message);
           void this.workspace.refresh();
-        } else if (detail?.ok) {
-          this.space.set(detail.data);
+        } else {
           await this.load();
         }
       }

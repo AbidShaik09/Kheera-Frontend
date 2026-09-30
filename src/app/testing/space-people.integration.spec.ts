@@ -164,9 +164,14 @@ describe('People route integration', () => {
       })
       .toContain('Page 1 of 1');
   });
-  it.each([403, 404])(
-    'revalidates protected membership state after mutation %s',
-    async (status) => {
+  it.each([
+    [403, 200],
+    [404, 200],
+    [403, 503],
+    [404, 503],
+  ])(
+    'revalidates protected state after mutation %s and detail %s',
+    async (status, detailStatus) => {
       const h = await open();
       const component = h.routeDebugElement!.query(By.directive(SpacePeople))
         .componentInstance as SpacePeople;
@@ -181,7 +186,10 @@ describe('People route integration', () => {
           return detail.length;
         })
         .toBe(1);
-      detail[0].flush(SPACE);
+      expect(component.members()).toBeNull();
+      expect(component.confirmation()).toBeNull();
+      if (detailStatus === 200) detail[0].flush(SPACE);
+      else detail[0].flush({}, { status: detailStatus, statusText: 'Unavailable' });
       let refresh: ReturnType<HttpTestingController['match']> = [];
       await expect
         .poll(() => {
