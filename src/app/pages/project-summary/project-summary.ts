@@ -34,6 +34,7 @@ import { ProjectSummaryService } from '../../services/project-summary-service';
           <h1>{{ project.name }}</h1>
         </div>
         <a [routerLink]="['/spaces', project.spaceId]">Back to space</a>
+        <a [routerLink]="['/projects', project.id, 'settings']">Project settings</a>
       </header>
       <p class="description">{{ project.description || 'No description provided.' }}</p>
       <p>{{ project.openTaskCount }} open tasks · {{ project.progressPercent }}% complete</p>

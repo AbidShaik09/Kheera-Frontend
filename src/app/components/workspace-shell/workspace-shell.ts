@@ -36,7 +36,7 @@ export class WorkspaceShell {
     { initialValue: this.route.firstChild?.snapshot?.paramMap.get('spaceId') ?? null },
   );
   readonly selectedId = computed(() =>
-    this.currentPage() === 'Project'
+    this.currentPage().startsWith('Project')
       ? null
       : (this.resourceSpaceId() ?? this.params().get('space')),
   );
@@ -45,7 +45,7 @@ export class WorkspaceShell {
   );
   readonly unavailable = computed(
     () =>
-      this.currentPage() !== 'Project' &&
+      !this.currentPage().startsWith('Project') &&
       !!this.selectedId() &&
       this.workspace.state().status === 'ready' &&
       !this.selectedSpace(),

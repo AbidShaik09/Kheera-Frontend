@@ -99,3 +99,25 @@ revalidates directory access. Session epochs and page generations reject stale r
 
 The API supplies historical user identity on current memberships; historical task author
 and assignee presentation remains owned by task features. No task history is rewritten.
+
+## Project lifecycle (#89)
+
+Space Details exposes Create project when SpaceDetail.canUpdate is true, routing to
+`/spaces/:spaceId/projects/new`. Project overview links `/projects/:projectId/settings`.
+Settings re-read the project and its actual parent space before showing actions; no query
+parameter can reparent a project or supply authorization. Space update/delete grants map
+to project create/update/delete according to the merged backend #68 contract.
+
+ProjectLifecycleService owns requests and validates IDs, response identity and session
+continuity. Draft validation counts Unicode code points for the 255-character name and
+500-character description. Sprint cycle values are positive 32-bit integers; blank creation
+uses the server default of 7. Legacy null cycle values remain unchanged unless supplied.
+PATCH contains changed fields only; null clears description and no space/metric fields are sent.
+
+Route/session changes clear editor state; late responses cannot populate a different context.
+Recoverable failures preserve drafts. A denied mutation disables its action and revalidates
+project/space access; failed revalidation hides stale controls until retry. Inaccessible
+resources clear the draft. Deletion confirms project identity and descendant inaccessibility,
+accepts only 204, and navigates to the parent space. Route-scoped summary/list providers are
+recreated there, so project lists reload; no persistent task cache exists to retain descendants.
+Server progressPercent/openTaskCount are displayed without frontend completion assumptions.
