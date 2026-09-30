@@ -65,3 +65,6 @@
 
 - Codex thread PRRT_kwDOSlID6c6nKz_i was valid: a mutation 404 could retain a concurrently deleted membership/role. After confirming continued space access, the page now reloads members and catalogues and clears obsolete confirmation while preserving the add-user draft.
 - Regression first failed because no member refresh followed the 404. Full corrected verification passed 164 unit tests, 21 integration tests, production build and 82 browser tests (../issue87-stale-target-verify.log).
+
+- Resumed 2026-09-30, fetched develop and confirmed no upstream changes. Review thread PRRT_kwDOSlID6c6nLCF1 was valid: directory permission can be revoked independently of ordinary space access. Both mutation 403 and 404 now reload protected directory/catalogue state after space revalidation.
+- Regression first failed because a 403 did not trigger membership reload. Final verify passed 164 unit tests, 22 integration tests, production build and 82 browser tests (../issue87-permission-verify.log).

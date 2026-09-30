@@ -222,7 +222,7 @@ export class SpacePeople {
           void this.workspace.refresh();
         } else if (detail?.ok) {
           this.space.set(detail.data);
-          if (r.status === 404) await this.load();
+          await this.load();
         }
       }
       return;
