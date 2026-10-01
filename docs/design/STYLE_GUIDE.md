@@ -473,3 +473,7 @@ Inputs are labeled with inline errors; validation focuses the first invalid fiel
 uses an explicit identity-bearing confirmation and supports Escape/Cancel focus restoration.
 Project metadata and metrics remain inside the existing workspace shell. No project editor
 Penpot frame was supplied; existing form and overview composition is retained.
+
+## Workflow settings
+
+Issue #88 reuses the workspace shell and Space editor surface, semantic tokens and form spacing. The ordered stage list displays configured names, escaped text icons, zero-based position and explicit Open/Complete classification. The form explains completion's effect on all tasks. No exact workflow-settings Penpot frame was supplied; this extends the existing settings composition without inventing a board design. Mutations follow parent update capability; delete confirmation places focus on Cancel, Escape restores the source button, and editing/validation moves focus to the relevant field. Verify the list and form at desktop/mobile widths in both themes.

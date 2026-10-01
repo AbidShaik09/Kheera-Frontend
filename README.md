@@ -132,3 +132,7 @@ removal and read-only role/permission catalogues. See [the membership architectu
 Projects can be created from Space Details and maintained through Project settings. The
 permission-aware editor supports metadata changes, sprint-cycle configuration and confirmed
 soft deletion. See [project lifecycle](docs/architecture/SPACE_DETAILS.md#project-lifecycle-89).
+
+## Project workflow settings
+
+Project overview links to `/projects/:projectId/workflow` for ordered, custom stage names, text icons, completion classification and confirmed deletion. See the [issue #88 plan](docs/planning/issue-plans/issue-88_workflow-settings.md) and [workflow contract](docs/architecture/SPACE_DETAILS.md#project-workflow-settings).

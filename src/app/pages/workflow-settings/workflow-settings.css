@@ -1,0 +1,49 @@
+h2 {
+  font-weight: 600;
+  margin-top: var(--space-lg);
+  overflow-wrap: anywhere;
+}
+.stage-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-lg) 0;
+}
+.stage-list li {
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-md) 0;
+  display: grid;
+  gap: var(--space-md);
+}
+.stage-identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+.stage-identity > * {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.stage-identity > span:last-child {
+  color: var(--color-secondary-text);
+  font-size: var(--text-sm);
+}
+.stage-icon:empty {
+  display: none;
+}
+.stage-list button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.checkbox {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+.checkbox input {
+  width: auto;
+}
+.error:empty {
+  display: none;
+}

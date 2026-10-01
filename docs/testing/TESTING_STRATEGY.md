@@ -95,3 +95,7 @@ create/edit/delete, permissions, draft recovery and stale project-navigation che
 `project-lifecycle.smoke.spec.ts` verifies desktop/mobile light/dark forms, create navigation,
 reload persistence, server metrics, deletion/list refresh, keyboard focus and 400/401/403/404/500.
 These use the merged backend DTO contract with isolated responses, not live deployment data.
+
+## Workflow settings coverage
+
+Issue #88 adds `workflow-stage-service.spec.ts` for ordered custom stages, sparse requests, UTF-16 field limits, integer positions, malformed responses, conflicts and account races. `workflow-settings.integration.spec.ts` joins real routes/services/interceptor with mocked HTTP for permission loss, conflict-refresh recovery, deletion confirmation/serialization and stale navigation. `workflow-settings.smoke.spec.ts` covers create, rename, reorder, completion, icon clearing, delete, reload, keyboard focus, 400/401/403/404/500 and all named conflicts across desktop/mobile; screenshots capture light/dark layouts. These are fixture-based frontend checks, not deployed-backend evidence. Browser smoke consumes the production build: rebuild before running it after application edits.
