@@ -25,15 +25,15 @@
 
 ## Ordered execution
 - [x] Verify clean synchronized baseline, issue and implemented contracts.
-- [ ] Commit initial plan and TODO before application/test edits.
-- [ ] Write service tests with compilable stub; run expected behavior failures, implement adapter, rerun focused tests.
-- [ ] Write route integration/browser expectations before UI; record expected failures, implement editor and targeted regressions.
-- [ ] Update relevant docs and self-review scope, permissions, stale responses and accessibility.
-- [ ] Run PLAYWRIGHT_CHANNEL=msedge npm run verify (full unit/integration, production build, browser suite); repair failures and repeat required gates.
-- [ ] Start npm start on loopback; inspect desktop/mobile light/dark screenshots and keyboard flows. Browser API fixtures are not deployed-backend verification; no authorized live account available.
+- [x] Commit initial plan and TODO before application/test edits.
+- [x] Write service tests with compilable stub; run expected behavior failures, implement adapter, rerun focused tests.
+- [x] Write route integration/browser expectations before UI; record expected failures, implement editor and targeted regressions.
+- [x] Update relevant docs and self-review scope, permissions, stale responses and accessibility.
+- [x] Run PLAYWRIGHT_CHANNEL=msedge npm run verify (full unit/integration, production build, browser suite); repair failures and repeat required gates.
+- [x] Start npm start on loopback; inspect desktop/mobile light/dark screenshots and keyboard flows. Browser API fixtures are not deployed-backend verification; no authorized live account available.
 - [ ] Commit/push, create PR to develop with Closes #88 and plan/evidence; immediately post exactly @codex review and record links.
 - [ ] Inspect CI/reviews, repair valid findings, rerun validation and request fresh review if changed.
 - [ ] Merge/deployment outside requested raise-PR scope; report actual state and keep pending gates pending.
 
 ## Evidence and delivery
-Pending implementation. Record initial failing tests and final counts, build/start/visual checks, PR and review URLs. Resolve actual review findings and record fresh evidence before reporting readiness.
+Initial plan committed as c0b3099 before code/tests. After correcting test setup types, 17 service and 6 route tests failed for missing behavior against compilable stubs/missing route. Focused adapter: 17 passed; expanded route integration: 8 passed. Initial browser run consumed the prior production build (stopped and rebuilt); rebuilt affected browser suite: 22 passed. Added empty/loading and 100-stage limit checks before full regression. Reviewed all four desktop/mobile light/dark screenshots: readable form/list, no overflow. Development server compiled successfully on 127.0.0.1:4301 and was stopped. No workflow Penpot frame available; reused established editor. First full verification: 199 unit and 39 integration passed; production build passed; 122 browser passed and 2 failed because the deletion test checked list absence during refresh. Fixed the test to await the positive Stage deleted confirmation before asserting authoritative refresh; Final PLAYWRIGHT_CHANNEL=msedge npm run verify passed: 199 unit tests, 39 integration tests, production build and 124 browser tests. existing 500 kB bundle warning remains (521.35 kB, below 1 MB error budget). Browser fixtures do not verify a deployed backend. PR/review pending.
