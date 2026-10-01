@@ -132,7 +132,11 @@ export class ProjectBoard {
       this.failure(stages);
       return false;
     }
-    const result = await this.api.read(id, page);
+    let result = await this.api.read(id, page);
+    while (current() && result?.ok && result.data && page > 0 && page >= result.data.totalPages) {
+      page = Math.max(0, result.data.totalPages - 1);
+      result = await this.api.read(id, page);
+    }
     if (!current() || !result) return false;
     if (!result.ok || !result.data) {
       this.failure(result);

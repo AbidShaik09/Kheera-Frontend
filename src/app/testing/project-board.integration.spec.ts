@@ -103,6 +103,25 @@ describe('Project board routes', () => {
     expect(h.routeNativeElement?.textContent).toContain('Task 26');
     expect(h.routeNativeElement?.textContent).toContain('Complete');
   });
+  it.each([0, 1])('recovers pagination when the board shrinks to %i tasks', async (total) => {
+    const h = await open(true, boardPage([task()], 0, 26));
+    click(h, 'Next page');
+    (await request(`/api/projects/${PROJECT.id}`)).flush(PROJECT);
+    (await request(`/api/spaces/${SPACE.id}`)).flush(SPACE);
+    (await request(`/api/projects/${PROJECT.id}/workflow-stages`)).flush(STAGES);
+    const stale = await request(`/api/projects/${PROJECT.id}/work-items`);
+    expect(stale.request.params.get('page')).toBe('1');
+    stale.flush(boardPage([], 1, total));
+    const corrected = await request(`/api/projects/${PROJECT.id}/work-items`);
+    expect(corrected.request.params.get('page')).toBe('0');
+    corrected.flush(boardPage(total ? [task()] : []));
+    await expect.poll(() => {
+      h.detectChanges();
+      return h.routeNativeElement?.querySelector('.board');
+    }).toBeTruthy();
+    expect(h.routeNativeElement?.textContent).not.toContain('Page 2');
+    if (total) expect(h.routeNativeElement?.textContent).toContain('Task 1');
+  });
   it('serializes a keyboard move and reloads both columns authoritatively', async () => {
     const h = await open();
     await move(h);
