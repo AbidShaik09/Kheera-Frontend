@@ -52,8 +52,7 @@ function isPage(value: unknown, project: string, page: number): value is BoardPa
     p.totalItems < 0 ||
     p.totalPages !== Math.ceil(p.totalItems / 25) ||
     !Array.isArray(p.items) ||
-    p.items.length > 25 ||
-    p.items.length > p.totalItems ||
+    p.items.length !== Math.max(0, Math.min(25, p.totalItems - page * 25)) ||
     !p.items.every((t) => isTask(t, project)) ||
     new Set(p.items.map((t) => t.id)).size !== p.items.length ||
     !Array.isArray(p.groups) ||

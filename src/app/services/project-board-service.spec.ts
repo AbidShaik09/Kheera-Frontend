@@ -36,6 +36,8 @@ describe('Project board API', () => {
     expect((await service.read(PROJECT.id))?.data?.totalItems).toBe(0);
   });
   it.each([
+    { data: boardPage([], 1, 26) },
+    { data: boardPage([task()], 0, 26) },
     { data: { ...boardPage(), totalPages: 99 } },
     { data: boardPage([task(), task()]) },
     { data: boardPage([{ ...task(), projectId: STAGES[0].id }]) },
@@ -48,7 +50,7 @@ describe('Project board API', () => {
     },
   ])('rejects inconsistent page shape $data', async ({ data }) => {
     api.get.mockResolvedValue(reply(data));
-    expect((await service.read(PROJECT.id))?.ok).toBe(false);
+    expect((await service.read(PROJECT.id, data.page))?.ok).toBe(false);
   });
   it('appends same or cross-column moves, never transmitting a visible page index', async () => {
     for (const stage of STAGES.slice(0, 2)) {

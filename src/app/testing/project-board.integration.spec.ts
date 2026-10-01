@@ -104,7 +104,7 @@ describe('Project board routes', () => {
     expect(h.routeNativeElement?.textContent).toContain('Complete');
   });
   it.each([0, 1])('recovers pagination when the board shrinks to %i tasks', async (total) => {
-    const h = await open(true, boardPage([task()], 0, 26));
+    const h = await open(true, boardPage(Array.from({ length: 25 }, (_, i) => task(i)), 0, 26));
     click(h, 'Next page');
     (await request(`/api/projects/${PROJECT.id}`)).flush(PROJECT);
     (await request(`/api/spaces/${SPACE.id}`)).flush(SPACE);
