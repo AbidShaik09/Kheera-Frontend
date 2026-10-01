@@ -1,0 +1,109 @@
+<section class="editor" [attr.aria-busy]="loading() || busy()">
+  <header>
+    <h1>{{ id ? 'Project settings' : 'Create project' }}</h1>
+    @if (project(); as current) {
+      <a [routerLink]="['/projects', current.id]">Back to project</a>
+    } @else if (spaceId) {
+      <a [routerLink]="['/spaces', spaceId]">Back to space</a>
+    } @else {
+      <a routerLink="/dashboard">Dashboard</a>
+    }
+  </header>
+  <button type="button" (click)="load(true)" [disabled]="busy() || loading()">
+    Refresh project access
+  </button>
+  @if (loading()) {
+    <p role="status">Loading project access…</p>
+  }
+  @if (message()) {
+    <p role="alert">{{ message() }}</p>
+  }
+  @if (success()) {
+    <p role="status">{{ success() }}</p>
+  }
+  @if (!unavailable() && space(); as currentSpace) {
+    <p class="identity">Space: {{ currentSpace.name }}</p>
+    @if (project(); as current) {
+      <p class="identity">{{ current.name }} · {{ current.id }}</p>
+      <p>{{ current.openTaskCount }} open tasks · {{ current.progressPercent }}% complete</p>
+    }
+    @if (!currentSpace.capabilities.canUpdate) {
+      <p>You do not have permission to {{ id ? 'edit' : 'create' }} projects in this space.</p>
+    }
+    <form (ngSubmit)="save()" novalidate>
+      <fieldset
+        [disabled]="busy() || loading() || !currentSpace.capabilities.canUpdate || deniedSave()"
+      >
+        <legend>Project details</legend>
+        <label for="project-name">Name</label
+        ><input
+          id="project-name"
+          name="name"
+          [(ngModel)]="draft.name"
+          required
+          [attr.aria-invalid]="!!errors().name"
+          aria-describedby="name-help name-error"
+        />
+        <p id="name-help" class="help">Required. Up to 255 characters.</p>
+        <p id="name-error" class="error">{{ errors().name }}</p>
+        <label for="project-description">Description <span>(optional)</span></label
+        ><textarea
+          id="project-description"
+          name="description"
+          [(ngModel)]="draft.description"
+          rows="4"
+          [attr.aria-invalid]="!!errors().description"
+          aria-describedby="description-help description-error"
+        ></textarea>
+        <p id="description-help" class="help">
+          Up to 500 characters. Clear to remove the description.
+        </p>
+        <p id="description-error" class="error">{{ errors().description }}</p>
+        <label for="project-cycle">Sprint cycle days</label
+        ><input
+          id="project-cycle"
+          name="sprintCycleDays"
+          inputmode="numeric"
+          [(ngModel)]="draft.sprintCycleDays"
+          [attr.aria-invalid]="!!errors().sprintCycleDays"
+          aria-describedby="cycle-help cycle-error"
+        />
+        <p id="cycle-help" class="help">
+          A whole number from 1 to 2147483647. New projects default to 7 when blank. Existing unset
+          values can be left blank. This setting does not create sprints.
+        </p>
+        <p id="cycle-error" class="error">{{ errors().sprintCycleDays }}</p>
+      </fieldset>
+      @if (currentSpace.capabilities.canUpdate) {
+        <button type="submit" class="primary" [disabled]="busy() || loading() || deniedSave()">
+          {{ id ? 'Save changes' : 'Create project' }}
+        </button>
+      }
+    </form>
+    @if (id && project() && currentSpace.capabilities.canDelete) {
+      <section class="danger" aria-labelledby="delete-project-title">
+        <h2 id="delete-project-title">Delete project</h2>
+        <button
+          data-delete
+          type="button"
+          (click)="beginDelete()"
+          [disabled]="busy() || loading() || deniedDelete() || confirming()"
+        >
+          Delete project
+        </button>
+        @if (confirming()) {
+          <div role="group" aria-label="Confirm project deletion" (keydown.escape)="cancelDelete()">
+            <p>
+              Delete <strong>{{ project()?.name }}</strong> ({{ project()?.id }})? Its board and
+              tasks will become inaccessible. Historical descendants are retained by the server.
+            </p>
+            <button type="button" (click)="remove()" [disabled]="busy()">Confirm deletion</button
+            ><button #cancelButton type="button" (click)="cancelDelete()" [disabled]="busy()">
+              Cancel deletion
+            </button>
+          </div>
+        }
+      </section>
+    }
+  }
+</section>

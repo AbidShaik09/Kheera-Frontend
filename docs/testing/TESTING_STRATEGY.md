@@ -86,3 +86,16 @@ exercises the real route, bearer interceptor and service with denied directory a
 failed duplicate submissions. `space-people.smoke.spec.ts` checks paging, keyboard search,
 role changes, add/retry, last-administrator protection and self-removal on desktop/mobile
 in light/dark themes. Browser API fixtures validate frontend behavior, not deployment.
+
+## Project lifecycle coverage
+`project-lifecycle-service.spec.ts` covers sparse payloads, null clearing, Unicode and cycle
+bounds, exact scope/identity, 204 deletion, field errors and session races.
+`project-lifecycle.integration.spec.ts` joins real routing, services and bearer HTTP with
+create/edit/delete, permissions, draft recovery and stale project-navigation checks.
+`project-lifecycle.smoke.spec.ts` verifies desktop/mobile light/dark forms, create navigation,
+reload persistence, server metrics, deletion/list refresh, keyboard focus and 400/401/403/404/500.
+These use the merged backend DTO contract with isolated responses, not live deployment data.
+
+## Workflow settings coverage
+
+Issue #88 adds `workflow-stage-service.spec.ts` for ordered custom stages, sparse requests, UTF-16 field limits, integer positions, malformed responses, conflicts and account races. `workflow-settings.integration.spec.ts` joins real routes/services/interceptor with mocked HTTP for permission loss, conflict-refresh recovery, deletion confirmation/serialization and stale navigation. `workflow-settings.smoke.spec.ts` covers create, rename, reorder, completion, icon clearing, delete, reload, keyboard focus, 400/401/403/404/500 and all named conflicts across desktop/mobile; screenshots capture light/dark layouts. These are fixture-based frontend checks, not deployed-backend evidence. Browser smoke consumes the production build: rebuild before running it after application edits.

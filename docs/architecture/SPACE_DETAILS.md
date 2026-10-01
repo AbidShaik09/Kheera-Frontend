@@ -99,3 +99,40 @@ revalidates directory access. Session epochs and page generations reject stale r
 
 The API supplies historical user identity on current memberships; historical task author
 and assignee presentation remains owned by task features. No task history is rewritten.
+
+## Project lifecycle (#89)
+
+Space Details exposes Create project when SpaceDetail.canUpdate is true, routing to
+`/spaces/:spaceId/projects/new`. Project overview links `/projects/:projectId/settings`.
+Settings re-read the project and its actual parent space before showing actions; no query
+parameter can reparent a project or supply authorization. Space update/delete grants map
+to project create/update/delete according to the merged backend #68 contract.
+
+ProjectLifecycleService owns requests and validates IDs, response identity and session
+continuity. Draft validation counts Unicode code points for the 255-character name and
+500-character description. Sprint cycle values are positive 32-bit integers; blank creation
+uses the server default of 7. Legacy null cycle values remain unchanged unless supplied.
+PATCH contains changed fields only; null clears description and no space/metric fields are sent.
+
+Route/session changes clear editor state; late responses cannot populate a different context.
+Recoverable failures preserve drafts. A denied mutation disables its action and revalidates
+project/space access; failed revalidation hides stale controls until retry. Inaccessible
+resources clear the draft. Deletion confirms project identity and descendant inaccessibility,
+accepts only 204, and navigates to the parent space. Route-scoped summary/list providers are
+recreated there, so project lists reload; no persistent task cache exists to retain descendants.
+Server progressPercent/openTaskCount are displayed without frontend completion assumptions.
+
+## Project workflow settings
+
+`/projects/:projectId/workflow` loads the exact project, its parent-space capabilities, then its ordered workflow stages. `WorkflowStageService` is a stateless reusable transport adapter; a future board (#64) must call its list method on entry/refresh rather than retain outdated column metadata. No task board cache currently exists. Settings re-fetch project, permissions and stages after every successful mutation and 409 conflict. Returning to project overview re-fetches completion metrics.
+
+| Operation | API path beneath configured `/api/` | Body/result |
+| --- | --- | --- |
+| List | GET projects/{projectId}/workflow-stages | Ordered array `{id,name,icon,position,complete}` |
+| Create | POST projects/{projectId}/workflow-stages | Name, icon, complete; optional position; 201 stage |
+| Edit/reorder | PATCH projects/{projectId}/workflow-stages/{stageId} | Only changed fields; stage response |
+| Delete | DELETE projects/{projectId}/workflow-stages/{stageId} | Confirmed empty-stage deletion; requires 204 |
+
+All writes require `space.update`, represented by parent `canUpdate`; server authorization remains authoritative. Name is trimmed, 1–100 UTF-16 units; icon is optional, at most 255 UTF-16 units. Empty icon clears it. PATCH never sends null; omitted fields remain unchanged. Position is a non-negative 32-bit integer; omission appends on creation or preserves on edit, and oversized positions clamp on the server. Completion uses the boolean, independent of stage name; changing it reclassifies every task in the stage. Icons are escaped text, never executable markup or remote image URLs.
+
+`STAGE_NOT_EMPTY`, `LAST_STAGE`, and `STAGE_LIMIT` conflicts explain the constraint, retain the draft, and reload authoritative metadata. Writes are serialized. A denied write revalidates access and disables retries until explicit refresh. Inaccessible reads clear the private list/draft; failed refresh hides stale controls and allows retry. Missing edited stages cannot be accidentally recreated. Route generation and account epoch/token checks ignore outdated reads/writes after navigation or session changes. There are no backend/schema/dependency changes.

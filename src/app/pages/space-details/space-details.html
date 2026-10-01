@@ -64,6 +64,9 @@
     <section aria-labelledby="projects-heading" class="projects-section">
       <div class="section-heading">
         <h2 #projectsHeading id="projects-heading" tabindex="-1">Projects</h2>
+        @if (space.capabilities.canUpdate) {
+          <a [routerLink]="['/spaces', space.id, 'projects', 'new']">Create project</a>
+        }
         @if (service.state().projects.data; as result) {
           <span
             >{{ result.totalItems }} {{ result.totalItems === 1 ? 'project' : 'projects' }}</span

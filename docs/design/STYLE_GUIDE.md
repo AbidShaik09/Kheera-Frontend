@@ -466,3 +466,14 @@ wrap names and email addresses on small screens. Labeled native search, sort and
 controls support keyboard use. Removal requires a separate named confirmation section.
 Read-only catalogues explain that available permissions are not the caller's grants.
 No People-specific Penpot board was provided by issue #87.
+
+### Project create/settings
+Project forms reuse the Space editor's semantic surface, text, border, error and focus tokens.
+Inputs are labeled with inline errors; validation focuses the first invalid field. Deletion
+uses an explicit identity-bearing confirmation and supports Escape/Cancel focus restoration.
+Project metadata and metrics remain inside the existing workspace shell. No project editor
+Penpot frame was supplied; existing form and overview composition is retained.
+
+## Workflow settings
+
+Issue #88 reuses the workspace shell and Space editor surface, semantic tokens and form spacing. The ordered stage list displays configured names, escaped text icons, zero-based position and explicit Open/Complete classification. The form explains completion's effect on all tasks. No exact workflow-settings Penpot frame was supplied; this extends the existing settings composition without inventing a board design. Mutations follow parent update capability; delete confirmation places focus on Cancel, Escape restores the source button, and editing/validation moves focus to the relevant field. Verify the list and form at desktop/mobile widths in both themes.

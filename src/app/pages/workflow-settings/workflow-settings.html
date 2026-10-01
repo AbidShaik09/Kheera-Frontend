@@ -1,0 +1,149 @@
+<section class="editor" aria-labelledby="workflow-title" [attr.aria-busy]="loading() || busy()">
+  <header>
+    <h1 id="workflow-title">Workflow settings</h1>
+    <a [routerLink]="['/projects', id]">Back to project</a>
+  </header>
+  <p>Arrange your project's board columns and choose which stages count as complete.</p>
+  <button type="button" data-refresh (click)="load()" [disabled]="loading() || busy()">
+    Refresh workflow
+  </button>
+  @if (loading()) {
+    <p role="status">Loading workflow…</p>
+  }
+  @if (message()) {
+    <p role="alert">{{ message() }}</p>
+  }
+  @if (success()) {
+    <p role="status">{{ success() }}</p>
+  }
+  @if (ready()) {
+    <h2>{{ project()?.name }}</h2>
+    <p class="help">
+      Changing “Counts as complete” reclassifies every task in that stage. Renaming alone keeps
+      completion unchanged.
+    </p>
+    @if (!space()?.capabilities?.canUpdate) {
+      <p>You do not have permission to change this workflow.</p>
+    }
+    @if (!stages().length) {
+      <p>No stages yet.</p>
+    }
+    <ol class="stage-list" aria-label="Workflow stages">
+      @for (stage of stages(); track stage.id) {
+        <li>
+          <div class="stage-identity">
+            <span class="stage-icon">{{ stage.icon }}</span
+            ><strong>{{ stage.name }}</strong
+            ><span>{{ stage.complete ? 'Complete' : 'Open' }} · Position {{ stage.position }}</span>
+          </div>
+          @if (space()?.capabilities?.canUpdate) {
+            <div class="actions">
+              <button type="button" (click)="edit(stage)" [disabled]="!canWrite || !!deleting()">
+                Edit {{ stage.name }}</button
+              ><button
+                type="button"
+                class="destructive"
+                [attr.data-delete]="stage.id"
+                (click)="beginDelete(stage)"
+                [disabled]="!canWrite || !!deleting()"
+              >
+                Delete {{ stage.name }}
+              </button>
+            </div>
+          }
+        </li>
+      }
+    </ol>
+    @if (deleting(); as stage) {
+      <section
+        class="danger"
+        aria-labelledby="delete-title"
+        (keydown.escape)="cancelDelete(); $event.stopPropagation()"
+      >
+        <h2 id="delete-title">Delete {{ stage.name }}?</h2>
+        <p>Only empty stages can be deleted. A project must keep at least one stage.</p>
+        <div class="actions">
+          <button #cancelButton type="button" (click)="cancelDelete()" [disabled]="busy()">
+            Cancel deletion</button
+          ><button type="button" class="destructive" (click)="remove()" [disabled]="!canWrite">
+            Confirm deletion
+          </button>
+        </div>
+      </section>
+    }
+    @if (space()?.capabilities?.canUpdate) {
+      <form (ngSubmit)="save()" novalidate>
+        <fieldset [disabled]="!canWrite || !!deleting()">
+          <legend>{{ editing() ? 'Edit stage' : 'New stage' }}</legend>
+          @if (missingStage) {
+            <p role="alert">The edited stage no longer exists. Start a new stage or refresh.</p>
+          }
+          @if (!editing() && stages().length >= 100) {
+            <p role="status">
+              The limit of 100 stages has been reached. You can still edit existing stages.
+            </p>
+          }
+          <label for="stage-name">Name</label
+          ><input
+            id="stage-name"
+            name="name"
+            [(ngModel)]="draft.name"
+            [attr.aria-invalid]="!!errors().name"
+            aria-describedby="name-help name-error"
+          />
+          <p id="name-help" class="help">1–100 characters. Emoji count as two characters.</p>
+          <p id="name-error" class="error">{{ errors().name }}</p>
+          <label for="stage-icon">Icon</label
+          ><input
+            id="stage-icon"
+            name="icon"
+            [(ngModel)]="draft.icon"
+            [attr.aria-invalid]="!!errors().icon"
+            aria-describedby="icon-help icon-error"
+          />
+          <p id="icon-help" class="help">
+            Optional symbol or label, up to 255 characters. Leave empty to clear.
+          </p>
+          <p id="icon-error" class="error">{{ errors().icon }}</p>
+          <label for="stage-position">Position</label
+          ><input
+            id="stage-position"
+            name="position"
+            inputmode="numeric"
+            [(ngModel)]="draft.position"
+            [attr.aria-invalid]="!!errors().position"
+            aria-describedby="position-help position-error"
+          />
+          <p id="position-help" class="help">
+            Zero is first. Larger positions go last. Leave blank to
+            {{ editing() ? 'keep the current position' : 'add at the end' }}.
+          </p>
+          <p id="position-error" class="error">{{ errors().position }}</p>
+          <label class="checkbox" for="stage-complete"
+            ><input
+              id="stage-complete"
+              name="complete"
+              type="checkbox"
+              [(ngModel)]="draft.complete"
+              aria-describedby="complete-help complete-error"
+            />Counts as complete</label
+          >
+          <p id="complete-help" class="help">This applies to every task in the stage.</p>
+          <p id="complete-error" class="error">{{ errors().complete }}</p>
+          <div class="actions">
+            <button
+              type="submit"
+              class="primary"
+              [disabled]="missingStage || (!editing() && stages().length >= 100)"
+            >
+              {{ editing() ? 'Save stage' : 'Create stage' }}
+            </button>
+            @if (editing()) {
+              <button type="button" (click)="newStage()">Cancel editing</button>
+            }
+          </div>
+        </fieldset>
+      </form>
+    }
+  }
+</section>

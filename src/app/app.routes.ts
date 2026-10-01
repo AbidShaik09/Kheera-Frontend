@@ -39,6 +39,24 @@ export const routes: Routes = [
     canActivateChild: [authGuard],
     children: [
       {
+        path: 'projects/:projectId/workflow',
+        loadComponent: () =>
+          import('./pages/workflow-settings/workflow-settings').then((m) => m.WorkflowSettings),
+        data: { title: 'Project workflow' },
+      },
+      {
+        path: 'spaces/:spaceId/projects/new',
+        loadComponent: () =>
+          import('./pages/project-editor/project-editor').then((m) => m.ProjectEditor),
+        data: { title: 'Create project' },
+      },
+      {
+        path: 'projects/:projectId/settings',
+        loadComponent: () =>
+          import('./pages/project-editor/project-editor').then((m) => m.ProjectEditor),
+        data: { title: 'Project settings' },
+      },
+      {
         path: 'spaces/:spaceId/people',
         loadComponent: () => import('./pages/space-people/space-people').then((m) => m.SpacePeople),
         data: { title: 'People' },
