@@ -135,6 +135,43 @@ describe('Project board routes', () => {
     );
     expect(h.routeNativeElement?.textContent).toContain('Task 1');
   });
+  it('allows a retry after a conflict reload without another manual refresh', async () => {
+    const h = await open();
+    await move(h);
+    http.expectOne((r) => r.method === 'POST').flush({}, { status: 409, statusText: 'Conflict' });
+    await ready(h);
+    await expect
+      .poll(() => {
+        h.detectChanges();
+        return h.routeNativeElement?.textContent;
+      })
+      .toContain('Unable');
+    expect(h.routeNativeElement?.querySelector<HTMLSelectElement>('select')?.disabled).toBe(false);
+    await move(h);
+    http.expectOne((r) => r.method === 'POST').flush({}, { status: 500, statusText: 'Error' });
+    await h.fixture.whenStable();
+  });
+  it('does not announce success when the authoritative post-move reload fails', async () => {
+    const h = await open();
+    await move(h);
+    http
+      .expectOne((r) => r.method === 'POST')
+      .flush({ ...task(), stageId: STAGES[1].id, stageName: STAGES[1].name, complete: true });
+    (await request(`/api/projects/${PROJECT.id}`)).flush(
+      {},
+      { status: 503, statusText: 'Unavailable' },
+    );
+    await expect
+      .poll(() => {
+        h.detectChanges();
+        return h.routeNativeElement?.textContent;
+      })
+      .toContain('Unable');
+    await h.fixture.whenStable();
+    h.detectChanges();
+    expect(h.routeNativeElement?.textContent).not.toContain('Task moved.');
+    expect(h.routeNativeElement?.querySelector('.board')).toBeNull();
+  });
   it('hides moves without update permission', async () => {
     const h = await open(false);
     expect(h.routeNativeElement?.querySelector('select')).toBeNull();

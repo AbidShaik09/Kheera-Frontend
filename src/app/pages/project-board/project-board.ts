@@ -106,8 +106,8 @@ export class ProjectBoard {
       token === this.auth.accessToken() &&
       this.auth.isUserLoggedIn();
   }
-  async load(page = 0, resetDenied = true): Promise<void> {
-    if (this.loading() || this.moving()) return;
+  async load(page = 0, resetDenied = true): Promise<boolean> {
+    if (this.loading() || this.moving()) return false;
     const current = this.context(),
       id = this.id;
     this.loading.set(true);
@@ -115,28 +115,28 @@ export class ProjectBoard {
     this.message.set('');
     this.success.set('');
     const project = await this.projects.read(id);
-    if (!current() || !project) return;
+    if (!current() || !project) return false;
     if (!project.ok || !project.project) {
       this.failure(project);
-      return;
+      return false;
     }
     const space = await this.spaces.read(project.project.spaceId);
-    if (!current() || !space) return;
+    if (!current() || !space) return false;
     if (!space.ok || !space.space) {
       this.failure(space);
-      return;
+      return false;
     }
     const stages = await this.workflow.list(id);
-    if (!current() || !stages) return;
+    if (!current() || !stages) return false;
     if (!stages.ok) {
       this.failure(stages);
-      return;
+      return false;
     }
     const result = await this.api.read(id, page);
-    if (!current() || !result) return;
+    if (!current() || !result) return false;
     if (!result.ok || !result.data) {
       this.failure(result);
-      return;
+      return false;
     }
     if (
       result.data.groups.length !== stages.stages.length ||
@@ -146,7 +146,7 @@ export class ProjectBoard {
         status: 409,
         message: 'The workflow changed while loading. Refresh to load the current board.',
       });
-      return;
+      return false;
     }
     const targets: Record<string, string> = {};
     for (const task of result.data.items)
@@ -159,6 +159,7 @@ export class ProjectBoard {
     this.board.set(result.data);
     this.loading.set(false);
     if (resetDenied) this.denied.set(false);
+    return true;
   }
   private failure(result: { status: number; message: string }) {
     this.loading.set(false);
@@ -187,14 +188,14 @@ export class ProjectBoard {
     if (!result.ok) {
       if (result.status === 404) this.failure(result);
       else if (result.status === 403 || result.status === 409) {
-        this.denied.set(true);
+        if (result.status === 403) this.denied.set(true);
         await this.load(this.board()?.page ?? 0, false);
         if (current() && this.board()) this.message.set(result.message);
       } else this.message.set(result.message);
       return;
     }
-    await this.load(0);
-    if (current()) {
+    const loaded = await this.load(0);
+    if (current() && loaded) {
       this.success.set('Task moved.');
       this.restoreFocus.set(true);
     }
