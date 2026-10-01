@@ -316,3 +316,5 @@ Space creation, editing and deletion are implemented on issue/86_space-lifecycle
 Issue #87 implementation and local validation complete; PR/review pending: [Space members implementation plan](issue-plans/issue-87_space-members.md).
 
 Issue #89 implementation and local verification complete; [PR #103](https://github.com/AbidShaik09/Kheera-Frontend/pull/103) opened for review: [Project lifecycle plan](issue-plans/issue-89_project-lifecycle.md). Backend #68 project CRUD is confirmed merged; stale blocked prose does not apply.
+
+Issue #88 workflow settings in progress: [implementation plan](issue-plans/issue-88_workflow-settings.md). Existing project navigation and backend stage CRUD are ready; task board remains #64.
