@@ -40,11 +40,10 @@ Space settings and People management controls are capability-aware and explicitl
 marked coming soon until #86/#87 supply their actual editors. No role-name inference,
 mutation, upload, fake member list or unsupported restore action is introduced.
 
-Project cards navigate to `/projects/:projectId`, a guarded, API-backed read-only summary
-with progress/open counts and a link to its actual parent space. #64 owns the task board;
-#89 owns project writes. The summary provides a working destination without a fake board.
-Future implementations should reuse the exported DTO/validation and replace this
-summary route rather than adding competing project routes.
+Project cards navigate to `/projects/:projectId`, the guarded live task board from #64,
+with progress/open counts and a link to its actual parent space. Project writes from
+#89 and workflow settings from #88 have separate settings routes. Task creation/detail
+remains #65; reuse the exported contracts and existing project route.
 
 ## Design and verification
 
@@ -124,7 +123,7 @@ Server progressPercent/openTaskCount are displayed without frontend completion a
 
 ## Project workflow settings
 
-`/projects/:projectId/workflow` loads the exact project, its parent-space capabilities, then its ordered workflow stages. `WorkflowStageService` is a stateless reusable transport adapter; a future board (#64) must call its list method on entry/refresh rather than retain outdated column metadata. No task board cache currently exists. Settings re-fetch project, permissions and stages after every successful mutation and 409 conflict. Returning to project overview re-fetches completion metrics.
+`/projects/:projectId/workflow` loads the exact project, its parent-space capabilities, then its ordered workflow stages. `WorkflowStageService` is a stateless reusable transport adapter; the board (#64) calls its list method on entry/refresh rather than retaining outdated column metadata. No persistent task board cache exists. Settings re-fetch project, permissions and stages after every successful mutation and 409 conflict. Returning to the project board re-fetches completion metrics and stage metadata.
 
 | Operation | API path beneath configured `/api/` | Body/result |
 | --- | --- | --- |
@@ -136,3 +135,13 @@ Server progressPercent/openTaskCount are displayed without frontend completion a
 All writes require `space.update`, represented by parent `canUpdate`; server authorization remains authoritative. Name is trimmed, 1–100 UTF-16 units; icon is optional, at most 255 UTF-16 units. Empty icon clears it. PATCH never sends null; omitted fields remain unchanged. Position is a non-negative 32-bit integer; omission appends on creation or preserves on edit, and oversized positions clamp on the server. Completion uses the boolean, independent of stage name; changing it reclassifies every task in the stage. Icons are escaped text, never executable markup or remote image URLs.
 
 `STAGE_NOT_EMPTY`, `LAST_STAGE`, and `STAGE_LIMIT` conflicts explain the constraint, retain the draft, and reload authoritative metadata. Writes are serialized. A denied write revalidates access and disables retries until explicit refresh. Inaccessible reads clear the private list/draft; failed refresh hides stale controls and allows retry. Missing edited stages cannot be accidentally recreated. Route generation and account epoch/token checks ignore outdated reads/writes after navigation or session changes. There are no backend/schema/dependency changes.
+
+## Project task board (#64)
+
+The active `/projects/:projectId` route now renders ProjectBoard, replacing the summary placeholder while retaining project metadata and settings/workflow links. It reads the project, parent-space capabilities, ordered workflow stages, then `GET projects/{id}/work-items?groupBy=stage&page=N&size=25`. Board groups include every active stage but only tasks on the requested page. Column labels say “on this page”; the header's task count is the global `totalItems`. Explicit previous/next paging replaces cards, avoiding unsafe accumulation after concurrent reordering. Group metadata is authoritative for names/completion; changed stage identities between reads require refresh.
+
+`ProjectBoardService` validates task/project/stage UUIDs, page totals, stage order, unique tasks and correspondence between page items and groups. Current task fields are id, projectId, title, stageId, stageName, complete and position; no fake assignees, type filters, sprint, epic, activity or detail destinations. Task creation/detail remains #65.
+
+Both native drag-and-drop and the labelled keyboard move form send `POST work-items/{taskId}/move` with only `{stageId}`. Omitted position appends after removing the source item, including same-column moves. Visible page indexes are never global insertion positions. Writes require space.update (`canUpdate`) and are serialized. No optimistic card relocation occurs: ordinary failures retain cards/destination; denied writes revalidate and remain disabled until explicit refresh; inaccessible responses clear private data. Successful moves reload project metrics, permissions, stages and page zero, including both affected columns. All reads/writes ignore stale route/account responses. There is no persistent board cache: returning from workflow settings reloads current stage metadata.
+
+Desktop columns scroll inside the board; mobile columns stack without document overflow. Counts, pending status, success/failure, empty pages/boards and read-only states are explicit. The documented project header/columns and existing shell/tokens are reused; no exact Project Details Penpot URL was available for pixel comparison. Browser checks use API fixtures, not a deployed backend account.

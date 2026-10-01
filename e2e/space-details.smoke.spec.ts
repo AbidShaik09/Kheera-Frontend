@@ -1,5 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 import { SPACE, PROJECT, projectPage } from '../src/app/testing/space-fixtures';
+import { STAGES, boardPage } from '../src/app/testing/board-fixtures';
 async function fixture(
   page: Page,
   result?: (path: string, page: number) => { status: number; body: unknown } | undefined,
@@ -17,6 +18,8 @@ async function fixture(
     if (url.pathname === '/api/spaces/' + SPACE.id) return route.fulfill({ json: SPACE });
     if (url.pathname.endsWith('/projects')) return route.fulfill({ json: projectPage() });
     if (url.pathname === '/api/projects/' + PROJECT.id) return route.fulfill({ json: PROJECT });
+    if (url.pathname.endsWith('/workflow-stages')) return route.fulfill({ json: STAGES });
+    if (url.pathname.endsWith('/work-items')) return route.fulfill({ json: boardPage([]) });
     return route.fulfill({ status: 404, json: {} });
   });
 }
@@ -43,7 +46,7 @@ for (const theme of ['light', 'dark']) {
     await expect(page).toHaveURL('/projects/' + PROJECT.id);
     await expect(page.getByRole('heading', { name: PROJECT.name })).toBeVisible();
     await page.reload();
-    await expect(page.getByText('The task board is coming soon.')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Task board' })).toBeVisible();
     await page.goBack();
     await expect(details.getByRole('heading', { name: SPACE.name, exact: true })).toBeVisible();
   });

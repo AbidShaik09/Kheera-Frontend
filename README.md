@@ -136,3 +136,7 @@ soft deletion. See [project lifecycle](docs/architecture/SPACE_DETAILS.md#projec
 ## Project workflow settings
 
 Project overview links to `/projects/:projectId/workflow` for ordered, custom stage names, text icons, completion classification and confirmed deletion. See the [issue #88 plan](docs/planning/issue-plans/issue-88_workflow-settings.md) and [workflow contract](docs/architecture/SPACE_DETAILS.md#project-workflow-settings).
+
+## Live project board
+
+Projects display paginated task cards in their custom workflow columns. Move tasks with drag-and-drop or keyboard controls; moves append to the destination and reload authoritative data. See [board architecture](docs/architecture/SPACE_DETAILS.md#project-task-board-64) and [issue #64 plan](docs/planning/issue-plans/issue-64_project-board.md). Task creation/detail remains #65.

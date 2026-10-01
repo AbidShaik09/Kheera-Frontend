@@ -22,14 +22,14 @@
 - Existing project navigation integration/browser fixtures updated for newly required board reads. ProjectSummaryService remains a compatible read adapter.
 - README, architecture/SPACE_DETAILS.md and WORKSPACE_NAVIGATION.md, design/STYLE_GUIDE.md, testing/TESTING_STRATEGY.md, TODO updated. No backend/schema/dependency changes.
 - [x] Read synchronized baseline, issue, contracts, available design/assets and tests.
-- [ ] Commit this initial plan and TODO before application/tests.
-- [ ] Write compilable adapter tests, record behavior failures, implement and pass.
-- [ ] Write route/browser expectations first, record missing board behavior, implement state/template/styles, targeted checks.
-- [ ] Update docs and self-review contracts/security/concurrency/accessibility.
-- [ ] Run PLAYWRIGHT_CHANNEL=msedge npm run verify (unit, integration, build, browser); fix failures and repeat required gates.
-- [ ] Start npm start on loopback; visually inspect desktop/mobile light/dark screenshots and keyboard behavior. Fixture APIs do not prove deployed backend behavior; no live account assumed.
+- [x] Commit this initial plan and TODO before application/tests.
+- [x] Write compilable adapter tests, record behavior failures, implement and pass.
+- [x] Write route/browser expectations first, record missing board behavior, implement state/template/styles, targeted checks.
+- [x] Update docs and self-review contracts/security/concurrency/accessibility.
+- [x] Run PLAYWRIGHT_CHANNEL=msedge npm run verify (unit, integration, build, browser); fix failures and repeat required gates.
+- [x] Start npm start on loopback; visually inspect desktop/mobile light/dark screenshots and keyboard behavior. Fixture APIs do not prove deployed backend behavior; no live account assumed.
 - [ ] Commit/push; PR to develop with Closes #64, plan and validation. Immediately post @codex review, record links.
 - [ ] Inspect CI/review, repair findings and rerun validation; fresh review after fixes. Merge/deployment outside requested scope.
 
 ## Evidence
-Pending. Preserve red/green evidence, final counts, design limitations, PR/review links and actual delivery status.
+Initial plan committed as 9378b02. TDD: 16 adapter tests failed against a compilable stub; 6 route tests failed on missing board after fixing test harness setup/HTTP cleanup. Focused implementation: 22 passed. Full integration regression: 45 passed. Full verification running: 215 unit and 45 integration passed; production build passes with existing 521.35 kB initial-bundle warning (500 kB warning, below 1 MB error). Development server started successfully at 127.0.0.1:4301 and was stopped. Inspected all four desktop/mobile light/dark screenshots: readable columns, counts and forms, no document overflow. First full browser pass: 141 passed, 1 mobile drag failure. The test aimed at an embedded form control/offscreen column center; title-to-header drag passes both viewport sizes. Final PLAYWRIGHT_CHANNEL=msedge npm run verify passed: 215 unit tests, 45 integration tests, production build and all 142 browser tests. No exact Penpot board URL and no authorized deployed-backend account; fixture checks are frontend-only. PR/review pending.

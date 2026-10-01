@@ -1,5 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 import { PROJECT, SPACE } from '../src/app/testing/space-fixtures';
+import { boardPage } from '../src/app/testing/board-fixtures';
 test('loading and empty workflow remain honest and recoverable', async ({ page }) => {
   await setup(page);
   let release!: () => void;
@@ -67,6 +68,10 @@ async function setup(page: Page, update = true) {
         json: { ...SPACE, capabilities: { ...SPACE.capabilities, canUpdate: update } },
       });
     if (path === `/api/projects/${PROJECT.id}`) return route.fulfill({ json: PROJECT });
+    if (path.endsWith('/work-items'))
+      return route.fulfill({
+        json: { ...boardPage([]), groups: stages.map((stage) => ({ stage, items: [] })) },
+      });
     if (path.includes('/workflow-stages')) {
       if (method === 'GET') {
         reads++;
