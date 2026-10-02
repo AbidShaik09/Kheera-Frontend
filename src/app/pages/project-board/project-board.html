@@ -1,0 +1,124 @@
+<section class="space-page" aria-label="Project board" [attr.aria-busy]="loading() || moving()">
+  <div class="page-actions">
+    <a routerLink="/dashboard">Dashboard</a
+    ><button data-refresh type="button" (click)="load()" [disabled]="loading() || moving()">
+      Refresh project
+    </button>
+  </div>
+  @if (loading()) {
+    <p role="status">Loading project board…</p>
+  }
+  @if (moving()) {
+    <p role="status">Moving task…</p>
+  }
+  @if (message()) {
+    @if (!project()) {
+      <h1>Project unavailable</h1>
+    }
+    <p role="alert">{{ message() }}</p>
+  }
+  @if (success()) {
+    <p role="status">{{ success() }}</p>
+  }
+  @if (project(); as project) {
+    <header class="space-header">
+      <div class="space-identity">
+        <p class="eyebrow">Project</p>
+        <h1>{{ project.name }}</h1>
+      </div>
+      <a [routerLink]="['/spaces', project.spaceId]">Back to space</a
+      ><a [routerLink]="['/projects', project.id, 'settings']">Project settings</a
+      ><a [routerLink]="['/projects', project.id, 'workflow']">Workflow settings</a>
+    </header>
+    <p class="description">{{ project.description || 'No description provided.' }}</p>
+    <p>{{ project.openTaskCount }} open tasks · {{ project.progressPercent }}% complete</p>
+    <progress max="100" [value]="project.progressPercent" aria-label="Project progress"></progress>
+    <p class="updated">Updated {{ project.updatedAt | date: 'medium' }}</p>
+  }
+  @if (board(); as board) {
+    <div class="section-heading">
+      <h2>Task board</h2>
+      <p>{{ board.totalItems }} tasks</p>
+    </div>
+    <p class="board-help">
+      Showing {{ board.items.length }} tasks on this page. Column counts cover this page only.
+    </p>
+    @if (space()?.capabilities?.canUpdate) {
+      <p class="board-help">
+        Drag a task to a column or use its move control. Moves place it at the end, including within
+        the same column.
+      </p>
+    } @else {
+      <p class="board-help">You have read-only access to this board.</p>
+    }
+    @if (board.totalItems === 0) {
+      <p>No tasks yet.</p>
+    }
+    @if (!board.groups.length) {
+      <p>No workflow stages yet. Configure stages in Workflow settings.</p>
+    }
+    <div class="board">
+      @for (group of board.groups; track group.stage.id) {
+        <section
+          class="column"
+          [attr.data-stage]="group.stage.id"
+          [attr.aria-label]="group.stage.name"
+          (dragover)="allowDrop($event)"
+          (drop)="drop($event, group.stage.id)"
+        >
+          <header>
+            <h3>{{ group.stage.icon }} {{ group.stage.name }}</h3>
+            <span>{{ group.stage.complete ? 'Complete' : 'Open' }}</span>
+            <p>{{ group.items.length }} on this page</p>
+          </header>
+          @if (!group.items.length) {
+            <p class="column-empty">No tasks on this page.</p>
+          }
+          @for (task of group.items; track task.id) {
+            <article
+              [class.complete]="task.complete"
+              [attr.data-task]="task.id"
+              [attr.draggable]="canMove"
+              (dragstart)="dragStart($event, task)"
+              (dragend)="dragEnd()"
+            >
+              <h4>{{ task.title }}</h4>
+              <p class="task-id">{{ task.id }}</p>
+              @if (space()?.capabilities?.canUpdate) {
+                <form (ngSubmit)="move(task, targets[task.id])">
+                  <label [for]="'move-' + task.id">Move {{ task.title }} to</label
+                  ><select
+                    [id]="'move-' + task.id"
+                    name="stageId"
+                    [(ngModel)]="targets[task.id]"
+                    [disabled]="!canMove"
+                  >
+                    @for (destination of board.groups; track destination.stage.id) {
+                      <option [value]="destination.stage.id">{{ destination.stage.name }}</option>
+                    }</select
+                  ><button type="submit" [disabled]="!canMove">Move task</button>
+                </form>
+              }
+            </article>
+          }
+        </section>
+      }
+    </div>
+    <nav class="pagination" aria-label="Task pages">
+      <button
+        type="button"
+        (click)="load(board.page - 1)"
+        [disabled]="loading() || moving() || board.page === 0"
+      >
+        Previous page</button
+      ><span>Page {{ board.page + 1 }} of {{ board.totalPages || 1 }}</span
+      ><button
+        type="button"
+        (click)="load(board.page + 1)"
+        [disabled]="loading() || moving() || board.page + 1 >= board.totalPages"
+      >
+        Next page
+      </button>
+    </nav>
+  }
+</section>

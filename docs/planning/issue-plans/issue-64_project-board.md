@@ -1,0 +1,53 @@
+# Issue #64: Project task board
+
+## Scope and baseline
+- Issue: https://github.com/AbidShaik09/Kheera-Frontend/issues/64
+- Branch issue/64_project-board, clean synchronized develop 964019f589df18d36ff2e5f39def1cb4604d68b3.
+- Replace project summary placeholder with API-backed board, retaining project metadata/settings links. Dependencies #63/#85/#68 and workflow settings #88 are implemented; stale open issue statuses are not blockers.
+- Read current backend WorkflowStageController/Service, BoardPageDto, BoardWorkItemDto, MoveWorkItemRequest and repository ordering. GET projects/{id}/workflow-stages and work-items?groupBy=stage&page=N&size=25; POST work-items/{id}/move with {stageId}. Reads scoped by UUID; mutation requires parent space.update. Current board DTO has no assignee/type/sprint/epic metadata. Task creation/detail remains #65; no fake links or unsupported filters.
+- All moves (drag/drop and keyboard form, including same-column) append, omitting position. Visible page indexes are never global indexes. Explicit previous/next pagination replaces the current page; counts labelled on this page, global total labelled tasks. Successful move reloads all metadata and page zero, covering both source/destination. No optimistic mutation: pending state keeps original cards, ordinary failure preserves them. No server stale-board rejection is assumed.
+- No exact Project Details Penpot URL found in issue/repository. Use documented project header plus ordered columns, existing shell/assets/semantic tokens; responsive stacked columns on mobile. No invented activity/backlog/sprint content.
+
+## Acceptance/test mapping
+| Criterion | Named tests | Expected |
+| --- | --- | --- |
+| Contract, >25, empty columns, custom completed stages | project-board-service.spec.ts and project-board.integration.spec.ts | Scoped read, valid groups/page totals; completion boolean |
+| Moves/permissions | service/integration/browser | UUID append body, same/cross stage, serialized pending, authoritative reload |
+| Errors/races | service/integration | 401 logout, 403/404 clear, ordinary failure retains cards, stale navigation/account ignored |
+| Interaction/design | project-board.smoke.spec.ts desktop/mobile light/dark | Keyboard move form and native drag/drop, explicit paging, no overflow, focus/status |
+
+## Files and execution
+- services/project-board-service.ts: typed page/move transport, response guards and session protection.
+- pages/project-board/*: state/route cancellation, permission-aware page/drag/form controls; existing project-summary route now loads this page.
+- Existing project navigation integration/browser fixtures updated for newly required board reads. ProjectSummaryService remains a compatible read adapter.
+- README, architecture/SPACE_DETAILS.md and WORKSPACE_NAVIGATION.md, design/STYLE_GUIDE.md, testing/TESTING_STRATEGY.md, TODO updated. No backend/schema/dependency changes.
+- [x] Read synchronized baseline, issue, contracts, available design/assets and tests.
+- [x] Commit this initial plan and TODO before application/tests.
+- [x] Write compilable adapter tests, record behavior failures, implement and pass.
+- [x] Write route/browser expectations first, record missing board behavior, implement state/template/styles, targeted checks.
+- [x] Update docs and self-review contracts/security/concurrency/accessibility.
+- [x] Run PLAYWRIGHT_CHANNEL=msedge npm run verify (unit, integration, build, browser); fix failures and repeat required gates.
+- [x] Start npm start on loopback; visually inspect desktop/mobile light/dark screenshots and keyboard behavior. Fixture APIs do not prove deployed backend behavior; no live account assumed.
+- [x] Commit/push; PR to develop with Closes #64, plan and validation. Immediately post @codex review, record links.
+- [ ] Inspect CI/review, repair findings and rerun validation; fresh review after fixes. Merge/deployment outside requested scope.
+
+## Evidence
+
+### Review follow-up (2026-10-02)
+Pagination follow-up: [4159615759](https://github.com/AbidShaik09/Kheera-Frontend/pull/106#discussion_r4159615759) is real: an otherwise valid response can refer to a page beyond the reduced total. The page loader now retries the last valid page before publishing, retaining session guards and checking errors on every response. Retries strictly decrease the page and stop at zero, including an empty board. Two integration cases reproduced the missing recovery request before implementation (8 passed, 2 failed); the tests wait for asynchronous rendering as the existing harness does. Validation results are recorded below after completion.
+
+| Thread | Verified finding | Action |
+| --- | --- | --- |
+| [4156788750](https://github.com/AbidShaik09/Kheera-Frontend/pull/106#discussion_r4156788750) | Real: 409 set the permission-denied flag despite successful reload | Only 403 enters denied state; conflict recovery permits retry |
+| [4156788769](https://github.com/AbidShaik09/Kheera-Frontend/pull/106#discussion_r4156788769) | Real: move success was announced even if authoritative reload failed | load returns a success boolean; announce success/focus only after successful reload |
+
+Both new route regression tests failed with the reported behavior before the fix (6 existing passed, 2 new failed). Repaired working tree: PLAYWRIGHT_CHANNEL=msedge npm run verify passed 215 unit tests, 47 integration tests, production build and 142 browser tests. Future move outcomes must distinguish permission denial, recoverable conflict and reload completion; these regression tests enforce that distinction. Prior CI passed on 3f0a72b; it is not evidence for the repair. Review replies/resolution and fresh review pending validation.
+Initial plan committed as 9378b02. TDD: 16 adapter tests failed against a compilable stub; 6 route tests failed on missing board after fixing test harness setup/HTTP cleanup. Focused implementation: 22 passed. Full integration regression: 45 passed. Full verification running: 215 unit and 45 integration passed; production build passes with existing 521.35 kB initial-bundle warning (500 kB warning, below 1 MB error). Development server started successfully at 127.0.0.1:4301 and was stopped. Inspected all four desktop/mobile light/dark screenshots: readable columns, counts and forms, no document overflow. First full browser pass: 141 passed, 1 mobile drag failure. The test aimed at an embedded form control/offscreen column center; title-to-header drag passes both viewport sizes. Final PLAYWRIGHT_CHANNEL=msedge npm run verify passed: 215 unit tests, 45 integration tests, production build and all 142 browser tests. No exact Penpot board URL and no authorized deployed-backend account; fixture checks are frontend-only. Opened [PR #106](https://github.com/AbidShaik09/Kheera-Frontend/pull/106) to develop. Initial [Codex review request](https://github.com/AbidShaik09/Kheera-Frontend/pull/106#issuecomment-5933857411) accepted. CI/review pending at this documentation snapshot; merge/deployment outside requested scope.
+
+Pagination repair verification: PLAYWRIGHT_CHANNEL=msedge npm run verify passed 215 unit tests, 49 integration tests, production build and all 142 browser tests. Earlier two findings resolved; CI passed on be7a1bc. Fresh CI/review for this pagination repair remains pending at this snapshot.
+
+Exact-count follow-up: review thread 4159718775 is real. The adapter now requires the exact page item count implied by totalItems, page and size, rejecting incomplete in-range pages while retaining empty out-of-range pages for recovery. Two new service regressions failed before implementation (16 passed, 2 failed). Full verification passed 217 unit tests, 49 integration tests, production build and 142 browser tests. CI passed on 83acdbe; review/CI for this repair remains pending at this snapshot.
+
+Keyboard follow-up: review thread 4159806847 is real. Pagination removes its focused control while loading. Capture focus inside the current board and use the existing post-render refresh-control focus restoration after loading, without stealing focus on initial route entry. The real browser keyboard pagination test failed before the fix. Full verification passed 217 unit tests, 49 integration tests, production build and all 142 browser tests, including focus assertions in both themes and viewports. CI/review for this repair pending at this snapshot.
+
+Error heading follow-up: review thread 4161891981 is real. Failed loads clear project metadata and removed the only h1. The error state now renders Project unavailable only when project metadata is absent; ordinary move errors retain the existing heading. Route regression failed before the fix (9 passed, 1 failed). Full verification passed 217 unit tests, 49 integration tests, production build and 142 browser tests. Fresh CI/review pending at this snapshot.

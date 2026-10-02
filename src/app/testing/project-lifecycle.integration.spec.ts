@@ -8,6 +8,7 @@ import { ConfigService } from '../services/config-service';
 import { AuthService } from '../services/auth-service';
 import { authInterceptor } from '../interceptors/auth.interceptor';
 import { PROJECT, SPACE, projectPage } from './space-fixtures';
+import { STAGES, boardPage } from './board-fixtures';
 describe('Project lifecycle route integration', () => {
   let http: HttpTestingController;
   beforeEach(() => {
@@ -93,6 +94,23 @@ describe('Project lifecycle route integration', () => {
       )
       .toBe(1);
     http.match('/api/spaces').forEach((r) => r.flush([{ id: SPACE.id, name: SPACE.name }]));
+    for (const [path, body] of [
+      [`/api/spaces/${SPACE.id}`, SPACE],
+      [`/api/projects/${PROJECT.id}/workflow-stages`, STAGES],
+      [`/api/projects/${PROJECT.id}/work-items`, boardPage([])],
+    ] as const) {
+      await expect
+        .poll(
+          () =>
+            http
+              .match((r) => r.url === path)
+              .map((r) => {
+                r.flush(body);
+                return r;
+              }).length,
+        )
+        .toBe(1);
+    }
     await expect
       .poll(() => {
         h.detectChanges();

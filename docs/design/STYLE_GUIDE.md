@@ -477,3 +477,7 @@ Penpot frame was supplied; existing form and overview composition is retained.
 ## Workflow settings
 
 Issue #88 reuses the workspace shell and Space editor surface, semantic tokens and form spacing. The ordered stage list displays configured names, escaped text icons, zero-based position and explicit Open/Complete classification. The form explains completion's effect on all tasks. No exact workflow-settings Penpot frame was supplied; this extends the existing settings composition without inventing a board design. Mutations follow parent update capability; delete confirmation places focus on Cancel, Escape restores the source button, and editing/validation moves focus to the relevant field. Verify the list and form at desktop/mobile widths in both themes.
+
+## Project board
+
+Issue #64 uses the existing project header, progress, workspace navigation and semantic theme tokens, with ordered custom workflow columns and task cards. Completion styling follows the boolean rather than the name. Desktop columns scroll within the board; mobile columns stack. Page-only column counts and global task totals are visually distinct. Drag/drop and labelled keyboard forms both append; the UI states that placement rule. Pending moves disable duplicate actions, preserve cards until success, and restore focus to Refresh after the authoritative reload. No exact Project Details Penpot URL was supplied; follow the documented header/columns composition without inventing unsupported side panels or metadata.

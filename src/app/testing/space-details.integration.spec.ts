@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth-service';
 import { ConfigService } from '../services/config-service';
 import { authInterceptor } from '../interceptors/auth.interceptor';
 import { SPACE, PROJECT, projectPage } from './space-fixtures';
+import { STAGES, boardPage } from './board-fixtures';
 describe('Space Details route integration', () => {
   let http: HttpTestingController;
   beforeEach(() => {
@@ -51,9 +52,24 @@ describe('Space Details route integration', () => {
     await harness.navigateByUrl('/projects/' + PROJECT.id);
     for (const req of http.match('/api/spaces')) req.flush([{ id: SPACE.id, name: SPACE.name }]);
     http.expectOne('/api/projects/' + PROJECT.id).flush(PROJECT);
-    await expect
-      .poll(() => harness.routeNativeElement?.textContent)
-      .toContain('The task board is coming soon.');
+    for (const [path, body] of [
+      [`/api/spaces/${SPACE.id}`, SPACE],
+      [`/api/projects/${PROJECT.id}/workflow-stages`, STAGES],
+      [`/api/projects/${PROJECT.id}/work-items`, boardPage([])],
+    ] as const) {
+      await expect
+        .poll(
+          () =>
+            http
+              .match((r) => r.url === path)
+              .map((r) => {
+                r.flush(body);
+                return r;
+              }).length,
+        )
+        .toBe(1);
+    }
+    await expect.poll(() => harness.routeNativeElement?.textContent).toContain('Task board');
     expect(harness.routeNativeElement?.querySelector('[aria-current="page"]')).toBeNull();
   });
   it('keeps metadata visible when the project API fails', async () => {

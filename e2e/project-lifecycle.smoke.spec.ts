@@ -1,5 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 import { SPACE, PROJECT, projectPage } from '../src/app/testing/space-fixtures';
+import { STAGES, boardPage } from '../src/app/testing/board-fixtures';
 async function setup(
   page: Page,
   options: { update?: boolean; remove?: boolean; exists?: boolean } = {},
@@ -49,6 +50,8 @@ async function setup(
       return route.fulfill({ json: projectPage(exists ? [project] : []) });
     if (path === `/api/projects/${PROJECT.id}`)
       return exists ? route.fulfill({ json: project }) : route.fulfill({ status: 404, json: {} });
+    if (path.endsWith('/workflow-stages')) return route.fulfill({ json: STAGES });
+    if (path.endsWith('/work-items')) return route.fulfill({ json: boardPage([]) });
     return route.fulfill({ status: 404, json: {} });
   });
   return { writes, fail: (status: number) => (failure = status) };

@@ -8,7 +8,7 @@ The first workspace slice used /dashboard?space=<UUID>; #63 now routes sidebar l
 
 Profile and Settings preserve the selected workspace in their query and breadcrumb. Space links are marked as the current page only on their Space Details route; preserved workspace context never marks them current on account or project pages.
 
-Issue #63 provides /spaces/:spaceId and a read-only /projects/:projectId summary destination. #64 owns its future task board; /work-items/:workItemId remains with #65. See [Space Details](SPACE_DETAILS.md). Those issues should reuse the shell and build their own authorized resource loading. #86 owns space creation; until it lands, Create space is explicitly disabled with explanatory text.
+Issue #63 provides /spaces/:spaceId; #64 now supplies the live /projects/:projectId board. /work-items/:workItemId remains with #65. See [Space Details](SPACE_DETAILS.md). These pages reuse the shell and own authorized resource loading. Space creation from #86 is available through Create space.
 
 ## HTTP and state contract
 
@@ -50,3 +50,7 @@ Project resource routes ignore legacy `?space=` context in the workspace breadcr
 Account navigation from a project removes that query parameter, so an unrelated
 bookmark cannot label Profile or Settings with a false space. Space routes still
 preserve their path ID; dashboard/account routes retain their legacy query context.
+
+## Project board navigation
+
+Issue #64 makes `/projects/:projectId` the live board route, retaining exact UUID context and project settings/workflow links. Its state is scoped to the routed page, cleared on navigation/logout/access loss, and reloaded on return from workflow settings. Task detail and creation routes remain #65; the board does not expose placeholder destinations.

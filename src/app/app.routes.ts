@@ -80,7 +80,7 @@ export const routes: Routes = [
       {
         path: 'projects/:projectId',
         loadComponent: () =>
-          import('./pages/project-summary/project-summary').then((m) => m.ProjectSummaryPage),
+          import('./pages/project-board/project-board').then((m) => m.ProjectBoard),
         data: { title: 'Project' },
       },
       { path: 'dashboard', component: Dashboard, data: { title: 'Dashboard' } },

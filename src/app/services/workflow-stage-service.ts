@@ -51,7 +51,7 @@ export function stagePayload(draft: StageDraft, original?: WorkflowStage): Stage
     payload.position = Number(draft.position);
   return payload;
 }
-function isStage(value: unknown): value is WorkflowStage {
+export function isStage(value: unknown): value is WorkflowStage {
   if (!value || typeof value !== 'object') return false;
   const s = value as WorkflowStage;
   return (
