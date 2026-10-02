@@ -110,6 +110,8 @@ export class ProjectBoard {
     if (this.loading() || this.moving()) return false;
     const current = this.context(),
       id = this.id;
+    const host = this.host.nativeElement;
+    this.restoreFocus.set(!!this.board() && host.contains(host.ownerDocument.activeElement));
     this.loading.set(true);
     this.hide();
     this.message.set('');

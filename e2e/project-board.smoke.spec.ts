@@ -58,8 +58,10 @@ for (const theme of ['light', 'dark'])
     await expect(board.getByText('27 tasks', { exact: true })).toBeVisible();
     await expect(board.locator('article')).toHaveCount(25);
     await expect(board.getByText('0 on this page')).toHaveCount(2);
-    await board.getByRole('button', { name: 'Next page' }).click();
+    await board.getByRole('button', { name: 'Next page' }).focus();
+    await page.keyboard.press('Enter');
     await expect(board.locator('article')).toHaveCount(2);
+    await expect(board.getByRole('button', { name: 'Refresh project' })).toBeFocused();
     const card = board.locator('article').first();
     await card.getByLabel('Move Task 26 to').selectOption(STAGES[1].id);
     await card.getByRole('button', { name: 'Move task' }).focus();
