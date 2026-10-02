@@ -12,6 +12,9 @@
     <p role="status">Moving task…</p>
   }
   @if (message()) {
+    @if (!project()) {
+      <h1>Project unavailable</h1>
+    }
     <p role="alert">{{ message() }}</p>
   }
   @if (success()) {

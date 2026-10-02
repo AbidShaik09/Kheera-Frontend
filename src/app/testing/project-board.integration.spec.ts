@@ -211,6 +211,7 @@ describe('Project board routes', () => {
       .toContain('unavailable');
     http.match('/api/spaces').forEach((r) => r.flush([]));
     expect(h.routeNativeElement?.textContent).not.toContain('Task 1');
+    expect(h.routeNativeElement?.querySelector('h1')?.textContent).toBe('Project unavailable');
   });
   it('ignores delayed board results after leaving the route', async () => {
     const h = await open();
