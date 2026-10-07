@@ -38,6 +38,9 @@
   @if (board(); as board) {
     <div class="section-heading">
       <h2>Task board</h2>
+      @if (space()?.capabilities?.canUpdate) {
+        <a [routerLink]="['/projects', project()!.id, 'tasks', 'new']">Create task</a>
+      }
       <p>{{ board.totalItems }} tasks</p>
     </div>
     <p class="board-help">
@@ -82,7 +85,9 @@
               (dragstart)="dragStart($event, task)"
               (dragend)="dragEnd()"
             >
-              <h4>{{ task.title }}</h4>
+              <h4>
+                <a [routerLink]="['/work-items', task.id]">{{ task.title }}</a>
+              </h4>
               <p class="task-id">{{ task.id }}</p>
               @if (space()?.capabilities?.canUpdate) {
                 <form (ngSubmit)="move(task, targets[task.id])">

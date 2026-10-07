@@ -26,14 +26,14 @@
 
 ## Ordered execution
 - [x] Verify clean synchronized baseline, issue, merged backend contract, assets/design guidance and existing code/tests.
-- [ ] Commit initial plan/TODO before application tests/code.
-- [ ] Add compilable behavior tests; run expected red; record results.
-- [ ] Implement typed service/payloads; pass focused service tests.
-- [ ] Write route tests before route/editor implementation; record red; implement state/form/relations/permissions.
-- [ ] Add browser journeys and responsive semantic styles; targeted regressions.
-- [ ] Update documentation and self-review all criteria/security/contract boundaries.
-- [ ] Run npm test -- --watch=false and PLAYWRIGHT_CHANNEL=msedge npm run verify (unit/integration/production/browser); repeat after fixes.
-- [ ] Start npm start on loopback; verify keyboard/focus and desktop/mobile light/dark screenshots. Run disposable local-backend API smoke where available; fixtures alone are not deployment proof.
+- [x] Commit initial plan/TODO before application tests/code.
+- [x] Add compilable behavior tests; run expected red; record results.
+- [x] Implement typed service/payloads; pass focused service tests.
+- [x] Write route tests before route/editor implementation; record red; implement state/form/relations/permissions.
+- [x] Add browser journeys and responsive semantic styles; targeted regressions.
+- [x] Update documentation and self-review all criteria/security/contract boundaries.
+- [x] Run npm test -- --watch=false and PLAYWRIGHT_CHANNEL=msedge npm run verify (unit/integration/production/browser); repeat after fixes.
+- [x] Start npm start on loopback; verify keyboard/focus and desktop/mobile light/dark screenshots. Run disposable local-backend API smoke where available; fixtures alone are not deployment proof.
 - [ ] Commit/push; PR to develop with Refs #65, dependent-slice explanation, plan/evidence. Immediately post @codex review and attach PR.
 - [ ] Inspect CI/review; repair real findings, repeat gates, reply/resolve and request fresh review. Merge/deployment pending explicit authorization.
 
@@ -42,3 +42,7 @@ Initial plan only; checks pending. Latest backend develop e0e84109ec9819fd3a70fc
 TDD evidence: 6 initial service tests failed against compilable transport/payload stubs; route helper type error was fixed before recording 4 behavior failures for missing detail requests. After implementation 10 service/route cases passed. Added further contract, date/calendar and historical-metadata regressions; full verify pending. Overall issue stays open because dependent comments/uploads are not delivered.
 
 Delivery refinement: core editing extracted as [#107](https://github.com/AbidShaik09/Kheera-Frontend/issues/107) during delivery to satisfy closing-keyword policy without closing unfinished collaboration acceptance. Original plan was committed before all code/tests; no scope changed. PR will Closes #107 and Refs #65. See the [core delivery plan](issue-107_task-editing-core.md). Self-review member-search 403 regression failed with retained editor, then passed after scoped clearing; 14 focused task cases pass.
+
+Schema self-review: V17 efforts is nullable (default 1). A new service regression failed because the reader rejected historical null. Reader/draft validation now preserves null on unrelated edits, and a browser regression verifies an empty effort stays omitted. The first expanded assertion was accidentally inserted into the inactive-member test; moved it to the nullable-effort case. Final full gates are repeated after this repair. Live frontend/backend smoke before this compatibility-only reader repair passed CRUD, assignment, parent/cycle 400, delete 409, exact microsecond preservation, reload and board refresh on local disposable PostgreSQL/backend; no deployment claim.
+
+Final pre-PR evidence (2026-10-07): npm test -- --watch=false passed 281 tests in 44 files. PLAYWRIGHT_CHANNEL=msedge npm run verify passed 227 unit tests, 54 integration tests, production build, and 162 desktop/mobile browser checks with zero failures/skips. Existing initial-bundle warning: 523.04 kB vs 500 kB warning, below error budget. Screenshots inspected desktop/mobile light/dark; semantic layout readable without document overflow; no exact board supplied. Local npm start served 4200; merged backend via spring-boot:run PID 11896 on 18065, disposable PostgreSQL 15465. Live UI/API checks passed as recorded above; verified task-owned servers and container stopped. No dependencies/backend changes, secrets, generated artifacts or unrelated work included. CI/review pending.

@@ -481,3 +481,6 @@ Issue #88 reuses the workspace shell and Space editor surface, semantic tokens a
 ## Project board
 
 Issue #64 uses the existing project header, progress, workspace navigation and semantic theme tokens, with ordered custom workflow columns and task cards. Completion styling follows the boolean rather than the name. Desktop columns scroll within the board; mobile columns stack. Page-only column counts and global task totals are visually distinct. Drag/drop and labelled keyboard forms both append; the UI states that placement rule. Pending moves disable duplicate actions, preserve cards until success, and restore focus to Refresh after the authoritative reload. No exact Project Details Penpot URL was supplied; follow the documented header/columns composition without inventing unsupported side panels or metadata.
+
+## Task editor
+Task Details reuses the editor panel with a responsive two-column metadata/date grid, semantic surfaces and restrained destructive section. UTC inputs have explicit labels; inline deletion confirmation focuses Cancel and restores Delete on Escape. Relation searches use explicit paged results; unavailable collaboration features use text states.

@@ -39,6 +39,16 @@ export const routes: Routes = [
     canActivateChild: [authGuard],
     children: [
       {
+        path: 'work-items/:workItemId',
+        loadComponent: () => import('./pages/task-details/task-details').then((m) => m.TaskDetails),
+        data: { title: 'Task Details' },
+      },
+      {
+        path: 'projects/:projectId/tasks/new',
+        loadComponent: () => import('./pages/task-details/task-details').then((m) => m.TaskDetails),
+        data: { title: 'Create task' },
+      },
+      {
         path: 'projects/:projectId/workflow',
         loadComponent: () =>
           import('./pages/workflow-settings/workflow-settings').then((m) => m.WorkflowSettings),

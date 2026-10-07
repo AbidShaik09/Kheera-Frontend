@@ -8,6 +8,6 @@ Issue #107 was extracted during delivery on 2026-10-07 because #65 also contains
 - [x] Typed service, UUID routes/editor, parent/member searches, children, sparse edits/date precision and deletion implemented.
 - [x] Focused tests and first full verify passed; access-loss self-review regression failed then fixed.
 - [x] Disposable real frontend/backend smoke passed CRUD, assignment, hierarchy, server 400/409, persisted precision, reload and board refresh.
-- [ ] Final full unit/integration/production/browser gates after access-loss repair.
+- [x] Final full unit/integration/production/browser gates after access-loss and legacy-effort repairs: 281 full tests; verify 227 unit/54 integration/build/162 browser, zero skips.
 - [ ] PR to develop, attach, request Codex review, inspect CI and repair findings.
 - [ ] Merge/deployment awaits owner authorization.
