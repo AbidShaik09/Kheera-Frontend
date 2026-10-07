@@ -320,3 +320,6 @@ Issue #89 implementation and local verification complete; [PR #103](https://gith
 Issue #88 workflow settings implemented and locally verified; [PR #104](https://github.com/AbidShaik09/Kheera-Frontend/pull/104) open for review: [implementation plan](issue-plans/issue-88_workflow-settings.md). Existing project navigation and backend stage CRUD are ready; task board remains #64.
 
 Issue #64 project board implemented and locally verified; [PR #106](https://github.com/AbidShaik09/Kheera-Frontend/pull/106) open for review: [implementation plan](issue-plans/issue-64_project-board.md). Project and stage APIs/navigation are implemented; task CRUD remains #65.
+
+### Active implementation: #65
+Backend #69 merged in PR #84. Core Task Details/editing now in progress; comments #90, attachments #91 and visits #92 remain dependent slices. Keep #65 open until overall collaboration acceptance is delivered. See [task plan](issue-plans/issue-65_task-details.md).
