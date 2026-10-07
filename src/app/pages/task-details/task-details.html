@@ -1,0 +1,330 @@
+<section class="editor task-panel" aria-label="Task Details" [attr.aria-busy]="loading() || busy()">
+  <header>
+    <h1>{{ id ? 'Task Details' : 'Create task' }}</h1>
+    <a routerLink="/dashboard">Dashboard</a>
+    @if (project(); as project) {
+      <a [routerLink]="['/projects', project.id]">Back to {{ project.name }}</a>
+    }
+  </header>
+  @if (loading()) {
+    <p role="status">Loading task…</p>
+  }
+  @if (message()) {
+    <p role="alert">{{ message() }}</p>
+  }
+  @if (success()) {
+    <p role="status">{{ success() }}</p>
+  }
+  @if (!loading() && !project()) {
+    <button type="button" (click)="load()">Retry task</button>
+  }
+  @if (project(); as project) {
+    @if (task(); as task) {
+      <p class="help">
+        {{ task.complete ? 'Completed' : task.stageName }} · Updated
+        {{ task.updatedAt | date: 'medium' }}
+      </p>
+    }
+    @if (!space()?.capabilities?.canUpdate) {
+      <p>You have read-only access to this task.</p>
+    }
+    <form (ngSubmit)="save()" novalidate>
+      <fieldset [disabled]="!canEdit">
+        <legend>Task information</legend>
+        <label for="task-title">Title</label
+        ><input
+          id="task-title"
+          name="title"
+          [(ngModel)]="draft.title"
+          [attr.aria-invalid]="!!errors().title"
+          aria-describedby="title-error"
+        />
+        <p id="title-error" class="error">{{ errors().title }}</p>
+        <label for="task-description">Description</label
+        ><textarea
+          id="task-description"
+          name="description"
+          rows="4"
+          [(ngModel)]="draft.description"
+          aria-describedby="description-error"
+          [attr.aria-invalid]="!!errors().description"
+        ></textarea>
+        <p id="description-error" class="error">{{ errors().description }}</p>
+        <div class="task-grid">
+          <div>
+            <label for="task-type">Type</label
+            ><select
+              id="task-type"
+              name="typeId"
+              [(ngModel)]="draft.typeId"
+              aria-describedby="type-error"
+            >
+              @if (task()?.typeId && !typesContainCurrent()) {
+                <option [value]="task()!.typeId" disabled>
+                  {{ task()?.typeName || 'Historical type' }}
+                </option>
+              }
+              @if (task() && !task()?.typeId) {
+                <option value="">Type unavailable</option>
+              }
+              @for (type of types(); track type.id) {
+                <option [value]="type.id">{{ type.name }}</option>
+              }
+            </select>
+            <p id="type-error" class="error">{{ errors().typeId }}</p>
+          </div>
+          <div>
+            <label for="task-stage">Stage</label
+            ><select
+              id="task-stage"
+              name="stageId"
+              [(ngModel)]="draft.stageId"
+              aria-describedby="stage-error"
+            >
+              @for (stage of stages(); track stage.id) {
+                <option [value]="stage.id">{{ stage.name }}</option>
+              }
+            </select>
+            <p id="stage-error" class="error">{{ errors().stageId }}</p>
+          </div>
+          <div>
+            <label for="task-efforts">Effort</label
+            ><input
+              id="task-efforts"
+              name="efforts"
+              type="number"
+              min="0"
+              step="1"
+              [ngModel]="draft.efforts"
+              (ngModelChange)="draft.efforts = $event == null ? '' : '' + $event"
+              aria-describedby="efforts-error"
+            />
+            <p id="efforts-error" class="error">{{ errors().efforts }}</p>
+          </div>
+        </div>
+        <div class="task-grid">
+          @for (field of dates; track field) {
+            <div>
+              <label [for]="field">{{ dateLabels[field] }} (UTC)</label
+              ><input
+                [id]="field"
+                [name]="field"
+                type="datetime-local"
+                step="0.001"
+                [(ngModel)]="draft[field]"
+                [attr.aria-describedby]="field + '-error'"
+                [attr.aria-invalid]="!!errors()[field]"
+              />
+              <p [id]="field + '-error'" class="error">{{ errors()[field] }}</p>
+            </div>
+          }
+        </div>
+        <section class="relationship">
+          <h2>Assignment</h2>
+          <p>
+            {{
+              draft.assigneeMemberId
+                ? chosenMember()?.user?.name || task()?.assigneeName || 'Historical member'
+                : 'Unassigned'
+            }}
+            @if (
+              draft.assigneeMemberId &&
+              task()?.assigneeMemberId &&
+              !task()?.assigneeActive &&
+              !chosenMember()
+            ) {
+              <span>(inactive historical member)</span>
+            }
+          </p>
+          @if (draft.assigneeMemberId) {
+            <button type="button" (click)="draft.assigneeMemberId = ''; chosenMember.set(null)">
+              Clear assignee
+            </button>
+          }
+          <label for="member-search">Find an active member</label
+          ><input
+            id="member-search"
+            name="memberSearch"
+            [(ngModel)]="memberSearch"
+            maxlength="100"
+          /><button type="button" (click)="search('members')" [disabled]="relatedBusy()">
+            Search members
+          </button>
+          @if (members(); as page) {
+            <ul>
+              @for (member of page.items; track member.id) {
+                <li>
+                  <button type="button" (click)="selectMember(member.id)">
+                    Assign {{ member.user.name }} ({{ member.user.email }})
+                  </button>
+                </li>
+              }
+            </ul>
+            @if (!page.items.length) {
+              <p>No active members found.</p>
+            }
+            <div class="actions">
+              <button
+                type="button"
+                (click)="search('members', page.page - 1)"
+                [disabled]="relatedBusy() || page.page === 0"
+              >
+                Previous members</button
+              ><span>Page {{ page.page + 1 }} of {{ page.totalPages || 1 }}</span
+              ><button
+                type="button"
+                (click)="search('members', page.page + 1)"
+                [disabled]="relatedBusy() || page.page + 1 >= page.totalPages"
+              >
+                Next members
+              </button>
+            </div>
+          }
+          <p class="error">{{ errors().assigneeMemberId }}</p>
+        </section>
+        <section class="relationship">
+          <h2>Parent task</h2>
+          @if (draft.parentId) {
+            <p>
+              <a [routerLink]="['/work-items', draft.parentId]">{{
+                chosenParent()?.title || 'Open parent task'
+              }}</a>
+            </p>
+            <button type="button" (click)="draft.parentId = ''; chosenParent.set(null)">
+              Clear parent
+            </button>
+          } @else {
+            <p>No parent task.</p>
+          }
+          <label for="parent-search">Find a parent in this project</label
+          ><input
+            id="parent-search"
+            name="parentSearch"
+            [(ngModel)]="parentSearch"
+            maxlength="100"
+          /><button type="button" (click)="search('parents')" [disabled]="relatedBusy()">
+            Search parent tasks
+          </button>
+          @if (parents(); as page) {
+            <ul>
+              @for (parent of page.items; track parent.id) {
+                @if (parent.id !== task()?.id) {
+                  <li>
+                    <button type="button" (click)="selectParent(parent.id)">
+                      Choose {{ parent.title }}
+                    </button>
+                  </li>
+                }
+              }
+            </ul>
+            @if (!page.items.length) {
+              <p>No tasks found.</p>
+            }
+            <div class="actions">
+              <button
+                type="button"
+                (click)="search('parents', page.page - 1)"
+                [disabled]="relatedBusy() || page.page === 0"
+              >
+                Previous parents</button
+              ><span>Page {{ page.page + 1 }} of {{ page.totalPages || 1 }}</span
+              ><button
+                type="button"
+                (click)="search('parents', page.page + 1)"
+                [disabled]="relatedBusy() || page.page + 1 >= page.totalPages"
+              >
+                Next parents
+              </button>
+            </div>
+          }
+          <p class="error">{{ errors().parentId }}</p>
+        </section>
+        <button class="primary save" type="submit">
+          {{ busy() ? 'Saving…' : id ? 'Save changes' : 'Create task' }}
+        </button>
+      </fieldset>
+    </form>
+    @if (relatedBusy()) {
+      <p role="status">Loading related tasks or members…</p>
+    }
+    @if (relatedMessage()) {
+      <p role="alert">{{ relatedMessage() }}</p>
+    }
+    @if (task(); as task) {
+      <section class="relationship">
+        <h2>Children</h2>
+        <button type="button" (click)="search('children')" [disabled]="relatedBusy() || busy()">
+          Show children
+        </button>
+        @if (space()?.capabilities?.canUpdate) {
+          <a
+            [routerLink]="['/projects', project.id, 'tasks', 'new']"
+            [queryParams]="{ parent: task.id }"
+            >Create child task</a
+          >
+        }
+        @if (children(); as page) {
+          <ul>
+            @for (child of page.items; track child.id) {
+              <li>
+                <a [routerLink]="['/work-items', child.id]">{{ child.title }}</a> ·
+                {{ child.stageName }}
+              </li>
+            }
+          </ul>
+          @if (!page.items.length) {
+            <p>No child tasks.</p>
+          }
+          <div class="actions">
+            <button
+              type="button"
+              (click)="search('children', page.page - 1)"
+              [disabled]="relatedBusy() || busy() || page.page === 0"
+            >
+              Previous children</button
+            ><span>Page {{ page.page + 1 }} of {{ page.totalPages || 1 }}</span
+            ><button
+              type="button"
+              (click)="search('children', page.page + 1)"
+              [disabled]="relatedBusy() || busy() || page.page + 1 >= page.totalPages"
+            >
+              Next children
+            </button>
+          </div>
+        }
+      </section>
+      @if (space()?.capabilities?.canUpdate) {
+        <section class="danger">
+          <h2>Delete task</h2>
+          <p>Tasks with active children must be reparented or have their children removed first.</p>
+          @if (confirming()) {
+            <div role="group" aria-label="Confirm task deletion" (keydown.escape)="cancelDelete()">
+              <p>Delete this task? It will no longer appear on the board.</p>
+              <button #cancelButton type="button" (click)="cancelDelete()" [disabled]="busy()">
+                Cancel deletion</button
+              ><button class="destructive" type="button" (click)="remove()" [disabled]="busy()">
+                Confirm deletion
+              </button>
+            </div>
+          } @else {
+            <button
+              data-delete
+              type="button"
+              class="destructive"
+              (click)="beginDelete()"
+              [disabled]="!canEdit"
+            >
+              Delete task
+            </button>
+          }
+        </section>
+      }
+    }
+    <aside class="collaboration">
+      <h2>Collaboration</h2>
+      <p>Comments are not available yet.</p>
+      <p>Attachments are not available yet.</p>
+      <p>Recently visited history is not available yet.</p>
+    </aside>
+  }
+</section>

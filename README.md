@@ -139,4 +139,7 @@ Project overview links to `/projects/:projectId/workflow` for ordered, custom st
 
 ## Live project board
 
-Projects display paginated task cards in their custom workflow columns. Move tasks with drag-and-drop or keyboard controls; moves append to the destination and reload authoritative data. See [board architecture](docs/architecture/SPACE_DETAILS.md#project-task-board-64) and [issue #64 plan](docs/planning/issue-plans/issue-64_project-board.md). Task creation/detail remains #65.
+Projects display paginated task cards in their custom workflow columns. Move tasks with drag-and-drop or keyboard controls; moves append to the destination and reload authoritative data. See [board architecture](docs/architecture/SPACE_DETAILS.md#project-task-board-64) and [issue #64 plan](docs/planning/issue-plans/issue-64_project-board.md). Task titles open Task Details, with permission-controlled creation and editing.
+
+## Task Details
+Open a task from a project board to edit supported task fields, find a parent or active assignee, inspect children and confirm deletion. Create task is available to members with update permission. Comments, attachments and visit history await their dependent APIs. See [Task Details architecture](docs/architecture/TASK_DETAILS.md).
