@@ -39,3 +39,6 @@
 
 ## Evidence and delivery
 Initial plan only; checks pending. Latest backend develop e0e84109ec9819fd3a70fc6bc4df1ca610632444. PR #84 merged 2026-10-03. Frontend #65 overall collaboration scope stays open. No exact design URL or production account assumed.
+TDD evidence: 6 initial service tests failed against compilable transport/payload stubs; route helper type error was fixed before recording 4 behavior failures for missing detail requests. After implementation 10 service/route cases passed. Added further contract, date/calendar and historical-metadata regressions; full verify pending. Overall issue stays open because dependent comments/uploads are not delivered.
+
+Delivery refinement: core editing extracted as [#107](https://github.com/AbidShaik09/Kheera-Frontend/issues/107) during delivery to satisfy closing-keyword policy without closing unfinished collaboration acceptance. Original plan was committed before all code/tests; no scope changed. PR will Closes #107 and Refs #65. See the [core delivery plan](issue-107_task-editing-core.md). Self-review member-search 403 regression failed with retained editor, then passed after scoped clearing; 14 focused task cases pass.
