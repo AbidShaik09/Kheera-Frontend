@@ -327,3 +327,5 @@ Backend #69 merged in PR #84. Core Task Details/editing now in progress; comment
 Core editing slice tracked by [#107](https://github.com/AbidShaik09/Kheera-Frontend/issues/107); #65 stays open for dependent collaboration work. The [delivery plan](issue-plans/issue-107_task-editing-core.md) links the original pre-code plan and validation.
 
 #107 core Task Details locally implemented and verified: 281 Angular tests, production build, 162 browser checks and disposable live frontend/backend smoke passed. PR/CI/review pending; #65 collaboration dependencies remain open.
+
+[PR #108](https://github.com/AbidShaik09/Kheera-Frontend/pull/108) delivers #107 / core #65 editing and awaits CI/review. Overall #65 remains open for comments/attachments integration.

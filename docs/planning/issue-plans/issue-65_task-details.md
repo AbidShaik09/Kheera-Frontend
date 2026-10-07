@@ -34,7 +34,7 @@
 - [x] Update documentation and self-review all criteria/security/contract boundaries.
 - [x] Run npm test -- --watch=false and PLAYWRIGHT_CHANNEL=msedge npm run verify (unit/integration/production/browser); repeat after fixes.
 - [x] Start npm start on loopback; verify keyboard/focus and desktop/mobile light/dark screenshots. Run disposable local-backend API smoke where available; fixtures alone are not deployment proof.
-- [ ] Commit/push; PR to develop with Refs #65, dependent-slice explanation, plan/evidence. Immediately post @codex review and attach PR.
+- [x] Commit/push; PR to develop with Closes #107 and Refs #65, dependent-slice explanation, plan/evidence. Immediately post @codex review and attach PR.
 - [ ] Inspect CI/review; repair real findings, repeat gates, reply/resolve and request fresh review. Merge/deployment pending explicit authorization.
 
 ## Evidence and delivery
@@ -46,3 +46,5 @@ Delivery refinement: core editing extracted as [#107](https://github.com/AbidSha
 Schema self-review: V17 efforts is nullable (default 1). A new service regression failed because the reader rejected historical null. Reader/draft validation now preserves null on unrelated edits, and a browser regression verifies an empty effort stays omitted. The first expanded assertion was accidentally inserted into the inactive-member test; moved it to the nullable-effort case. Final full gates are repeated after this repair. Live frontend/backend smoke before this compatibility-only reader repair passed CRUD, assignment, parent/cycle 400, delete 409, exact microsecond preservation, reload and board refresh on local disposable PostgreSQL/backend; no deployment claim.
 
 Final pre-PR evidence (2026-10-07): npm test -- --watch=false passed 281 tests in 44 files. PLAYWRIGHT_CHANNEL=msedge npm run verify passed 227 unit tests, 54 integration tests, production build, and 162 desktop/mobile browser checks with zero failures/skips. Existing initial-bundle warning: 523.04 kB vs 500 kB warning, below error budget. Screenshots inspected desktop/mobile light/dark; semantic layout readable without document overflow; no exact board supplied. Local npm start served 4200; merged backend via spring-boot:run PID 11896 on 18065, disposable PostgreSQL 15465. Live UI/API checks passed as recorded above; verified task-owned servers and container stopped. No dependencies/backend changes, secrets, generated artifacts or unrelated work included. CI/review pending.
+
+Delivery: [PR #108](https://github.com/AbidShaik09/Kheera-Frontend/pull/108) targets develop, implementation d50dc04. Immediate [Codex request](https://github.com/AbidShaik09/Kheera-Frontend/pull/108#issuecomment-6031631285) accepted. CI/review pending. Core #107 closes on delivery/merge policy; parent #65 remains open. No merge requested.

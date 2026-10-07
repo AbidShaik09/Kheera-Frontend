@@ -11,3 +11,4 @@ Issue #107 was extracted during delivery on 2026-10-07 because #65 also contains
 - [x] Final full unit/integration/production/browser gates after access-loss and legacy-effort repairs: 281 full tests; verify 227 unit/54 integration/build/162 browser, zero skips.
 - [ ] PR to develop, attach, request Codex review, inspect CI and repair findings.
 - [ ] Merge/deployment awaits owner authorization.
+PR: [#108](https://github.com/AbidShaik09/Kheera-Frontend/pull/108), with Closes #107 and Refs #65; immediate review requested. Final local gates passed as recorded; CI/review pending. Merge/deployment remain pending.
